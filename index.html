@@ -144,7 +144,6 @@
       font-weight: 700;
     }
 
-    /* شريط الأعضاء العلوي المربع */
     .clan-roster-section {
       background: #0d1017;
       border-bottom: 1px solid var(--border);
@@ -206,7 +205,6 @@
     .roster-name { font-weight: 800; font-size: 0.95rem; color: #fff; }
     .roster-title { font-size: 0.75rem; color: var(--primary); font-weight: 600; white-space: nowrap; }
 
-    /* شاشة الدخول */
     .hero-section {
       max-width: 900px;
       margin: 40px auto;
@@ -236,7 +234,6 @@
     .member-name { font-weight: 800; font-size: 1.3rem; color: #fff; }
     .member-tag { font-size: 0.85rem; color: var(--primary); margin-top: 4px; }
 
-    /* التبويبات */
     #main-hub { display: none; padding-bottom: 80px; }
     .nav-tabs {
       display: flex;
@@ -635,7 +632,7 @@
     .status-tag.absent { background: rgba(239,68,68,0.2); color: var(--danger); border: 1px solid var(--danger); }
     .status-tag.waiting { color: var(--muted); }
 
-    /* مراجعات الألعاب */
+    /* مراجعات الألعاب المتطورة */
     .review-rule-box {
       background: rgba(239, 68, 68, 0.15);
       border: 2px solid var(--danger);
@@ -648,27 +645,36 @@
       color: #fee2e2;
     }
     .review-rule-icon { font-size: 1.8rem; }
-    .star-rating-select {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      background: #0b0d14;
+    
+    .rating-sub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      background: #0d1017;
       border: 1px solid var(--border);
-      padding: 10px 14px;
-      border-radius: 8px;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 15px;
     }
-    .star-btn {
-      font-size: 1.4rem;
-      cursor: pointer;
+    .rating-sub-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .rating-sub-item label {
+      font-size: 0.85rem;
+      font-weight: 700;
       color: var(--muted);
-      transition: 0.15s;
-      background: none;
-      border: none;
     }
-    .star-btn.active {
+    .rating-sub-item select {
+      background: #141824;
+      border: 1px solid var(--border);
       color: var(--primary);
-      transform: scale(1.15);
+      font-weight: 800;
+      padding: 8px 10px;
+      border-radius: 6px;
     }
+
     .review-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -676,7 +682,7 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
     .review-card:hover { border-color: var(--primary); }
@@ -689,14 +695,30 @@
       align-items: center;
     }
     .review-game-thumb {
-      width: 70px;
-      height: 70px;
+      width: 75px;
+      height: 75px;
       border-radius: 10px;
       object-fit: cover;
       background: #000;
       border: 1px solid var(--border);
       flex-shrink: 0;
     }
+    .review-scores-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .review-pill {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
     .review-body {
       padding: 18px;
       font-size: 0.95rem;
@@ -1025,41 +1047,97 @@
         <div class="games-grid" id="wishlist-container"></div>
       </section>
 
-      <!-- مراجعات الألعاب -->
+      <!-- قسم مراجعات الألعاب المتطور -->
       <section id="reviews-section" style="display: none;">
         <div class="review-rule-box">
           <div class="review-rule-icon">🛑</div>
           <div>
             <h4 style="font-weight: 900; font-size: 1.1rem; color: #f87171;">قانون صارم: ممنوع حرق قصة وأحداث الألعاب نهائياً!</h4>
-            <p style="font-size: 0.85rem; margin-top: 2px;">اكتب رأيك وانطباعك عن أسلوب اللعب، الجرافيكس، والمتعة العامة بدون ذكر أي تفاصيل تحرق متعة التجربة على الشباب.</p>
+            <p style="font-size: 0.85rem; margin-top: 2px;">اكتب رأيك بحرية عن تجربتك دون حرق أي مفاجآت أو نهايات على الشباب.</p>
           </div>
         </div>
 
         <div class="add-box">
-          <h3 style="color: var(--primary); margin-bottom: 15px; font-weight: 800;">✍️ شارك رأيك ومراجعتك عن لعبة</h3>
+          <h3 style="color: var(--primary); margin-bottom: 15px; font-weight: 800;">✍️ اكتب مراجعتك التفصيلية عن اللعبة</h3>
+          
           <div class="form-grid">
             <input type="text" id="review-game-title" placeholder="اسم اللعبة (مثال: Resident Evil 3)...">
             
-            <div class="star-rating-select">
-              <span style="font-weight: 700; font-size: 0.9rem; color: var(--muted);">تقييمك:</span>
-              <div id="star-picker">
-                <button type="button" class="star-btn active" onclick="setReviewRating(1)">★</button>
-                <button type="button" class="star-btn active" onclick="setReviewRating(2)">★</button>
-                <button type="button" class="star-btn active" onclick="setReviewRating(3)">★</button>
-                <button type="button" class="star-btn active" onclick="setReviewRating(4)">★</button>
-                <button type="button" class="star-btn active" onclick="setReviewRating(5)">★</button>
-              </div>
-              <span id="star-rating-num" style="font-weight: 800; color: var(--primary); margin-right: 5px;">5 / 5</span>
-            </div>
-
             <div class="file-input-wrapper">
-              <span id="review-file-label-text">📷 صورة اللعبة (اختياري)</span>
+              <span id="review-file-label-text">📷 غلاف/صورة اللعبة</span>
               <input type="file" id="review-file-input" accept="image/*" onchange="processImage(this, 'review')">
             </div>
           </div>
 
-          <textarea id="review-text" rows="4" placeholder="اكتب رأيك الكامل ومراجعتك بالتفصيل هنا: كيف كانت التجربة؟ وش الإيجابيات والسلبيات؟ وهل تنصح الشباب يلعبونها؟ (بدون حرق)..." style="margin-bottom: 15px;"></textarea>
-          <button class="action-btn" id="add-review-btn" onclick="addReview()">نشر المراجعة للكل 🌟</button>
+          <!-- التقييمات المفصلة من 0.5 إلى 5 نجوم -->
+          <div class="rating-sub-grid">
+            <div class="rating-sub-item">
+              <label>⭐ التقييم العام الرئيسي (من 0.5 إلى 5.0):</label>
+              <select id="score-main">
+                <option value="5.0">5.0 ★★★★★ (أسطورية)</option>
+                <option value="4.5">4.5 ★★★★☆</option>
+                <option value="4.0">4.0 ★★★★☆ (ممتازة)</option>
+                <option value="3.5">3.5 ★★★☆☆</option>
+                <option value="3.0">3.0 ★★★☆☆ (جيدة)</option>
+                <option value="2.5">2.5 ★★☆☆☆</option>
+                <option value="2.0">2.0 ★★☆☆☆ (متواضعة)</option>
+                <option value="1.5">1.5 ★☆☆☆☆</option>
+                <option value="1.0">1.0 ★☆☆☆☆ (سيئة)</option>
+                <option value="0.5">0.5 ☆☆☆☆☆ (كارثية)</option>
+              </select>
+            </div>
+
+            <div class="rating-sub-item">
+              <label>📖 القصة والأحداث:</label>
+              <select id="score-story">
+                <option value="5.0">5.0 ★★★★★</option>
+                <option value="4.5">4.5 ★★★★☆</option>
+                <option value="4.0">4.0 ★★★★☆</option>
+                <option value="3.5">3.5 ★★★☆☆</option>
+                <option value="3.0">3.0 ★★★☆☆</option>
+                <option value="2.5">2.5 ★★☆☆☆</option>
+                <option value="2.0">2.0 ★★☆☆☆</option>
+                <option value="1.5">1.5 ★☆☆☆☆</option>
+                <option value="1.0">1.0 ★☆☆☆☆</option>
+                <option value="0.5">0.5 ☆☆☆☆☆</option>
+              </select>
+            </div>
+
+            <div class="rating-sub-item">
+              <label>🎮 أسلوب اللعب (الجيم بلاي):</label>
+              <select id="score-gameplay">
+                <option value="5.0">5.0 ★★★★★</option>
+                <option value="4.5">4.5 ★★★★☆</option>
+                <option value="4.0">4.0 ★★★★☆</option>
+                <option value="3.5">3.5 ★★★☆☆</option>
+                <option value="3.0">3.0 ★★★☆☆</option>
+                <option value="2.5">2.5 ★★☆☆☆</option>
+                <option value="2.0">2.0 ★★☆☆☆</option>
+                <option value="1.5">1.5 ★☆☆☆☆</option>
+                <option value="1.0">1.0 ★☆☆☆☆</option>
+                <option value="0.5">0.5 ☆☆☆☆☆</option>
+              </select>
+            </div>
+
+            <div class="rating-sub-item">
+              <label>🎨 الجرافيكس والرسومات:</label>
+              <select id="score-graphics">
+                <option value="5.0">5.0 ★★★★★</option>
+                <option value="4.5">4.5 ★★★★☆</option>
+                <option value="4.0">4.0 ★★★★☆</option>
+                <option value="3.5">3.5 ★★★☆☆</option>
+                <option value="3.0">3.0 ★★★☆☆</option>
+                <option value="2.5">2.5 ★★☆☆☆</option>
+                <option value="2.0">2.0 ★★☆☆☆</option>
+                <option value="1.5">1.5 ★☆☆☆☆</option>
+                <option value="1.0">1.0 ★☆☆☆☆</option>
+                <option value="0.5">0.5 ☆☆☆☆☆</option>
+              </select>
+            </div>
+          </div>
+
+          <textarea id="review-text" rows="4" placeholder="اكتب رأيك الكامل ومراجعتك بالتفصيل هنا: الإيجابيات، السلبيات، وهل تنصح بها الشباب؟ (بدون حرق)..." style="margin-bottom: 15px;"></textarea>
+          <button class="action-btn" id="add-review-btn" onclick="addReview()">نشر المراجعة للجميع 🌟</button>
         </div>
 
         <div id="reviews-feed-container"></div>
@@ -1149,7 +1227,6 @@
     let uploadedImageBase64 = '';
     let uploadedWishImageBase64 = '';
     let uploadedReviewImageBase64 = '';
-    let currentSelectedRating = 5;
 
     let editAvatarBase64 = '';
     let editBannerBase64 = '';
@@ -1181,12 +1258,13 @@
       document.getElementById('theme-selector').value = theme;
     }
 
-    // دالة جلب الصورة المعدلة بدقة فائقة وبشكل حي
+    // دالة جلب الصورة بدون أي أخطاء أو صور مكسورة
     function getUserAvatar(name) {
-      if (membersProfiles[name] && membersProfiles[name].avatar) {
+      if (membersProfiles[name] && membersProfiles[name].avatar && membersProfiles[name].avatar.trim().length > 10) {
         return membersProfiles[name].avatar;
       }
-      return 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230d1017"/><circle cx="50" cy="40" r="20" fill="%23f59e0b"/><path d="M25 85 C25 65, 75 65, 75 85" fill="%23f59e0b"/></svg>';
+      // صورة افتراضية نظيفة جداً للأعضاء الذين لم يرفعوا صوراً بعد
+      return 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100';
     }
 
     function getUserStatusDot(name) {
@@ -1194,7 +1272,6 @@
       return `<span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:${isOnline ? '#10b981' : '#ef4444'};"></span>`;
     }
 
-    // استماع لحظي وتحديث كل الأقسام فوراً
     db.collection("users").onSnapshot(snapshot => {
       membersProfiles = {};
       snapshot.forEach(doc => membersProfiles[doc.id] = doc.data());
@@ -1574,7 +1651,6 @@
       }
     }
 
-    // هنا تم تعديل الربط ليعرض الصورة المحدثة فوراً في مولد الفرق
     function renderMatchups() {
       const container = document.getElementById('matchups-history-container');
       if (!container) return;
@@ -1661,7 +1737,6 @@
       }
     }
 
-    // هنا تم تعديل الربط ليعرض الصورة المحدثة فوراً في جدول السهرات
     function renderSchedule() {
       const timeElem = document.getElementById('current-session-time');
       const rosterGrid = document.getElementById('attendance-roster-grid');
@@ -1698,23 +1773,18 @@
       });
     }
 
-    function setReviewRating(rating) {
-      currentSelectedRating = rating;
-      const stars = document.querySelectorAll('#star-picker .star-btn');
-      stars.forEach((btn, idx) => {
-        if (idx < rating) btn.classList.add('active');
-        else btn.classList.remove('active');
-      });
-      document.getElementById('star-rating-num').innerText = `${rating} / 5`;
-    }
-
+    // إضافة المراجعة مع التقييمات المفصلة الأربعة
     function addReview() {
       const title = document.getElementById('review-game-title').value.trim();
       const content = document.getElementById('review-text').value.trim();
+      const scoreMain = document.getElementById('score-main').value;
+      const scoreStory = document.getElementById('score-story').value;
+      const scoreGameplay = document.getElementById('score-gameplay').value;
+      const scoreGraphics = document.getElementById('score-graphics').value;
       const img = uploadedReviewImageBase64 || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500';
 
       if (!title) return alert('يرجى كتابة اسم اللعبة');
-      if (!content) return alert('يرجى كتابة مراجعتك ورأيك عن اللعبة');
+      if (!content) return alert('يرجى كتابة المراجعة ورأيك بالتفصيل');
 
       const btn = document.getElementById('add-review-btn');
       btn.innerText = 'جاري النشر... ⏳';
@@ -1723,7 +1793,10 @@
       db.collection("reviews").add({
         title,
         content,
-        rating: currentSelectedRating,
+        scoreMain,
+        scoreStory,
+        scoreGameplay,
+        scoreGraphics,
         img,
         author: currentUser,
         createdAt: Date.now()
@@ -1731,20 +1804,23 @@
         document.getElementById('review-game-title').value = '';
         document.getElementById('review-text').value = '';
         document.getElementById('review-file-input').value = '';
-        document.getElementById('review-file-label-text').innerText = '📷 صورة اللعبة (اختياري)';
+        document.getElementById('review-file-label-text').innerText = '📷 غلاف/صورة اللعبة';
         uploadedReviewImageBase64 = '';
-        setReviewRating(5);
-        btn.innerText = 'نشر المراجعة للكل 🌟';
+        btn.innerText = 'نشر المراجعة للجميع 🌟';
         btn.disabled = false;
       }).catch(err => {
         alert('حدث خطأ: ' + err.message);
-        btn.innerText = 'نشر المراجعة للكل 🌟';
+        btn.innerText = 'نشر المراجعة للجميع 🌟';
         btn.disabled = false;
       });
     }
 
-    function deleteReview(id) {
-      if (confirm('هل أنت متأكد من حذف هذه المراجعة؟')) {
+    // الحذف مسموح لصاحب المراجعة فقط
+    function deleteReview(id, author) {
+      if (author !== currentUser) {
+        return alert('عفواً! لا يمكنك حذف هذه المراجعة لأنها مضافة من قبل ' + author);
+      }
+      if (confirm('هل أنت متأكد من حذف مراجعتك؟')) {
         db.collection("reviews").doc(id).delete();
       }
     }
@@ -1755,22 +1831,27 @@
       container.innerHTML = '';
 
       if (reviewsList.length === 0) {
-        container.innerHTML = `<p style="text-align: center; color: var(--muted); padding: 40px 0;">لا توجد مراجعات أو آراء مكتوبة عن ألعاب حتى الآن. كن أول من يشارك رأيه بالأعلى!</p>`;
+        container.innerHTML = `<p style="text-align: center; color: var(--muted); padding: 40px 0;">لا توجد مراجعات مسجلة حتى الآن. كن أول من يكتب رأيه بالأعلى!</p>`;
         return;
       }
 
       reviewsList.forEach(r => {
-        const starsText = '★'.repeat(r.rating || 5) + '☆'.repeat(5 - (r.rating || 5));
         const formattedDate = r.createdAt ? new Date(r.createdAt).toLocaleDateString('ar-SA') : '';
+        const isMyReview = r.author === currentUser;
 
         container.innerHTML += `
           <div class="review-card">
             <div class="review-header">
               <img src="${r.img}" class="review-game-thumb" alt="${r.title}">
-              <div>
-                <h3 style="color: #fff; font-size: 1.25rem; font-weight: 800; margin-bottom: 3px;">${r.title}</h3>
-                <div style="color: var(--primary); font-size: 1.15rem; font-weight: 900; letter-spacing: 2px;">
-                  ${starsText} <span style="font-size: 0.85rem; color: var(--muted);">(${r.rating || 5}/5)</span>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                  <h3 style="color: #fff; font-size: 1.3rem; font-weight: 800;">${r.title}</h3>
+                  <div style="color: var(--primary); font-size: 1.15rem; font-weight: 900;">★ ${r.scoreMain || '5.0'}</div>
+                </div>
+                <div class="review-scores-summary">
+                  <span class="review-pill">📖 القصة: ${r.scoreStory || '5.0'} ★</span>
+                  <span class="review-pill">🎮 أسلوب اللعب: ${r.scoreGameplay || '5.0'} ★</span>
+                  <span class="review-pill">🎨 الجرافيكس: ${r.scoreGraphics || '5.0'} ★</span>
                 </div>
               </div>
             </div>
@@ -1780,11 +1861,11 @@
             <div class="review-footer">
               <div class="clickable-author" onclick="openProfile('${r.author}')">
                 <img src="${getUserAvatar(r.author)}" class="author-thumb" alt="${r.author}">
-                <span>رأي الكاتب: <b>${r.author}</b></span>
+                <span>كتبها: <b>${r.author}</b></span>
               </div>
               <div style="display: flex; align-items: center; gap: 12px;">
                 <span style="color: var(--muted); font-size: 0.8rem;">${formattedDate}</span>
-                <button class="del-btn" onclick="deleteReview('${r.id}')">حذف 🗑️</button>
+                ${isMyReview ? `<button class="del-btn" onclick="deleteReview('${r.id}', '${r.author}')">حذف مراجعتي 🗑️</button>` : ''}
               </div>
             </div>
           </div>
