@@ -347,6 +347,7 @@
       border-radius: 50%;
       object-fit: cover;
       border: 1px solid var(--primary);
+      background: #000;
     }
 
     .games-grid {
@@ -594,6 +595,7 @@
       border-radius: 6px;
       object-fit: cover;
       border: 1px solid var(--border);
+      background: #000;
     }
 
     /* جدول السهرات */
@@ -620,12 +622,20 @@
       justify-content: space-between;
     }
     .attendee-left { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .attendee-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      background: #000;
+    }
     .status-tag { font-size: 0.8rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; }
     .status-tag.ready { background: rgba(16,185,129,0.2); color: var(--success); border: 1px solid var(--success); }
     .status-tag.absent { background: rgba(239,68,68,0.2); color: var(--danger); border: 1px solid var(--danger); }
     .status-tag.waiting { color: var(--muted); }
 
-    /* أنماط قسم مراجعات الألعاب الجديد */
+    /* مراجعات الألعاب */
     .review-rule-box {
       background: rgba(239, 68, 68, 0.15);
       border: 2px solid var(--danger);
@@ -637,9 +647,7 @@
       gap: 12px;
       color: #fee2e2;
     }
-    .review-rule-icon {
-      font-size: 1.8rem;
-    }
+    .review-rule-icon { font-size: 1.8rem; }
     .star-rating-select {
       display: flex;
       gap: 8px;
@@ -671,9 +679,7 @@
       margin-bottom: 20px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
-    .review-card:hover {
-      border-color: var(--primary);
-    }
+    .review-card:hover { border-color: var(--primary); }
     .review-header {
       display: flex;
       gap: 15px;
@@ -913,7 +919,6 @@
 
     <div class="container">
       
-      <!-- قسم إضافة لعبة عادية -->
       <section class="add-box" id="game-form-box">
         <h3 style="color: var(--primary); margin-bottom: 15px; font-weight: 800;">إضافة لعبة جديدة للموقع</h3>
         <div class="form-grid">
@@ -933,10 +938,8 @@
         <button class="action-btn" id="add-game-btn" onclick="addGame()">نشر اللعبة للجميع في السحابة 🚀</button>
       </section>
 
-      <!-- صالة عرض الألعاب -->
       <section class="games-grid" id="games-container"></section>
 
-      <!-- قسم التصويت -->
       <section id="poll-section" style="display: none;">
         <div class="vote-box">
           <h3 style="color: var(--primary); margin-bottom: 14px; font-weight: 800;">إنشاء تصويت تلقائي للألعاب 🗳️</h3>
@@ -963,7 +966,6 @@
         <div id="active-polls"></div>
       </section>
 
-      <!-- قسم مولّد الفرق السحابي -->
       <section id="teams-section" style="display: none;">
         <div class="vote-box" style="text-align: center;">
           <h3 style="color: var(--primary); font-size: 1.5rem; margin-bottom: 8px; font-weight: 800;">⚔️ مولّد الفرق السحابي (Squad Balancer)</h3>
@@ -979,7 +981,6 @@
         </div>
       </section>
 
-      <!-- قسم جدول السهرات والـ MVP -->
       <section id="schedule-section" style="display: none;">
         <div class="schedule-box" id="schedule-display-box">
           <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
@@ -1005,7 +1006,6 @@
         </div>
       </section>
 
-      <!-- قسم ألعاب الشراء المستقبلية -->
       <section id="wishlist-section" style="display: none;">
         <div class="add-box">
           <h3 style="color: var(--primary); margin-bottom: 15px; font-weight: 800;">💡 اقتراح لعبة جديدة للشراء الجماعي</h3>
@@ -1025,10 +1025,8 @@
         <div class="games-grid" id="wishlist-container"></div>
       </section>
 
-      <!-- قسم مراجعات ورأي الأعضاء عن الألعاب (الجديد) -->
+      <!-- مراجعات الألعاب -->
       <section id="reviews-section" style="display: none;">
-        
-        <!-- قانون منع الحرق الصارم -->
         <div class="review-rule-box">
           <div class="review-rule-icon">🛑</div>
           <div>
@@ -1183,11 +1181,27 @@
       document.getElementById('theme-selector').value = theme;
     }
 
+    // دالة جلب الصورة المعدلة بدقة فائقة وبشكل حي
+    function getUserAvatar(name) {
+      if (membersProfiles[name] && membersProfiles[name].avatar) {
+        return membersProfiles[name].avatar;
+      }
+      return 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230d1017"/><circle cx="50" cy="40" r="20" fill="%23f59e0b"/><path d="M25 85 C25 65, 75 65, 75 85" fill="%23f59e0b"/></svg>';
+    }
+
+    function getUserStatusDot(name) {
+      const isOnline = membersProfiles[name] && membersProfiles[name].online;
+      return `<span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:${isOnline ? '#10b981' : '#ef4444'};"></span>`;
+    }
+
+    // استماع لحظي وتحديث كل الأقسام فوراً
     db.collection("users").onSnapshot(snapshot => {
       membersProfiles = {};
       snapshot.forEach(doc => membersProfiles[doc.id] = doc.data());
       renderRoster();
       render();
+      renderMatchups();
+      renderSchedule();
       renderReviews();
     });
 
@@ -1278,8 +1292,8 @@
             name: name,
             title: 'عضو كلان صبر',
             bio: 'متحمس للجيمنج مع السكواد 🎮',
-            avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=300',
-            banner: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800',
+            avatar: '',
+            banner: '',
             online: true,
             mvpUntil: 0
           });
@@ -1308,6 +1322,8 @@
       setUserOnlineStatus(true);
       renderRoster();
       render();
+      renderMatchups();
+      renderSchedule();
       renderReviews();
     }
 
@@ -1332,6 +1348,8 @@
       document.getElementById('reviews-section').style.display = isReviews ? 'block' : 'none';
 
       render();
+      if (isTeams) renderMatchups();
+      if (isSchedule) renderSchedule();
       if (isReviews) renderReviews();
     }
 
@@ -1344,7 +1362,7 @@
         const prof = membersProfiles[name] || {};
         const isOnline = !!prof.online;
         const isMvp = prof.mvpUntil && prof.mvpUntil > Date.now();
-        const avatar = prof.avatar || 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=300';
+        const avatar = getUserAvatar(name);
         const title = prof.title || 'عضو كلان صبر';
 
         container.innerHTML += `
@@ -1373,8 +1391,8 @@
       document.getElementById('prof-name').innerText = name + (isMvp ? ' 👑 (MVP)' : '');
       document.getElementById('prof-title').innerText = prof.title || 'عضو كلان صبر';
       document.getElementById('prof-bio').innerText = prof.bio || 'لا توجد نبذة تعريفية مكتوبة بعد.';
-      document.getElementById('prof-avatar').src = prof.avatar || 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=300';
-      document.getElementById('prof-banner').src = prof.banner || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800';
+      document.getElementById('prof-avatar').src = getUserAvatar(name);
+      document.getElementById('prof-banner').src = prof.banner || '';
 
       const statusText = document.getElementById('prof-status-text');
       statusText.innerHTML = isOnline 
@@ -1421,7 +1439,7 @@
 
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.75);
 
             if (type === 'avatar') editAvatarBase64 = dataUrl;
             if (type === 'banner') editBannerBase64 = dataUrl;
@@ -1456,16 +1474,6 @@
         saveBtn.innerText = 'حفظ التعديلات بالسحابة 💾';
         saveBtn.disabled = false;
       });
-    }
-
-    function getUserAvatar(name) {
-      const p = membersProfiles[name];
-      return (p && p.avatar) ? p.avatar : 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=100';
-    }
-
-    function getUserStatusDot(name) {
-      const isOnline = membersProfiles[name] && membersProfiles[name].online;
-      return `<span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:${isOnline ? '#10b981' : '#ef4444'};"></span>`;
     }
 
     function processImage(input, target) {
@@ -1566,6 +1574,7 @@
       }
     }
 
+    // هنا تم تعديل الربط ليعرض الصورة المحدثة فوراً في مولد الفرق
     function renderMatchups() {
       const container = document.getElementById('matchups-history-container');
       if (!container) return;
@@ -1652,6 +1661,7 @@
       }
     }
 
+    // هنا تم تعديل الربط ليعرض الصورة المحدثة فوراً في جدول السهرات
     function renderSchedule() {
       const timeElem = document.getElementById('current-session-time');
       const rosterGrid = document.getElementById('attendance-roster-grid');
@@ -1673,7 +1683,7 @@
         rosterGrid.innerHTML += `
           <div class="attendee-card">
             <div class="attendee-left" onclick="openProfile('${name}')">
-              <img src="${getUserAvatar(name)}" style="width:28px; height:28px; border-radius:6px; object-fit:cover;" alt="${name}">
+              <img src="${getUserAvatar(name)}" class="attendee-avatar" alt="${name}">
               <span style="font-weight:700; color:#fff;">${name}</span>
             </div>
             ${statusBadge}
@@ -1688,7 +1698,6 @@
       });
     }
 
-    /* إدارة قسم مراجعات الألعاب (Game Reviews) */
     function setReviewRating(rating) {
       currentSelectedRating = rating;
       const stars = document.querySelectorAll('#star-picker .star-btn');
@@ -2051,7 +2060,6 @@
     }
 
     function render() {
-      // 1. الألعاب العادية
       const container = document.getElementById('games-container');
       container.innerHTML = '';
 
@@ -2079,7 +2087,6 @@
         `;
       });
 
-      // 2. التصويتات
       const pollList = document.getElementById('active-polls');
       pollList.innerHTML = '';
 
@@ -2222,7 +2229,6 @@
         `;
       });
 
-      // 3. ألعاب الشراء
       const wishContainer = document.getElementById('wishlist-container');
       wishContainer.innerHTML = '';
 
