@@ -5,15 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SBR CLAN | البوابة الرسمية</title>
   
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23090a0f'/%3E%3Crect width='486' height='486' x='13' y='13' rx='100' fill='none' stroke='%23f59e0b' stroke-width='16'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-weight='900' font-size='170' fill='%23f59e0b' letter-spacing='4'%3ESBR%3C/text%3E%3C/svg%3E">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23090a0f'/%3E%3Crect width='486' height='486' x='13' y='13' rx='100' fill='none' stroke='%23f59e0b' stroke-width='16'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-weight='900' font-size='170' fill='%23f59e0b' letter-spacing='4'%3ESBR%3C/text%3E%3C/svg%3E">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="SBR CLAN">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#090a0f">
+
+  <!-- إعداد الأيقونة الخارجية للآبل والأندرويد تلقائياً برمجياً -->
+  <link id="site-favicon" rel="icon" type="image/png" href="">
+  <link id="apple-touch-icon" rel="apple-touch-icon" href="">
+
+  <script>
+    (function createClanIcons() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 192;
+      canvas.height = 192;
+      const ctx = canvas.getContext('2d');
+
+      // خلفية سوداء فخمة
+      ctx.fillStyle = '#090a0f';
+      ctx.fillRect(0, 0, 192, 192);
+
+      // إطار ذهبي أنيق
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 10;
+      ctx.strokeRect(8, 8, 176, 176);
+
+      // رسم نص الشعار SBR
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = '900 68px Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('SBR', 96, 100);
+
+      const iconData = canvas.toDataURL('image/png');
+      document.getElementById('site-favicon').href = iconData;
+      document.getElementById('apple-touch-icon').href = iconData;
+    })();
+  </script>
 
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
   
-  <!-- مكتبات Firebase السحابية الرسمية -->
+  <!-- مكتبات Firebase السحابية الرسمية للمزامنة المباشرة -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
@@ -387,7 +420,7 @@
   </main>
 
   <script>
-    // إعدادات Firebase الخاصة بمشروعك sbr-gaming
+    // إعدادات الربط السحابي مع Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyBZ1E4enqjFRR2iaZWURWUTsx3-kuf_zRE",
       authDomain: "sbr-gaming.firebaseapp.com",
@@ -408,7 +441,7 @@
     let gamesList = [];
     let pollsList = [];
 
-    // استماع مباشر للسحابة (Live Realtime Sync)
+    // استماع لحظي ومباشر لقاعدة البيانات (Realtime Sync)
     db.collection("games").orderBy("createdAt", "desc").onSnapshot(snapshot => {
       gamesList = [];
       snapshot.forEach(doc => {
