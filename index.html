@@ -50,9 +50,9 @@
       --bg: #090a0f;
       --card: #131722;
       --card-hover: #181e2e;
-      --gold: #f59e0b;
-      --gold-glow: rgba(245, 158, 11, 0.45);
-      --gold-dark: #b45309;
+      --primary: #f59e0b;
+      --primary-glow: rgba(245, 158, 11, 0.45);
+      --primary-dark: #b45309;
       --text: #f8fafc;
       --muted: #94a3b8;
       --border: #272f45;
@@ -60,11 +60,73 @@
       --success: #10b981;
       --blue: #3b82f6;
     }
+
+    /* الستايلات الخمسة الحصرية */
+    body.theme-snow {
+      --bg: #0b1320;
+      --card: #142136;
+      --card-hover: #1b2d49;
+      --primary: #7dd3fc;
+      --primary-glow: rgba(125, 211, 252, 0.5);
+      --primary-dark: #0284c7;
+      --border: #253e61;
+      --text: #f0f9ff;
+      --muted: #93c5fd;
+    }
+
+    body.theme-sony {
+      --bg: #050b18;
+      --card: #0c1833;
+      --card-hover: #12244d;
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.5);
+      --primary-dark: #0369a1;
+      --border: #1e3a8a;
+      --text: #ffffff;
+      --muted: #94a3b8;
+    }
+
+    body.theme-crimson {
+      --bg: #0d0608;
+      --card: #1c0f13;
+      --card-hover: #29151c;
+      --primary: #ef4444;
+      --primary-glow: rgba(239, 68, 68, 0.5);
+      --primary-dark: #991b1b;
+      --border: #451a24;
+      --text: #fff1f2;
+      --muted: #fda4af;
+    }
+
+    body.theme-cyber {
+      --bg: #05100c;
+      --card: #0d221a;
+      --card-hover: #133226;
+      --primary: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.5);
+      --primary-dark: #047857;
+      --border: #134e38;
+      --text: #ecfdf5;
+      --muted: #6ee7b7;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-    body { background-color: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+    body { background-color: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; transition: background-color 0.3s, color 0.3s; position: relative; }
+
+    /* كانفاس الثلج */
+    #snowCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+      display: none;
+    }
 
     header {
-      background: radial-gradient(circle at top, #1e2436 0%, var(--bg) 100%);
+      background: radial-gradient(circle at top, var(--card) 0%, var(--bg) 100%);
       padding: 22px 15px 12px;
       text-align: center;
       border-bottom: 2px solid var(--border);
@@ -73,10 +135,11 @@
       font-size: 3.2rem;
       font-weight: 900;
       letter-spacing: 3px;
-      color: var(--gold);
-      text-shadow: 0 0 25px var(--gold-glow);
+      color: var(--primary);
+      text-shadow: 0 0 25px var(--primary-glow);
       display: inline-block;
       margin-bottom: 2px;
+      transition: color 0.3s, text-shadow 0.3s;
     }
     .clan-sub { color: var(--muted); font-size: 1.05rem; font-weight: 600; }
 
@@ -89,7 +152,7 @@
       align-items: center;
       font-size: 0.95rem;
     }
-    .user-badge { color: var(--gold); font-weight: 800; cursor: pointer; }
+    .user-badge { color: var(--primary); font-weight: 800; cursor: pointer; }
     .logout-btn {
       background: transparent;
       border: 1px solid var(--border);
@@ -102,7 +165,18 @@
     }
     .logout-btn:hover { color: var(--danger); border-color: var(--danger); }
 
-    /* شريط الأعضاء العلوي المربع الأنيق */
+    .theme-select-btn {
+      background: var(--card);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    /* شريط الأعضاء */
     .clan-roster-section {
       background: #0d1017;
       border-bottom: 1px solid var(--border);
@@ -133,9 +207,9 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     .roster-card:hover {
-      border-color: var(--gold);
+      border-color: var(--primary);
       transform: translateY(-3px);
-      box-shadow: 0 6px 18px var(--gold-glow);
+      box-shadow: 0 6px 18px var(--primary-glow);
       background: var(--card-hover);
     }
     .roster-avatar-wrap {
@@ -163,21 +237,13 @@
     }
     .status-online { background: #10b981; box-shadow: 0 0 8px #10b981; }
     .status-offline { background: #ef4444; }
-    .roster-info {
-      display: flex;
-      flex-direction: column;
-      text-align: right;
-    }
-    .roster-name-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .roster-info { display: flex; flex-direction: column; text-align: right; }
+    .roster-name-row { display: flex; align-items: center; gap: 6px; }
     .roster-name { font-weight: 800; font-size: 1rem; color: #fff; }
-    .mvp-crown { font-size: 1rem; filter: drop-shadow(0 0 5px var(--gold)); }
-    .roster-title { font-size: 0.75rem; color: var(--gold); font-weight: 600; white-space: nowrap; }
+    .mvp-crown { font-size: 1rem; filter: drop-shadow(0 0 5px var(--primary)); }
+    .roster-title { font-size: 0.75rem; color: var(--primary); font-weight: 600; white-space: nowrap; }
 
-    /* شاشة تسجيل الدخول */
+    /* شاشة الدخول */
     .hero-section {
       max-width: 900px;
       margin: 40px auto;
@@ -201,15 +267,15 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
     .member-card:hover {
-      border-color: var(--gold);
+      border-color: var(--primary);
       transform: translateY(-6px);
-      box-shadow: 0 8px 25px var(--gold-glow);
+      box-shadow: 0 8px 25px var(--primary-glow);
     }
     .member-icon { font-size: 2.5rem; margin-bottom: 8px; }
     .member-name { font-weight: 800; font-size: 1.3rem; color: #fff; }
-    .member-tag { font-size: 0.85rem; color: var(--gold); margin-top: 4px; }
+    .member-tag { font-size: 0.85rem; color: var(--primary); margin-top: 4px; }
 
-    /* التبويبات والمحتوى الأساسي */
+    /* التبويبات والمحتوى */
     #main-hub { display: none; padding-bottom: 80px; }
     .nav-tabs {
       display: flex;
@@ -236,9 +302,10 @@
       transition: 0.2s;
     }
     .nav-btn.active, .nav-btn:hover {
-      background: var(--gold);
+      background: var(--primary);
       color: #000;
-      border-color: var(--gold);
+      border-color: var(--primary);
+      font-weight: 800;
     }
 
     .container { max-width: 1050px; margin: auto; padding: 25px 15px; }
@@ -266,19 +333,19 @@
       outline: none;
       width: 100%;
     }
-    input:focus, select:focus, textarea:focus { border-color: var(--gold); }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); }
     
     .file-input-wrapper {
       position: relative;
       background: #0b0d14;
-      border: 1px dashed var(--gold);
+      border: 1px dashed var(--primary);
       border-radius: 8px;
       padding: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      color: var(--gold);
+      color: var(--primary);
       font-weight: 600;
       font-size: 0.9rem;
       overflow: hidden;
@@ -292,7 +359,7 @@
     }
 
     .action-btn {
-      background: var(--gold);
+      background: var(--primary);
       color: #000;
       font-weight: 800;
       border: none;
@@ -309,7 +376,7 @@
       align-items: center;
       gap: 6px;
       cursor: pointer;
-      color: var(--gold);
+      color: var(--primary);
       font-weight: 700;
       transition: 0.2s;
     }
@@ -319,7 +386,7 @@
       height: 22px;
       border-radius: 50%;
       object-fit: cover;
-      border: 1px solid var(--gold);
+      border: 1px solid var(--primary);
     }
 
     .games-grid {
@@ -338,7 +405,7 @@
       position: relative;
     }
     .game-card:hover {
-      border-color: var(--gold);
+      border-color: var(--primary);
       transform: translateY(-4px);
     }
     .game-img {
@@ -363,7 +430,7 @@
     }
     .del-btn { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 0.85rem; }
 
-    /* التصويت وعجلة فض التعادل */
+    /* التصويت وإظهار المصوتين والإجماع */
     .vote-box {
       background: var(--card);
       border: 1px solid var(--border);
@@ -373,7 +440,7 @@
     }
     .vote-badge {
       background: #1c2233;
-      color: var(--gold);
+      color: var(--primary);
       padding: 3px 8px;
       border-radius: 6px;
       font-size: 0.8rem;
@@ -383,23 +450,29 @@
     .vote-option {
       background: #0d1017;
       border: 1px solid var(--border);
-      padding: 10px 14px;
+      padding: 12px 14px;
       margin-top: 10px;
-      border-radius: 8px;
+      border-radius: 10px;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      gap: 8px;
       cursor: pointer;
       transition: 0.2s;
     }
-    .vote-option:hover { border-color: var(--gold); background: #151b27; }
+    .vote-option:hover { border-color: var(--primary); background: #151b27; }
     .vote-option.voted-by-me {
-      border-color: var(--gold);
-      background: rgba(245, 158, 11, 0.15);
+      border-color: var(--primary);
+      background: rgba(245, 158, 11, 0.12);
     }
     .vote-option.selected-temp {
       border-color: var(--blue);
       background: rgba(59, 130, 246, 0.15);
+    }
+    .vote-opt-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
     }
     .vote-opt-left {
       display: flex;
@@ -414,7 +487,58 @@
       background: #000;
       border: 1px solid var(--border);
     }
-    .vote-count { font-weight: 800; color: var(--gold); font-size: 0.95rem; }
+    .vote-count { font-weight: 800; color: var(--primary); font-size: 0.95rem; }
+
+    /* سطر صور وأسماء المصوتين */
+    .voters-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed var(--border);
+      font-size: 0.8rem;
+    }
+    .voter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 12px;
+      color: var(--text);
+    }
+    .voter-chip img {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    /* بنر إجماع كلان صبر (Consensus) */
+    .unanimous-sbr-badge {
+      background: linear-gradient(135deg, #181408 0%, #291d03 100%);
+      border: 2px solid var(--primary);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 4px 15px var(--primary-glow);
+      animation: popIn 0.3s ease-out;
+    }
+    .unanimous-logo {
+      font-weight: 900;
+      font-size: 1.5rem;
+      color: var(--primary);
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px var(--primary-glow);
+      border-left: 2px solid var(--border);
+      padding-left: 10px;
+    }
+
     .already-voted-notice {
       color: var(--success);
       font-size: 0.85rem;
@@ -423,7 +547,7 @@
       display: block;
     }
     .confirm-multi-btn {
-      background: var(--gold);
+      background: var(--primary);
       color: #000;
       font-weight: 800;
       border: none;
@@ -435,7 +559,7 @@
     }
     .wheel-result-banner {
       background: linear-gradient(90deg, rgba(245, 158, 11, 0.2) 0%, rgba(180, 83, 9, 0.2) 100%);
-      border: 2px solid var(--gold);
+      border: 2px solid var(--primary);
       border-radius: 10px;
       padding: 12px 16px;
       margin-top: 16px;
@@ -443,12 +567,12 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      box-shadow: 0 4px 20px var(--gold-glow);
+      box-shadow: 0 4px 20px var(--primary-glow);
     }
     .wheel-result-left { display: flex; align-items: center; gap: 12px; }
-    .wheel-result-img { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; border: 1px solid var(--gold); }
+    .wheel-result-img { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; border: 1px solid var(--primary); }
     .tie-breaker-btn {
-      background: linear-gradient(45deg, #b45309, #f59e0b);
+      background: linear-gradient(45deg, var(--primary-dark), var(--primary));
       color: #000;
       font-weight: 900;
       border: none;
@@ -462,10 +586,10 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      box-shadow: 0 4px 15px var(--gold-glow);
+      box-shadow: 0 4px 15px var(--primary-glow);
     }
 
-    /* مولّد الفرق السحابي التفاعلي (VS) */
+    /* مولّد الفرق */
     .matchup-card {
       background: var(--card);
       border: 2px solid var(--border);
@@ -497,13 +621,13 @@
       padding: 15px;
       text-align: center;
     }
-    .match-team.team-gold { border-color: var(--gold); }
+    .match-team.team-gold { border-color: var(--primary); }
     .match-team.team-blue { border-color: var(--blue); }
     .match-vs {
       font-weight: 900;
       font-size: 1.8rem;
-      color: var(--gold);
-      text-shadow: 0 0 15px var(--gold-glow);
+      color: var(--primary);
+      text-shadow: 0 0 15px var(--primary-glow);
       font-style: italic;
     }
     .match-player-row {
@@ -518,7 +642,7 @@
       cursor: pointer;
       transition: 0.2s;
     }
-    .match-player-row:hover { border-color: var(--gold); }
+    .match-player-row:hover { border-color: var(--primary); }
     .match-player-img {
       width: 32px;
       height: 32px;
@@ -527,14 +651,14 @@
       border: 1px solid var(--border);
     }
 
-    /* جدول المواعيد وتأكيد الحضور */
+    /* جدول السهرات */
     .schedule-box {
       background: var(--card);
-      border: 2px solid var(--gold);
+      border: 2px solid var(--primary);
       border-radius: 14px;
       padding: 22px;
       margin-bottom: 25px;
-      box-shadow: 0 0 25px var(--gold-glow);
+      box-shadow: 0 0 25px var(--primary-glow);
     }
     .schedule-grid {
       display: grid;
@@ -557,7 +681,7 @@
     .status-tag.absent { background: rgba(239,68,68,0.2); color: var(--danger); border: 1px solid var(--danger); }
     .status-tag.waiting { color: var(--muted); }
 
-    /* نافذة الملف الشخصي العريض (Profile Modal) */
+    /* الملف الشخصي */
     .profile-modal {
       display: none;
       position: fixed;
@@ -570,12 +694,12 @@
     }
     .profile-card {
       background: var(--card);
-      border: 2px solid var(--gold);
+      border: 2px solid var(--primary);
       border-radius: 18px;
       overflow: hidden;
       max-width: 480px;
       width: 100%;
-      box-shadow: 0 0 45px var(--gold-glow);
+      box-shadow: 0 0 45px var(--primary-glow);
       animation: popIn 0.3s ease-out;
       position: relative;
     }
@@ -584,7 +708,7 @@
       height: 150px;
       object-fit: cover;
       background: #111522;
-      border-bottom: 2px solid var(--gold);
+      border-bottom: 2px solid var(--primary);
     }
     .profile-content {
       padding: 0 20px 22px;
@@ -597,7 +721,7 @@
       height: 100px;
       border-radius: 20px;
       object-fit: cover;
-      border: 4px solid var(--gold);
+      border: 4px solid var(--primary);
       background: #000;
       box-shadow: 0 8px 25px rgba(0,0,0,0.6);
     }
@@ -613,7 +737,7 @@
       line-height: 1.5;
     }
 
-    /* النوافذ المنبثقة العامة */
+    /* نوافذ منبثقة */
     .wheel-modal {
       display: none;
       position: fixed;
@@ -626,13 +750,13 @@
     }
     .wheel-modal-content, .reason-box {
       background: var(--card);
-      border: 2px solid var(--gold);
+      border: 2px solid var(--primary);
       border-radius: 16px;
       padding: 22px;
       text-align: center;
       max-width: 380px;
       width: 100%;
-      box-shadow: 0 0 40px var(--gold-glow);
+      box-shadow: 0 0 40px var(--primary-glow);
     }
     .wheel-outer {
       position: relative;
@@ -649,14 +773,14 @@
       height: 0;
       border-left: 15px solid transparent;
       border-right: 15px solid transparent;
-      border-top: 25px solid var(--gold);
+      border-top: 25px solid var(--primary);
       z-index: 50;
     }
     #tieWheelCanvas {
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      border: 5px solid var(--gold);
+      border: 5px solid var(--primary);
       background: #000;
       transition: transform 4s cubic-bezier(0.15, 0.9, 0.25, 1);
     }
@@ -666,8 +790,8 @@
       top: 10px;
       left: 10px;
       background: rgba(9, 10, 15, 0.85);
-      border: 1px solid var(--gold);
-      color: var(--gold);
+      border: 1px solid var(--primary);
+      color: var(--primary);
       font-weight: 900;
       padding: 4px 10px;
       border-radius: 8px;
@@ -706,25 +830,36 @@
 </head>
 <body>
 
+  <!-- كانفاس الثلج للثيم الشتوي -->
+  <canvas id="snowCanvas"></canvas>
+
   <header>
     <div class="clan-logo">SBR</div>
-    <div class="clan-sub">كلان صبر • بوابة الأعضاء الرسمية</div>
+    <div class="clan-sub">كلان صبر • البوابة الرسمية</div>
   </header>
 
   <div class="user-bar" id="user-bar">
     <div>مرحباً، <span class="user-badge" id="current-user-name" onclick="openProfile(currentUser)"></span> 🔒</div>
-    <div style="display: flex; gap: 10px; align-items: center;">
-      <button class="logout-btn" onclick="openEditProfileModal()">تعديل ملفي الشخصي ⚙️</button>
-      <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <!-- زر اختيار الستايل (5 ستايلات فقط) -->
+      <select id="theme-selector" class="theme-select-btn" onchange="changeTheme(this.value)">
+        <option value="gold">👑 ذهبي وأسود</option>
+        <option value="snow">❄️ ثلجي شتوي</option>
+        <option value="sony">🎮 بلايستيشن</option>
+        <option value="crimson">🔥 أحمر وأسود</option>
+        <option value="cyber">⚡ أخضر سايبر</option>
+      </select>
+      <button class="logout-btn" onclick="openEditProfileModal()">الملف ⚙️</button>
+      <button class="logout-btn" onclick="logout()">خروج</button>
     </div>
   </div>
 
-  <!-- شريط الأعضاء العلوي المربع الأنيق مع الحالة المباشرة -->
+  <!-- شريط الأعضاء -->
   <section class="clan-roster-section" id="roster-section" style="display: none;">
     <div class="roster-grid" id="roster-cards-container"></div>
   </section>
 
-  <!-- شاشة الدخول الأولى -->
+  <!-- شاشة تسجيل الدخول -->
   <section class="hero-section" id="hero-view">
     <h2 class="hero-title">من أنت؟ اختر حسابك</h2>
     <p class="hero-desc">كل حساب محمي برمز سري (PIN) خاص لمنع التعديل نيابة عنك</p>
@@ -769,7 +904,7 @@
       
       <!-- إضافة لعبة -->
       <section class="add-box" id="game-form-box">
-        <h3 style="color: var(--gold); margin-bottom: 15px; font-weight: 800;">إضافة لعبة جديدة للموقع</h3>
+        <h3 style="color: var(--primary); margin-bottom: 15px; font-weight: 800;">إضافة لعبة جديدة للموقع</h3>
         <div class="form-grid">
           <input type="text" id="game-title" placeholder="اسم اللعبة...">
           <select id="game-category">
@@ -777,7 +912,7 @@
             <option value="3">3 لاعبين (Trio)</option>
             <option value="2">ثنائي لاعبين (Duo)</option>
           </select>
-          <input type="text" id="game-author-display" readonly style="background: #181d29; color: var(--gold); font-weight: 700;">
+          <input type="text" id="game-author-display" readonly style="background: #181d29; color: var(--primary); font-weight: 700;">
           
           <div class="file-input-wrapper">
             <span id="file-label-text">📷 رفع صورة اللعبة</span>
@@ -793,7 +928,7 @@
       <!-- قسم التصويت -->
       <section id="poll-section" style="display: none;">
         <div class="vote-box">
-          <h3 style="color: var(--gold); margin-bottom: 14px; font-weight: 800;">إنشاء تصويت تلقائي للألعاب 🗳️</h3>
+          <h3 style="color: var(--primary); margin-bottom: 14px; font-weight: 800;">إنشاء تصويت تلقائي للألعاب 🗳️</h3>
           
           <input type="text" id="poll-question" placeholder="عنوان التصويت (مثال: وش بنلعب الليلة؟)..." style="margin-bottom: 12px;">
           
@@ -817,10 +952,10 @@
         <div id="active-polls"></div>
       </section>
 
-      <!-- قسم مولّد الفرق التفاعلي السحابي -->
+      <!-- قسم مولّد الفرق السحابي -->
       <section id="teams-section" style="display: none;">
         <div class="vote-box" style="text-align: center;">
-          <h3 style="color: var(--gold); font-size: 1.5rem; margin-bottom: 8px; font-weight: 800;">⚔️ مولّد الفرق السحابي (Squad Balancer)</h3>
+          <h3 style="color: var(--primary); font-size: 1.5rem; margin-bottom: 8px; font-weight: 800;">⚔️ مولّد الفرق السحابي (Squad Balancer)</h3>
           <p style="color: var(--muted); font-size: 0.95rem; margin-bottom: 20px;">
             توزيع عشوائي وعادل لأعضاء كلان صبر الأربعة، مع ظهور النتيجة فوراً عند الجميع بالسحابة!
           </p>
@@ -838,7 +973,7 @@
         <div class="schedule-box" id="schedule-display-box">
           <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
             <div>
-              <h3 style="color: var(--gold); font-size: 1.35rem; font-weight: 900;">📅 السهرة القادمة المجدولة</h3>
+              <h3 style="color: var(--primary); font-size: 1.35rem; font-weight: 900;">📅 السهرة القادمة المجدولة</h3>
               <p style="color: #fff; font-size: 1.1rem; font-weight: 700; margin-top: 4px;" id="current-session-time">لم يُحدد موعد بعد</p>
             </div>
             <button class="logout-btn" onclick="openSetSessionPrompt()">تحديد موعد جديد ⏱️</button>
@@ -852,10 +987,9 @@
           <div class="schedule-grid" id="attendance-roster-grid"></div>
         </div>
 
-        <!-- تصويت MVP الجلسة -->
         <div class="vote-box" style="margin-top: 25px;">
-          <h3 style="color: var(--gold); font-size: 1.3rem; margin-bottom: 6px; font-weight: 800;">👑 تصويت نجم الجلسة (MVP of the Night)</h3>
-          <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 15px;">من كان أسطورة اللعب الليلة؟ الفائز يحصل على التاج الذهبي في الموقع لمدة 24 ساعة!</p>
+          <h3 style="color: var(--primary); font-size: 1.3rem; margin-bottom: 6px; font-weight: 800;">👑 تصويت نجم الجلسة (MVP of the Night)</h3>
+          <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 15px;">من كان أسطورة اللعب الليلة؟ الفائز يحصل على التاج في الموقع لمدة 24 ساعة!</p>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;" id="mvp-vote-buttons"></div>
         </div>
       </section>
@@ -863,11 +997,11 @@
       <!-- قسم ألعاب الشراء المستقبلية -->
       <section id="wishlist-section" style="display: none;">
         <div class="add-box">
-          <h3 style="color: var(--gold); margin-bottom: 15px; font-weight: 800;">💡 اقتراح لعبة جديدة للشراء الجماعي</h3>
+          <h3 style="color: var(--primary); margin-bottom: 15px; font-weight: 800;">💡 اقتراح لعبة جديدة للشراء الجماعي</h3>
           <div class="form-grid">
             <input type="text" id="wish-title" placeholder="اسم اللعبة المقترحة...">
             <input type="number" id="wish-price" placeholder="السعر بالريال السعودي...">
-            <input type="text" id="wish-author-display" readonly style="background: #181d29; color: var(--gold); font-weight: 700;">
+            <input type="text" id="wish-author-display" readonly style="background: #181d29; color: var(--primary); font-weight: 700;">
             
             <div class="file-input-wrapper">
               <span id="wish-file-label-text">📷 صورة اللعبة (اختياري)</span>
@@ -883,14 +1017,14 @@
     </div>
   </main>
 
-  <!-- نافذة عرض الملف الشخصي الكامل (Gamer ID) -->
+  <!-- نافذة عرض الملف الشخصي -->
   <div class="profile-modal" id="profile-modal">
     <div class="profile-card">
       <img src="" id="prof-banner" class="profile-banner" alt="خلفية الملف">
       <div class="profile-content">
         <img src="" id="prof-avatar" class="profile-avatar-lg" alt="الصورة الشخصية">
         <h2 style="color: #fff; font-size: 1.5rem; font-weight: 900; margin-top: 10px;" id="prof-name">اسم العضو</h2>
-        <div style="color: var(--gold); font-weight: 700; font-size: 0.95rem; margin-bottom: 6px;" id="prof-title">اللقب المختار</div>
+        <div style="color: var(--primary); font-weight: 700; font-size: 0.95rem; margin-bottom: 6px;" id="prof-title">اللقب المختار</div>
         <div id="prof-status-text" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;"></div>
         <div class="profile-bio-box" id="prof-bio">لا توجد نبذة تعريفية مكتوبة بعد.</div>
         <button class="action-btn" onclick="closeProfileModal()">إغلاق الملف</button>
@@ -901,9 +1035,9 @@
   <!-- نافذة تعديل الملف الشخصي -->
   <div class="profile-modal" id="edit-profile-modal">
     <div class="reason-box" style="max-width: 440px;">
-      <h3 style="color: var(--gold); font-weight: 900; margin-bottom: 15px;">تعديل ملفي الشخصي ⚙️</h3>
-      <input type="text" id="edit-user-title" placeholder="لقبك المفضل (مثال: قناص الكلان)..." style="margin-bottom: 10px;">
-      <textarea id="edit-user-bio" rows="3" placeholder="عبارتك المفضلة / النبذة التعريفية..." style="margin-bottom: 10px;"></textarea>
+      <h3 style="color: var(--primary); font-weight: 900; margin-bottom: 15px;">تعديل ملفي الشخصي ⚙️</h3>
+      <input type="text" id="edit-user-title" placeholder="لقبك المفضل..." style="margin-bottom: 10px;">
+      <textarea id="edit-user-bio" rows="3" placeholder="عبارتك المفضلة..." style="margin-bottom: 10px;"></textarea>
       
       <div class="file-input-wrapper" style="margin-bottom: 10px;">
         <span id="avatar-label">🖼️ رفع صورتي الشخصية (عالية الدقة)</span>
@@ -923,7 +1057,7 @@
   <!-- نافذة عجلة فض التعادل -->
   <div class="wheel-modal" id="tie-wheel-modal">
     <div class="wheel-modal-content">
-      <h3 style="color: var(--gold); font-weight: 800;">🎡 فض التعادل بين الألعاب المتصدرة</h3>
+      <h3 style="color: var(--primary); font-weight: 800;">🎡 فض التعادل بين الألعاب المتصدرة</h3>
       <p style="color: var(--muted); font-size: 0.85rem; margin-top: 4px;">هذه الألعاب حصلت على أعلى نسبة أصوات متساوية!</p>
       
       <div class="wheel-outer">
@@ -936,7 +1070,7 @@
     </div>
   </div>
 
-  <!-- نافذة اختيار سبب عدم الشراء -->
+  <!-- نافذة سبب عدم الشراء -->
   <div class="wheel-modal" id="reason-modal">
     <div class="reason-box">
       <h4 style="color: var(--danger); font-size: 1.1rem; margin-bottom: 8px;">لماذا لا ترغب بالشراء؟</h4>
@@ -963,6 +1097,7 @@
     const CLAN_MEMBERS = ['عبدالرحمن', 'عبدالله', 'سعود', 'إياد'];
     let currentTab = 'all';
     let currentUser = localStorage.getItem('sbr_current_user') || '';
+    let currentTheme = localStorage.getItem('sbr_theme') || 'gold';
     
     let uploadedImageBase64 = '';
     let uploadedWishImageBase64 = '';
@@ -977,19 +1112,104 @@
     let membersProfiles = {};
     let sessionData = {};
 
-    // متغيرات عجلة فض التعادل
     let activePollIdForWheel = null;
     let tieGames = [];
     let tieRotation = 0;
     let isTieSpinning = false;
     let pendingWishIdForReason = null;
 
-    // استماع لحظي لجميع مجموعات السحابة
+    // تطبيق الثيم المحفوظ
+    changeTheme(currentTheme, false);
+
+    function changeTheme(theme, save = true) {
+      document.body.className = '';
+      if (theme !== 'gold') {
+        document.body.classList.add('theme-' + theme);
+      }
+      currentTheme = theme;
+      if (save) localStorage.setItem('sbr_theme', theme);
+      document.getElementById('theme-selector').value = theme;
+
+      // تفعيل أو تعطيل أنيميشن الثلج
+      const snowCanvas = document.getElementById('snowCanvas');
+      if (theme === 'snow') {
+        snowCanvas.style.display = 'block';
+        initSnow();
+      } else {
+        snowCanvas.style.display = 'none';
+        stopSnow();
+      }
+    }
+
+    /* تأثير تساقط الثلج للثيم الشتوي */
+    let snowAnimationId = null;
+    let snowflakes = [];
+
+    function initSnow() {
+      const canvas = document.getElementById('snowCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      snowflakes = [];
+      for (let i = 0; i < 75; i++) {
+        snowflakes.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 3 + 1,
+          d: Math.random() + 0.5
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+        ctx.beginPath();
+        for (let i = 0; i < snowflakes.length; i++) {
+          const p = snowflakes[i];
+          ctx.moveTo(p.x, p.y);
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
+        }
+        ctx.fill();
+
+        for (let i = 0; i < snowflakes.length; i++) {
+          const p = snowflakes[i];
+          p.y += Math.cos(p.d) + 1 + p.r / 2;
+          p.x += Math.sin(p.d) * 1;
+
+          if (p.y > canvas.height) {
+            snowflakes[i] = { x: Math.random() * canvas.width, y: -10, r: p.r, d: p.d };
+          }
+        }
+        snowAnimationId = requestAnimationFrame(draw);
+      }
+
+      if (snowAnimationId) cancelAnimationFrame(snowAnimationId);
+      draw();
+    }
+
+    function stopSnow() {
+      if (snowAnimationId) {
+        cancelAnimationFrame(snowAnimationId);
+        snowAnimationId = null;
+      }
+      const canvas = document.getElementById('snowCanvas');
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    window.addEventListener('resize', () => {
+      if (currentTheme === 'snow') {
+        const canvas = document.getElementById('snowCanvas');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+    });
+
+    // استماع مباشر لبيانات Firebase
     db.collection("users").onSnapshot(snapshot => {
       membersProfiles = {};
-      snapshot.forEach(doc => {
-        membersProfiles[doc.id] = doc.data();
-      });
+      snapshot.forEach(doc => membersProfiles[doc.id] = doc.data());
       renderRoster();
       render();
     });
@@ -1027,7 +1247,6 @@
       applyUserSession();
     }
 
-    // إدارة حالة التواجد المباشر (Online / Offline Presence)
     function setUserOnlineStatus(isOnline) {
       if (!currentUser) return;
       db.collection("users").doc(currentUser).set({
@@ -1124,7 +1343,6 @@
       render();
     }
 
-    /* ريندر شريط الأعضاء المربع في الأعلى */
     function renderRoster() {
       const container = document.getElementById('roster-cards-container');
       if (!container) return;
@@ -1155,7 +1373,6 @@
       });
     }
 
-    /* عرض وتعديل الملف الشخصي (Gamer ID) */
     function openProfile(name) {
       const prof = membersProfiles[name] || {};
       const isOnline = !!prof.online;
@@ -1259,7 +1476,6 @@
       return `<span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:${isOnline ? '#10b981' : '#ef4444'};"></span>`;
     }
 
-    /* ضغط ورفع صور الألعاب */
     function processImage(input, target) {
       if (input.files && input.files[0]) {
         const file = input.files[0];
@@ -1314,7 +1530,7 @@
         btn.innerText = 'نشر اللعبة للجميع في السحابة 🚀';
         btn.disabled = false;
       }).catch(err => {
-        alert('حدث خطأ في الرفع: ' + err.message);
+        alert('حدث خطأ: ' + err.message);
         btn.innerText = 'نشر اللعبة للجميع في السحابة 🚀';
         btn.disabled = false;
       });
@@ -1326,7 +1542,6 @@
       }
     }
 
-    /* مولّد الفرق السحابي (Matchups VS) */
     function generateAndSaveTeams() {
       const btn = document.getElementById('gen-teams-btn');
       btn.disabled = true;
@@ -1338,12 +1553,9 @@
         [members[i], members[j]] = [members[j], members[i]];
       }
 
-      const teamA = [members[0], members[1]];
-      const teamB = [members[2], members[3]];
-
       db.collection("matchups").add({
-        teamA: teamA,
-        teamB: teamB,
+        teamA: [members[0], members[1]],
+        teamB: [members[2], members[3]],
         createdBy: currentUser,
         createdAt: Date.now()
       }).then(() => {
@@ -1388,12 +1600,12 @@
         container.innerHTML += `
           <div class="matchup-card">
             <div class="matchup-meta">
-              <div>بواسطة: <b style="color: var(--gold);">${m.createdBy}</b></div>
+              <div>بواسطة: <b style="color: var(--primary);">${m.createdBy}</b></div>
               <button class="del-btn" onclick="deleteMatchup('${m.id}')">حذف 🗑️</button>
             </div>
             <div class="matchup-teams-wrapper">
               <div class="match-team team-gold">
-                <div style="font-weight: 800; color: var(--gold); margin-bottom: 6px;">الفريق الأول 🦅</div>
+                <div style="font-weight: 800; color: var(--primary); margin-bottom: 6px;">الفريق الأول 🦅</div>
                 ${teamAHtml}
               </div>
               <div class="match-vs">VS</div>
@@ -1407,7 +1619,6 @@
       });
     }
 
-    /* جدول السهرات والـ MVP */
     function openSetSessionPrompt() {
       const timeStr = prompt("أدخل موعد السهرة القادمة (مثال: الجمعة الساعة 10:30 م):");
       if (timeStr && timeStr.trim()) {
@@ -1425,10 +1636,7 @@
       if (!sessionData.sessionTime) return alert('لم يتم تحديد موعد سهرة بعد!');
       const att = sessionData.attendance || {};
       att[currentUser] = isAttending ? 'ready' : 'absent';
-
-      db.collection("session").doc("latest").update({
-        attendance: att
-      });
+      db.collection("session").doc("latest").update({ attendance: att });
     }
 
     function voteMvp(votedUser) {
@@ -1438,7 +1646,6 @@
       votes[currentUser] = votedUser;
       db.collection("session").doc("latest").update({ mvpVotes: votes });
 
-      // إذا وصل لـ صوتين أو أكثر يُعلن فائزاً لمدة 24 ساعة
       const counts = {};
       Object.values(votes).forEach(u => counts[u] = (counts[u] || 0) + 1);
       if (counts[votedUser] >= 2) {
@@ -1460,17 +1667,12 @@
       mvpBtnGrid.innerHTML = '';
 
       const att = sessionData.attendance || {};
-      let readyCount = 0;
 
       CLAN_MEMBERS.forEach(name => {
         const st = att[name];
         let statusBadge = '<span class="status-tag waiting">لم يرد بعد</span>';
-        if (st === 'ready') {
-          statusBadge = '<span class="status-tag ready">جاهز وحاضر 🎮</span>';
-          readyCount++;
-        } else if (st === 'absent') {
-          statusBadge = '<span class="status-tag absent">غير متاح ❌</span>';
-        }
+        if (st === 'ready') statusBadge = '<span class="status-tag ready">جاهز وحاضر 🎮</span>';
+        else if (st === 'absent') statusBadge = '<span class="status-tag absent">غير متاح ❌</span>';
 
         rosterGrid.innerHTML += `
           <div class="attendee-card">
@@ -1482,7 +1684,6 @@
           </div>
         `;
 
-        // أزرار تصويت MVP
         mvpBtnGrid.innerHTML += `
           <button class="wish-choice-btn" onclick="voteMvp('${name}')">
             👑 ${name}
@@ -1491,7 +1692,6 @@
       });
     }
 
-    /* إدارة التصويت التلقائي وعجلة فض التعادل */
     function createAutoPoll() {
       const question = document.getElementById('poll-question').value.trim();
       const type = document.getElementById('poll-type').value;
@@ -1500,17 +1700,11 @@
       if (!question) return alert('يرجى كتابة عنوان التصويت');
 
       let targetGames = [];
-      if (sourceCat === 'all') {
-        targetGames = gamesList;
-      } else if (sourceCat === '3_and_2') {
-        targetGames = gamesList.filter(g => g.cat === '3' || g.cat === '2');
-      } else {
-        targetGames = gamesList.filter(g => g.cat === sourceCat);
-      }
+      if (sourceCat === 'all') targetGames = gamesList;
+      else if (sourceCat === '3_and_2') targetGames = gamesList.filter(g => g.cat === '3' || g.cat === '2');
+      else targetGames = gamesList.filter(g => g.cat === sourceCat);
 
-      if (targetGames.length < 2) {
-        return alert('يجب توفر لعبتين على الأقل في هذا الاختيار لإنشاء تصويت!');
-      }
+      if (targetGames.length < 2) return alert('يجب توفر لعبتين على الأقل في هذا الاختيار لإنشاء تصويت!');
 
       const options = targetGames.map((game, index) => ({
         id: index,
@@ -1559,11 +1753,8 @@
       if (!multiSelections[pollId]) multiSelections[pollId] = [];
       const idx = multiSelections[pollId].indexOf(optId);
 
-      if (idx > -1) {
-        multiSelections[pollId].splice(idx, 1);
-      } else {
-        multiSelections[pollId].push(optId);
-      }
+      if (idx > -1) multiSelections[pollId].splice(idx, 1);
+      else multiSelections[pollId].push(optId);
       render();
     }
 
@@ -1694,7 +1885,6 @@
       }, 4100);
     }
 
-    /* إدارة ألعاب الشراء المستقبلية (Wishlist) */
     function addWishGame() {
       const title = document.getElementById('wish-title').value.trim();
       const priceVal = document.getElementById('wish-price').value.trim();
@@ -1769,7 +1959,6 @@
       }
     }
 
-    /* الريندر الرئيسي للمحتوى */
     function render() {
       // 1. الألعاب العادية
       const container = document.getElementById('games-container');
@@ -1799,7 +1988,7 @@
         `;
       });
 
-      // 2. التصويتات
+      // 2. التصويتات مع إظهار المصوتين وبنر إجماع SBR
       const pollList = document.getElementById('active-polls');
       pollList.innerHTML = '';
 
@@ -1819,6 +2008,15 @@
           let classes = 'vote-option';
           let checkMark = '';
 
+          // جلب أسماء الأعضاء الذين صوتوا لهذا الخيار
+          const whoVotedForThis = [];
+          Object.keys(voters).forEach(userName => {
+            const userChoice = voters[userName];
+            if (Array.isArray(userChoice) && userChoice.includes(o.id)) {
+              whoVotedForThis.push(userName);
+            }
+          });
+
           if (hasVoted) {
             if (myVotes.includes(o.id)) {
               classes += ' voted-by-me';
@@ -1834,13 +2032,47 @@
 
           const clickAction = hasVoted ? '' : (isMulti ? `toggleMultiOption('${p.id}', ${o.id})` : `voteSingle('${p.id}', ${o.id})`);
 
+          // سطر المصوتين
+          let votersChipsHtml = '';
+          if (whoVotedForThis.length > 0) {
+            votersChipsHtml = `
+              <div class="voters-row">
+                <span style="color: var(--muted); font-size: 0.75rem;">المصوتون (${whoVotedForThis.length}):</span>
+                ${whoVotedForThis.map(name => `
+                  <span class="voter-chip" onclick="event.stopPropagation(); openProfile('${name}')">
+                    <img src="${getUserAvatar(name)}" alt="${name}">
+                    <span>${name}</span>
+                  </span>
+                `).join('')}
+              </div>
+            `;
+          }
+
+          // التحقق من إجماع الكلان الكامل (4 من 4)
+          let unanimousBanner = '';
+          if (whoVotedForThis.length === 4) {
+            unanimousBanner = `
+              <div class="unanimous-sbr-badge">
+                <div class="unanimous-logo">SBR</div>
+                <div>
+                  <div style="font-weight: 900; color: var(--primary); font-size: 0.95rem;">إجماع تام من كلان صبر! 🦅🔥</div>
+                  <div style="font-size: 0.8rem; color: #fff;">كلنا متفقين ومتحمسين للعب ${o.text} الليلة! (4/4)</div>
+                </div>
+              </div>
+            `;
+          }
+
           opts += `
             <div class="${classes}" onclick="${clickAction}">
-              <div class="vote-opt-left">
-                <img src="${o.img || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=100'}" class="vote-opt-img" alt="${o.text}">
-                <span style="font-weight: 700; color: #fff;">${checkMark}${o.text}</span>
+              <div class="vote-opt-top">
+                <div class="vote-opt-left">
+                  <img src="${o.img || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=100'}" class="vote-opt-img" alt="${o.text}">
+                  <span style="font-weight: 700; color: #fff;">${checkMark}${o.text}</span>
+                </div>
+                <span class="vote-count">${o.votes} صوت</span>
               </div>
-              <span class="vote-count">${o.votes} صوت</span>
+              ${votersChipsHtml}
+              ${unanimousBanner}
             </div>
           `;
         });
@@ -1866,12 +2098,12 @@
               <div class="wheel-result-left">
                 <img src="${p.wheelWinner.img || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=100'}" class="wheel-result-img" alt="الفائز">
                 <div>
-                  <div style="font-size: 0.8rem; color: var(--gold); font-weight: 700;">🏆 نتيجة قرعة عجلة الحظ لليلة:</div>
+                  <div style="font-size: 0.8rem; color: var(--primary); font-weight: 700;">🏆 نتيجة قرعة عجلة الحظ لليلة:</div>
                   <div style="font-size: 1.15rem; font-weight: 900; color: #fff;">اختارت العجلة: ${p.wheelWinner.title}</div>
                 </div>
               </div>
               <div style="font-size: 0.75rem; color: var(--muted); text-align: left;">
-                تم السحب بواسطة:<br><b style="color: var(--gold);">${p.wheelWinner.chosenBy}</b>
+                تم السحب بواسطة:<br><b style="color: var(--primary);">${p.wheelWinner.chosenBy}</b>
               </div>
             </div>
           `;
@@ -1952,7 +2184,7 @@
               </div>
 
               <div style="margin-top: 10px; border-top: 1px solid var(--border); padding-top: 8px;">
-                <div style="font-size: 0.8rem; color: var(--gold); font-weight: 700; margin-bottom: 4px;">الراغبون بالشراء (${buyers.length}):</div>
+                <div style="font-size: 0.8rem; color: var(--primary); font-weight: 700; margin-bottom: 4px;">الراغبون بالشراء (${buyers.length}):</div>
                 <div>${buyersHtml}</div>
               </div>
 
