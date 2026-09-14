@@ -386,7 +386,7 @@
     }
     .del-btn { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 0.85rem; }
 
-    /* التصويت وإظهار المصوتين */
+    /* التصويت */
     .vote-box {
       background: var(--card);
       border: 1px solid var(--border);
@@ -625,6 +625,89 @@
     .status-tag.absent { background: rgba(239,68,68,0.2); color: var(--danger); border: 1px solid var(--danger); }
     .status-tag.waiting { color: var(--muted); }
 
+    /* أنماط قسم مراجعات الألعاب الجديد */
+    .review-rule-box {
+      background: rgba(239, 68, 68, 0.15);
+      border: 2px solid var(--danger);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fee2e2;
+    }
+    .review-rule-icon {
+      font-size: 1.8rem;
+    }
+    .star-rating-select {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      background: #0b0d14;
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 8px;
+    }
+    .star-btn {
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--muted);
+      transition: 0.15s;
+      background: none;
+      border: none;
+    }
+    .star-btn.active {
+      color: var(--primary);
+      transform: scale(1.15);
+    }
+    .review-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .review-card:hover {
+      border-color: var(--primary);
+    }
+    .review-header {
+      display: flex;
+      gap: 15px;
+      padding: 15px;
+      background: #0d1017;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+    }
+    .review-game-thumb {
+      width: 70px;
+      height: 70px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #000;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .review-body {
+      padding: 18px;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+    }
+    .review-footer {
+      padding: 10px 15px;
+      background: #0d1017;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+
     /* الملف الشخصي */
     .profile-modal {
       display: none;
@@ -825,10 +908,12 @@
       <button class="nav-btn" onclick="setTab('teams')">⚔️ مولّد الفرق (VS)</button>
       <button class="nav-btn" onclick="setTab('schedule')">📅 جدول السهرات</button>
       <button class="nav-btn" onclick="setTab('wishlist')">💡 ألعاب الشراء القادمة</button>
+      <button class="nav-btn" onclick="setTab('reviews')">⭐ مراجعات الألعاب</button>
     </nav>
 
     <div class="container">
       
+      <!-- قسم إضافة لعبة عادية -->
       <section class="add-box" id="game-form-box">
         <h3 style="color: var(--primary); margin-bottom: 15px; font-weight: 800;">إضافة لعبة جديدة للموقع</h3>
         <div class="form-grid">
@@ -848,8 +933,10 @@
         <button class="action-btn" id="add-game-btn" onclick="addGame()">نشر اللعبة للجميع في السحابة 🚀</button>
       </section>
 
+      <!-- صالة عرض الألعاب -->
       <section class="games-grid" id="games-container"></section>
 
+      <!-- قسم التصويت -->
       <section id="poll-section" style="display: none;">
         <div class="vote-box">
           <h3 style="color: var(--primary); margin-bottom: 14px; font-weight: 800;">إنشاء تصويت تلقائي للألعاب 🗳️</h3>
@@ -876,6 +963,7 @@
         <div id="active-polls"></div>
       </section>
 
+      <!-- قسم مولّد الفرق السحابي -->
       <section id="teams-section" style="display: none;">
         <div class="vote-box" style="text-align: center;">
           <h3 style="color: var(--primary); font-size: 1.5rem; margin-bottom: 8px; font-weight: 800;">⚔️ مولّد الفرق السحابي (Squad Balancer)</h3>
@@ -891,6 +979,7 @@
         </div>
       </section>
 
+      <!-- قسم جدول السهرات والـ MVP -->
       <section id="schedule-section" style="display: none;">
         <div class="schedule-box" id="schedule-display-box">
           <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
@@ -916,6 +1005,7 @@
         </div>
       </section>
 
+      <!-- قسم ألعاب الشراء المستقبلية -->
       <section id="wishlist-section" style="display: none;">
         <div class="add-box">
           <h3 style="color: var(--primary); margin-bottom: 15px; font-weight: 800;">💡 اقتراح لعبة جديدة للشراء الجماعي</h3>
@@ -933,6 +1023,48 @@
         </div>
 
         <div class="games-grid" id="wishlist-container"></div>
+      </section>
+
+      <!-- قسم مراجعات ورأي الأعضاء عن الألعاب (الجديد) -->
+      <section id="reviews-section" style="display: none;">
+        
+        <!-- قانون منع الحرق الصارم -->
+        <div class="review-rule-box">
+          <div class="review-rule-icon">🛑</div>
+          <div>
+            <h4 style="font-weight: 900; font-size: 1.1rem; color: #f87171;">قانون صارم: ممنوع حرق قصة وأحداث الألعاب نهائياً!</h4>
+            <p style="font-size: 0.85rem; margin-top: 2px;">اكتب رأيك وانطباعك عن أسلوب اللعب، الجرافيكس، والمتعة العامة بدون ذكر أي تفاصيل تحرق متعة التجربة على الشباب.</p>
+          </div>
+        </div>
+
+        <div class="add-box">
+          <h3 style="color: var(--primary); margin-bottom: 15px; font-weight: 800;">✍️ شارك رأيك ومراجعتك عن لعبة</h3>
+          <div class="form-grid">
+            <input type="text" id="review-game-title" placeholder="اسم اللعبة (مثال: Resident Evil 3)...">
+            
+            <div class="star-rating-select">
+              <span style="font-weight: 700; font-size: 0.9rem; color: var(--muted);">تقييمك:</span>
+              <div id="star-picker">
+                <button type="button" class="star-btn active" onclick="setReviewRating(1)">★</button>
+                <button type="button" class="star-btn active" onclick="setReviewRating(2)">★</button>
+                <button type="button" class="star-btn active" onclick="setReviewRating(3)">★</button>
+                <button type="button" class="star-btn active" onclick="setReviewRating(4)">★</button>
+                <button type="button" class="star-btn active" onclick="setReviewRating(5)">★</button>
+              </div>
+              <span id="star-rating-num" style="font-weight: 800; color: var(--primary); margin-right: 5px;">5 / 5</span>
+            </div>
+
+            <div class="file-input-wrapper">
+              <span id="review-file-label-text">📷 صورة اللعبة (اختياري)</span>
+              <input type="file" id="review-file-input" accept="image/*" onchange="processImage(this, 'review')">
+            </div>
+          </div>
+
+          <textarea id="review-text" rows="4" placeholder="اكتب رأيك الكامل ومراجعتك بالتفصيل هنا: كيف كانت التجربة؟ وش الإيجابيات والسلبيات؟ وهل تنصح الشباب يلعبونها؟ (بدون حرق)..." style="margin-bottom: 15px;"></textarea>
+          <button class="action-btn" id="add-review-btn" onclick="addReview()">نشر المراجعة للكل 🌟</button>
+        </div>
+
+        <div id="reviews-feed-container"></div>
       </section>
 
     </div>
@@ -1018,6 +1150,9 @@
     
     let uploadedImageBase64 = '';
     let uploadedWishImageBase64 = '';
+    let uploadedReviewImageBase64 = '';
+    let currentSelectedRating = 5;
+
     let editAvatarBase64 = '';
     let editBannerBase64 = '';
     let multiSelections = {};
@@ -1026,6 +1161,7 @@
     let pollsList = [];
     let wishlistList = [];
     let matchupsList = [];
+    let reviewsList = [];
     let membersProfiles = {};
     let sessionData = {};
 
@@ -1047,18 +1183,17 @@
       document.getElementById('theme-selector').value = theme;
     }
 
-    // جلب البيانات بدون شروط صارمة تسبب حجب الألعاب السابقة
     db.collection("users").onSnapshot(snapshot => {
       membersProfiles = {};
       snapshot.forEach(doc => membersProfiles[doc.id] = doc.data());
       renderRoster();
       render();
+      renderReviews();
     });
 
     db.collection("games").onSnapshot(snapshot => {
       gamesList = [];
       snapshot.forEach(doc => gamesList.push({ id: doc.id, ...doc.data() }));
-      // فرز محلي آمن
       gamesList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
       render();
     });
@@ -1082,6 +1217,13 @@
       snapshot.forEach(doc => matchupsList.push({ id: doc.id, ...doc.data() }));
       matchupsList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
       renderMatchups();
+    });
+
+    db.collection("reviews").onSnapshot(snapshot => {
+      reviewsList = [];
+      snapshot.forEach(doc => reviewsList.push({ id: doc.id, ...doc.data() }));
+      reviewsList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      renderReviews();
     });
 
     db.collection("session").doc("latest").onSnapshot(doc => {
@@ -1166,6 +1308,7 @@
       setUserOnlineStatus(true);
       renderRoster();
       render();
+      renderReviews();
     }
 
     function setTab(tab) {
@@ -1177,7 +1320,8 @@
       const isTeams = tab === 'teams';
       const isSchedule = tab === 'schedule';
       const isWishlist = tab === 'wishlist';
-      const isStandardGames = !isVote && !isTeams && !isSchedule && !isWishlist;
+      const isReviews = tab === 'reviews';
+      const isStandardGames = !isVote && !isTeams && !isSchedule && !isWishlist && !isReviews;
 
       document.getElementById('game-form-box').style.display = isStandardGames ? 'block' : 'none';
       document.getElementById('games-container').style.display = isStandardGames ? 'grid' : 'none';
@@ -1185,8 +1329,10 @@
       document.getElementById('teams-section').style.display = isTeams ? 'block' : 'none';
       document.getElementById('schedule-section').style.display = isSchedule ? 'block' : 'none';
       document.getElementById('wishlist-section').style.display = isWishlist ? 'block' : 'none';
+      document.getElementById('reviews-section').style.display = isReviews ? 'block' : 'none';
 
       render();
+      if (isReviews) renderReviews();
     }
 
     function renderRoster() {
@@ -1325,7 +1471,10 @@
     function processImage(input, target) {
       if (input.files && input.files[0]) {
         const file = input.files[0];
-        const labelId = target === 'game' ? 'file-label-text' : 'wish-file-label-text';
+        let labelId = 'file-label-text';
+        if (target === 'wish') labelId = 'wish-file-label-text';
+        if (target === 'review') labelId = 'review-file-label-text';
+
         document.getElementById(labelId).innerText = 'تم الاختيار: ' + file.name.substring(0, 10) + '...';
         
         const reader = new FileReader();
@@ -1340,10 +1489,11 @@
 
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            const compressed = canvas.toDataURL('image/jpeg', 0.6);
+            const compressed = canvas.toDataURL('image/jpeg', 0.65);
 
             if (target === 'game') uploadedImageBase64 = compressed;
             if (target === 'wish') uploadedWishImageBase64 = compressed;
+            if (target === 'review') uploadedReviewImageBase64 = compressed;
           };
           img.src = e.target.result;
         };
@@ -1534,6 +1684,101 @@
           <button class="wish-choice-btn" onclick="voteMvp('${name}')">
             👑 ${name}
           </button>
+        `;
+      });
+    }
+
+    /* إدارة قسم مراجعات الألعاب (Game Reviews) */
+    function setReviewRating(rating) {
+      currentSelectedRating = rating;
+      const stars = document.querySelectorAll('#star-picker .star-btn');
+      stars.forEach((btn, idx) => {
+        if (idx < rating) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+      document.getElementById('star-rating-num').innerText = `${rating} / 5`;
+    }
+
+    function addReview() {
+      const title = document.getElementById('review-game-title').value.trim();
+      const content = document.getElementById('review-text').value.trim();
+      const img = uploadedReviewImageBase64 || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500';
+
+      if (!title) return alert('يرجى كتابة اسم اللعبة');
+      if (!content) return alert('يرجى كتابة مراجعتك ورأيك عن اللعبة');
+
+      const btn = document.getElementById('add-review-btn');
+      btn.innerText = 'جاري النشر... ⏳';
+      btn.disabled = true;
+
+      db.collection("reviews").add({
+        title,
+        content,
+        rating: currentSelectedRating,
+        img,
+        author: currentUser,
+        createdAt: Date.now()
+      }).then(() => {
+        document.getElementById('review-game-title').value = '';
+        document.getElementById('review-text').value = '';
+        document.getElementById('review-file-input').value = '';
+        document.getElementById('review-file-label-text').innerText = '📷 صورة اللعبة (اختياري)';
+        uploadedReviewImageBase64 = '';
+        setReviewRating(5);
+        btn.innerText = 'نشر المراجعة للكل 🌟';
+        btn.disabled = false;
+      }).catch(err => {
+        alert('حدث خطأ: ' + err.message);
+        btn.innerText = 'نشر المراجعة للكل 🌟';
+        btn.disabled = false;
+      });
+    }
+
+    function deleteReview(id) {
+      if (confirm('هل أنت متأكد من حذف هذه المراجعة؟')) {
+        db.collection("reviews").doc(id).delete();
+      }
+    }
+
+    function renderReviews() {
+      const container = document.getElementById('reviews-feed-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (reviewsList.length === 0) {
+        container.innerHTML = `<p style="text-align: center; color: var(--muted); padding: 40px 0;">لا توجد مراجعات أو آراء مكتوبة عن ألعاب حتى الآن. كن أول من يشارك رأيه بالأعلى!</p>`;
+        return;
+      }
+
+      reviewsList.forEach(r => {
+        const starsText = '★'.repeat(r.rating || 5) + '☆'.repeat(5 - (r.rating || 5));
+        const formattedDate = r.createdAt ? new Date(r.createdAt).toLocaleDateString('ar-SA') : '';
+
+        container.innerHTML += `
+          <div class="review-card">
+            <div class="review-header">
+              <img src="${r.img}" class="review-game-thumb" alt="${r.title}">
+              <div>
+                <h3 style="color: #fff; font-size: 1.25rem; font-weight: 800; margin-bottom: 3px;">${r.title}</h3>
+                <div style="color: var(--primary); font-size: 1.15rem; font-weight: 900; letter-spacing: 2px;">
+                  ${starsText} <span style="font-size: 0.85rem; color: var(--muted);">(${r.rating || 5}/5)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="review-body">${r.content}</div>
+
+            <div class="review-footer">
+              <div class="clickable-author" onclick="openProfile('${r.author}')">
+                <img src="${getUserAvatar(r.author)}" class="author-thumb" alt="${r.author}">
+                <span>رأي الكاتب: <b>${r.author}</b></span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <span style="color: var(--muted); font-size: 0.8rem;">${formattedDate}</span>
+                <button class="del-btn" onclick="deleteReview('${r.id}')">حذف 🗑️</button>
+              </div>
+            </div>
+          </div>
         `;
       });
     }
@@ -1812,7 +2057,7 @@
 
       const filtered = currentTab === 'all' ? gamesList : gamesList.filter(g => g.cat === currentTab);
 
-      if (filtered.length === 0 && currentTab !== 'vote' && currentTab !== 'teams' && currentTab !== 'schedule' && currentTab !== 'wishlist') {
+      if (filtered.length === 0 && currentTab !== 'vote' && currentTab !== 'teams' && currentTab !== 'schedule' && currentTab !== 'wishlist' && currentTab !== 'reviews') {
         container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 40px 0;">لا توجد ألعاب مضافة في هذا التصنيف بعد.</p>`;
       }
 
