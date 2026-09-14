@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SBR CLAN | البوابة الرسمية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090a0f;
+      --card: #131722;
+      --gold: #f59e0b;
+      --gold-glow: rgba(245, 158, 11, 0.4);
+      --gold-dark: #b45309;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: #272f45;
+      --danger: #ef4444;
+      --success: #10b981;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+    body { background-color: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+    header {
+      background: radial-gradient(circle at top, #1e2436 0%, var(--bg) 100%);
+      padding: 25px 15px 15px;
+      text-align: center;
+      border-bottom: 2px solid var(--border);
+    }
+    .clan-logo {
+      font-size: 3.5rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-shadow: 0 0 25px var(--gold-glow);
+      display: inline-block;
+      margin-bottom: 5px;
+    }
+    .clan-sub { color: var(--muted); font-size: 1.1rem; font-weight: 600; }
+
+    .user-bar {
+      display: none;
+      background: #111520;
+      padding: 10px 20px;
+      border-bottom: 1px solid var(--border);
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+    .user-badge { color: var(--gold); font-weight: 800; }
+    .logout-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 4px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .logout-btn:hover { color: var(--danger); border-color: var(--danger); }
+
+    /* صفحة اختيار الحساب */
+    .hero-section {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 15px;
+      text-align: center;
+    }
+    .hero-title { color: #fff; font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
+    .hero-desc { color: var(--muted); margin-bottom: 25px; font-size: 0.95rem; }
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+    }
+    .member-card {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 25px 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+    .member-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-6px);
+      box-shadow: 0 8px 25px var(--gold-glow);
+    }
+    .member-icon { font-size: 2.5rem; margin-bottom: 8px; }
+    .member-name { font-weight: 800; font-size: 1.3rem; color: #fff; }
+    .member-tag { font-size: 0.85rem; color: var(--gold); margin-top: 4px; }
+
+    #main-hub { display: none; padding-bottom: 80px; }
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      background: #0f121b;
+      padding: 15px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      overflow-x: auto;
+    }
+    .nav-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.95rem;
+      white-space: nowrap;
+      transition: 0.2s;
+    }
+    .nav-btn.active, .nav-btn:hover {
+      background: var(--gold);
+      color: #000;
+      border-color: var(--gold);
+    }
+
+    .container { max-width: 1050px; margin: auto; padding: 25px 15px; }
+
+    .add-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+    input, select {
+      background: #0b0d14;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      width: 100%;
+    }
+    input:focus, select:focus { border-color: var(--gold); }
+    
+    .file-input-wrapper {
+      position: relative;
+      background: #0b0d14;
+      border: 1px dashed var(--gold);
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 0.9rem;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .file-input-wrapper input[type="file"] {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .action-btn {
+      background: var(--gold);
+      color: #000;
+      font-weight: 800;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+      width: 100%;
+    }
+    .action-btn:hover { filter: brightness(1.1); }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .game-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: 0.3s;
+    }
+    .game-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+    }
+    .game-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: #000;
+    }
+    .game-info {
+      padding: 12px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .game-title { font-size: 1.15rem; font-weight: 700; color: #fff; }
+    .game-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .game-meta span { color: var(--gold); font-weight: 700; }
+    .del-btn { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 0.85rem; }
+
+    /* نظام التصويت المتطور */
+    .vote-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+    }
+    .vote-badge {
+      background: #1c2233;
+      color: var(--gold);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: 1px solid var(--border);
+    }
+    .vote-option {
+      background: #0d1017;
+      border: 1px solid var(--border);
+      padding: 12px 18px;
+      margin-top: 10px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .vote-option:hover { border-color: var(--gold); background: #151b27; }
+    .vote-option.voted-by-me {
+      border-color: var(--gold);
+      background: rgba(245, 158, 11, 0.15);
+    }
+    .vote-option.selected-temp {
+      border-color: #3b82f6;
+      background: rgba(59, 130, 246, 0.15);
+    }
+    .vote-count { font-weight: 800; color: var(--gold); }
+    .already-voted-notice {
+      color: var(--success);
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-top: 12px;
+      display: block;
+    }
+    .confirm-multi-btn {
+      background: var(--gold);
+      color: #000;
+      font-weight: 800;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin-top: 15px;
+      cursor: pointer;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="clan-logo">SBR</div>
+    <div class="clan-sub">كلان صبر • بوابة الأعضاء الرسمية</div>
+  </header>
+
+  <div class="user-bar" id="user-bar">
+    <div>مرحباً، <span class="user-badge" id="current-user-name"></span> 🔒</div>
+    <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
+  </div>
+
+  <!-- صفحة اختيار الحساب مع الحماية بالرمز السري PIN -->
+  <section class="hero-section" id="hero-view">
+    <h2 class="hero-title">من أنت؟ اختر حسابك</h2>
+    <p class="hero-desc">كل حساب محمي برمز سري (PIN) خاص بصاحبه لمنع أي شخص آخر من الدخول</p>
+    <div class="members-grid">
+      <div class="member-card" onclick="loginWithPin('عبدالرحمن')">
+        <div class="member-icon">🦅</div>
+        <div class="member-name">عبدالرحمن</div>
+        <div class="member-tag">عضو الكلان</div>
+      </div>
+      <div class="member-card" onclick="loginWithPin('عبدالله')">
+        <div class="member-icon">⚔️</div>
+        <div class="member-name">عبدالله</div>
+        <div class="member-tag">عضو الكلان</div>
+      </div>
+      <div class="member-card" onclick="loginWithPin('سعود')">
+        <div class="member-icon">🛡️</div>
+        <div class="member-name">سعود</div>
+        <div class="member-tag">عضو الكلان</div>
+      </div>
+      <div class="member-card" onclick="loginWithPin('إياد')">
+        <div class="member-icon">⚡</div>
+        <div class="member-name">إياد</div>
+        <div class="member-tag">عضو الكلان</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- الصالة الرئيسية -->
+  <main id="main-hub">
+    <nav class="nav-tabs">
+      <button class="nav-btn active" onclick="setTab('all')">كل الألعاب</button>
+      <button class="nav-btn" onclick="setTab('4')">4 لاعبين</button>
+      <button class="nav-btn" onclick="setTab('3')">3 لاعبين</button>
+      <button class="nav-btn" onclick="setTab('2')">ثنائي اللاعبين</button>
+      <button class="nav-btn" onclick="setTab('vote')">🗳️ التصويت</button>
+    </nav>
+
+    <div class="container">
+      
+      <!-- إضافة لعبة -->
+      <section class="add-box" id="game-form-box">
+        <h3 style="color: var(--gold); margin-bottom: 15px; font-weight: 800;">إضافة لعبة جديدة للموقع</h3>
+        <div class="form-grid">
+          <input type="text" id="game-title" placeholder="اسم اللعبة...">
+          <select id="game-category">
+            <option value="4">4 لاعبين (Squad)</option>
+            <option value="3">3 لاعبين (Trio)</option>
+            <option value="2">ثنائي لاعبين (Duo)</option>
+          </select>
+          <input type="text" id="game-author-display" readonly style="background: #181d29; color: var(--gold); font-weight: 700;">
+          
+          <div class="file-input-wrapper">
+            <span id="file-label-text">📷 رفع صورة (الصور / الملفات)</span>
+            <input type="file" id="game-file-input" accept="image/*" onchange="processImage(this)">
+          </div>
+        </div>
+        <button class="action-btn" onclick="addGame()">نشر اللعبة للجميع 🚀</button>
+      </section>
+
+      <section class="games-grid" id="games-container"></section>
+
+      <!-- إنشاء تصويت مع خيار (متعدد أو أحادي) -->
+      <section id="poll-section" style="display: none;">
+        <div class="vote-box">
+          <h3 style="color: var(--gold); margin-bottom: 12px; font-weight: 800;">إنشاء تصويت جديد (حتى 20 خيار)</h3>
+          
+          <input type="text" id="poll-question" placeholder="موضوع التصويت (مثال: وش الألعاب اللي نلعبها الليلة؟)..." style="margin-bottom: 10px;">
+          
+          <select id="poll-type" style="margin-bottom: 10px;">
+            <option value="single">نوع التصويت: خيار واحد فقط (Single choice)</option>
+            <option value="multi">نوع التصويت: خيارات متعددة (Multiple choice)</option>
+          </select>
+
+          <textarea id="poll-options-input" rows="4" placeholder="اكتب كل خيار في سطر جديد (يقبل من 2 إلى 20 خيار)" style="width: 100%; background: #0b0d14; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 8px; margin-bottom: 10px;"></textarea>
+          
+          <button class="action-btn" onclick="createPoll()">نشر التصويت للكل 🗳️</button>
+        </div>
+
+        <div id="active-polls"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    let currentTab = 'all';
+    let currentUser = localStorage.getItem('sbr_current_user') || '';
+    let uploadedImageBase64 = '';
+    let multiSelections = {}; // لتخزين التحديدات المؤقتة في الخيارات المتعددة
+    let db;
+
+    const request = indexedDB.open('SBR_Clan_System_DB', 2);
+    request.onupgradeneeded = function(e) {
+      db = e.target.result;
+      if (!db.objectStoreNames.contains('games')) db.createObjectStore('games', { keyPath: 'id' });
+      if (!db.objectStoreNames.contains('polls')) db.createObjectStore('polls', { keyPath: 'id' });
+    };
+    request.onsuccess = function(e) {
+      db = e.target.result;
+      if (currentUser) applyUserSession();
+      loadAllData();
+    };
+
+    let gamesList = [];
+    let pollsList = [];
+
+    // تسجيل الدخول مع التحقق من الرمز السري PIN
+    function loginWithPin(name) {
+      const savedPin = localStorage.getItem('sbr_pin_' + name);
+
+      if (!savedPin) {
+        // أول مرة يسجل العضو
+        const newPin = prompt(`مرحباً يا ${name}! هذه أول مرة تدخل فيها.\nأنشئ رمز PIN سري خاص بك لحماية حسابك (مثال: 1234):`);
+        if (!newPin || newPin.trim() === '') {
+          alert('يجب وضع رمز سري للدخول!');
+          return;
+        }
+        localStorage.setItem('sbr_pin_' + name, newPin.trim());
+        currentUser = name;
+        localStorage.setItem('sbr_current_user', name);
+        applyUserSession();
+      } else {
+        // العضو مسجل سابقاً ومطلوب الرمز
+        const inputPin = prompt(`أهلاً يا ${name}! أدخل رمزك السري (PIN) للدخول لحسابك:`);
+        if (inputPin === savedPin) {
+          currentUser = name;
+          localStorage.setItem('sbr_current_user', name);
+          applyUserSession();
+        } else {
+          alert('الرمز السري غير صحيح! لا يمكنك الدخول لحساب ليس لك ❌');
+        }
+      }
+    }
+
+    function logout() {
+      currentUser = '';
+      localStorage.removeItem('sbr_current_user');
+      document.getElementById('user-bar').style.display = 'none';
+      document.getElementById('main-hub').style.display = 'none';
+      document.getElementById('hero-view').style.display = 'block';
+    }
+
+    function applyUserSession() {
+      document.getElementById('current-user-name').innerText = currentUser;
+      document.getElementById('game-author-display').value = 'الناشر: ' + currentUser;
+      document.getElementById('user-bar').style.display = 'flex';
+      document.getElementById('hero-view').style.display = 'none';
+      document.getElementById('main-hub').style.display = 'block';
+      render();
+    }
+
+    function loadAllData() {
+      if (!db) return;
+      const tx = db.transaction(['games', 'polls'], 'readonly');
+      
+      const gReq = tx.objectStore('games').getAll();
+      gReq.onsuccess = () => { gamesList = gReq.result || []; render(); };
+
+      const pReq = tx.objectStore('polls').getAll();
+      pReq.onsuccess = () => { pollsList = pReq.result || []; render(); };
+    }
+
+    function setTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const isVote = tab === 'vote';
+      document.getElementById('game-form-box').style.display = isVote ? 'none' : 'block';
+      document.getElementById('games-container').style.display = isVote ? 'none' : 'grid';
+      document.getElementById('poll-section').style.display = isVote ? 'block' : 'none';
+
+      render();
+    }
+
+    function processImage(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        document.getElementById('file-label-text').innerText = 'تم الاختيار: ' + file.name.substring(0, 10) + '...';
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 320;
+            const scaleSize = MAX_WIDTH / img.width;
+            canvas.width = MAX_WIDTH;
+            canvas.height = img.height * scaleSize;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            uploadedImageBase64 = canvas.toDataURL('image/jpeg', 0.65);
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function addGame() {
+      const title = document.getElementById('game-title').value.trim();
+      const cat = document.getElementById('game-category').value;
+      const img = uploadedImageBase64 || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500';
+
+      if (!title) return alert('يرجى كتابة اسم اللعبة');
+
+      const newGame = { id: Date.now(), title, cat, author: currentUser, img };
+
+      const tx = db.transaction(['games'], 'readwrite');
+      tx.objectStore('games').add(newGame);
+      tx.oncomplete = function() {
+        gamesList.unshift(newGame);
+        render();
+
+        document.getElementById('game-title').value = '';
+        document.getElementById('game-file-input').value = '';
+        document.getElementById('file-label-text').innerText = '📷 رفع صورة (الصور / الملفات)';
+        uploadedImageBase64 = '';
+      };
+    }
+
+    function deleteGame(id) {
+      const tx = db.transaction(['games'], 'readwrite');
+      tx.objectStore('games').delete(id);
+      tx.oncomplete = function() {
+        gamesList = gamesList.filter(g => g.id !== id);
+        render();
+      };
+    }
+
+    function createPoll() {
+      const question = document.getElementById('poll-question').value.trim();
+      const type = document.getElementById('poll-type').value;
+      const optionsText = document.getElementById('poll-options-input').value.trim();
+
+      if (!question || !optionsText) return alert('اكتب الموضوع والخيارات');
+
+      const lines = optionsText.split('\n').map(l => l.trim()).filter(l => l.length > 0).slice(0, 20);
+      if (lines.length < 2) return alert('أضف خيارين على الأقل');
+
+      const options = lines.map((name, i) => ({ id: i, text: name, votes: 0 }));
+      const newPoll = { 
+        id: Date.now(), 
+        question, 
+        type, 
+        author: currentUser, 
+        options,
+        voters: {} 
+      };
+
+      const tx = db.transaction(['polls'], 'readwrite');
+      tx.objectStore('polls').add(newPoll);
+      tx.oncomplete = function() {
+        pollsList.unshift(newPoll);
+        render();
+
+        document.getElementById('poll-question').value = '';
+        document.getElementById('poll-options-input').value = '';
+      };
+    }
+
+    // تصويت أحادي
+    function voteSingle(pollId, optId) {
+      const poll = pollsList.find(p => p.id === pollId);
+      if (!poll) return;
+
+      if (!poll.voters) poll.voters = {};
+
+      if (poll.voters[currentUser]) {
+        alert('لقد قمت بالتصويت مسبقاً في هذا الاستطلاع!');
+        return;
+      }
+
+      poll.options[optId].votes += 1;
+      poll.voters[currentUser] = [optId];
+
+      const tx = db.transaction(['polls'], 'readwrite');
+      tx.objectStore('polls').put(poll);
+      tx.oncomplete = () => render();
+    }
+
+    // تحديد خيار مؤقت في التصويت المتعدد
+    function toggleMultiOption(pollId, optId) {
+      if (!multiSelections[pollId]) multiSelections[pollId] = [];
+      const idx = multiSelections[pollId].indexOf(optId);
+
+      if (idx > -1) {
+        multiSelections[pollId].splice(idx, 1);
+      } else {
+        multiSelections[pollId].push(optId);
+      }
+      render();
+    }
+
+    // تأكيد إرسال التصويت المتعدد
+    function submitMultiVote(pollId) {
+      const poll = pollsList.find(p => p.id === pollId);
+      if (!poll) return;
+
+      const selected = multiSelections[pollId] || [];
+      if (selected.length === 0) {
+        alert('يرجى تحديد خيار واحد على الأقل قبل التأكيد!');
+        return;
+      }
+
+      if (!poll.voters) poll.voters = {};
+
+      selected.forEach(optId => {
+        poll.options[optId].votes += 1;
+      });
+
+      poll.voters[currentUser] = selected;
+      delete multiSelections[pollId];
+
+      const tx = db.transaction(['polls'], 'readwrite');
+      tx.objectStore('polls').put(poll);
+      tx.oncomplete = () => render();
+    }
+
+    function render() {
+      const container = document.getElementById('games-container');
+      container.innerHTML = '';
+
+      const filtered = currentTab === 'all' 
+        ? gamesList 
+        : gamesList.filter(g => g.cat === currentTab);
+
+      if (filtered.length === 0 && currentTab !== 'vote') {
+        container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 40px 0;">لا توجد ألعاب مضافة في هذا التصنيف بعد. أضف أول لعبة بالأعلى!</p>`;
+      }
+
+      filtered.forEach(g => {
+        container.innerHTML += `
+          <div class="game-card">
+            <img src="${g.img}" class="game-img" alt="${g.title}">
+            <div class="game-info">
+              <div class="game-title">${g.title}</div>
+              <div class="game-meta">
+                <div>بواسطة: <span>${g.author}</span></div>
+                <button class="del-btn" onclick="deleteGame(${g.id})">حذف</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      const pollList = document.getElementById('active-polls');
+      pollList.innerHTML = '';
+
+      pollsList.forEach(p => {
+        if (!p.voters) p.voters = {};
+        const myVotes = p.voters[currentUser] || null;
+        const hasVoted = myVotes !== null;
+        const isMulti = p.type === 'multi';
+
+        let opts = '';
+        p.options.forEach(o => {
+          let classes = 'vote-option';
+          let checkMark = '';
+
+          if (hasVoted) {
+            if (myVotes.includes(o.id)) {
+              classes += ' voted-by-me';
+              checkMark = '✅ ';
+            }
+          } else if (isMulti) {
+            const currentSelected = multiSelections[p.id] || [];
+            if (currentSelected.includes(o.id)) {
+              classes += ' selected-temp';
+              checkMark = '☑️ ';
+            }
+          }
+
+          const clickAction = hasVoted ? '' : (isMulti ? `toggleMultiOption(${p.id}, ${o.id})` : `voteSingle(${p.id}, ${o.id})`);
+
+          opts += `
+            <div class="${classes}" onclick="${clickAction}">
+              <span>${checkMark}${o.text}</span>
+              <span class="vote-count">${o.votes} صوت</span>
+            </div>
+          `;
+        });
+
+        let multiConfirmButton = '';
+        if (isMulti && !hasVoted) {
+          multiConfirmButton = `<button class="confirm-multi-btn" onclick="submitMultiVote(${p.id})">تأكيد وإرسال التصويت (صوت واحد لكل خيار محدد) 🗳️</button>`;
+        }
+
+        pollList.innerHTML += `
+          <div class="vote-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <h4 style="font-size: 1.2rem; color: #fff;">${p.question}</h4>
+              <span class="vote-badge">${isMulti ? 'خيارات متعددة' : 'خيار واحد فقط'}</span>
+            </div>
+            <div style="font-size: 0.85rem; color: var(--gold); margin-bottom: 12px;">صاحب التصويت: ${p.author}</div>
+            ${opts}
+            ${multiConfirmButton}
+            ${hasVoted ? '<span class="already-voted-notice">✓ تم تسجيل صوتك بنجاح في هذا الاستطلاع.</span>' : ''}
+          </div>
+        `;
+      });
+    }
+  </script>
+</body>
+</html>
