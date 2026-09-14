@@ -90,7 +90,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: calc(var(--nav-height) + 25px); overflow-x: hidden; }
 
-    /* هيدر نحيف وشعار على الجنب */
     .app-header {
       position: sticky; top: 0; z-index: 100;
       background: rgba(7, 8, 12, 0.85);
@@ -108,7 +107,6 @@
       display: flex; align-items: center; gap: 6px;
     }
 
-    /* شريط التنقل السفلي للهواتف */
     .app-bottom-nav {
       position: fixed; bottom: 0; left: 0; right: 0; height: var(--nav-height);
       background: rgba(10, 12, 18, 0.92);
@@ -131,10 +129,8 @@
     }
     .nav-item.active .nav-profile-thumb { border-color: var(--primary); box-shadow: 0 0 8px var(--primary-glow); }
 
-    /* حاوية المحتوى المخصصة للجوال */
     .app-container { max-width: 540px; margin: 0 auto; padding: 14px 14px 40px; }
 
-    /* شاشة الدخول السريعة */
     .login-container { text-align: center; padding: 30px 10px; }
     .login-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
     .login-card {
@@ -143,7 +139,6 @@
     }
     .login-card:active { transform: scale(0.97); border-color: var(--primary); }
 
-    /* صالة الألعاب السريعة */
     .game-action-bar {
       display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;
     }
@@ -166,6 +161,16 @@
       padding: 11px; border-radius: 8px; width: 100%; cursor: pointer; font-size: 0.9rem;
     }
 
+    .file-input-wrapper {
+      position: relative; background: #080a10; border: 1px dashed var(--primary);
+      border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--primary); font-weight: 700; font-size: 0.85rem; margin-bottom: 10px;
+      overflow: hidden; white-space: nowrap;
+    }
+    .file-input-wrapper input[type="file"] {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;
+    }
+
     .mobile-games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .mobile-game-card {
       background: var(--card); border: 1px solid var(--border); border-radius: 12px;
@@ -177,7 +182,6 @@
     .game-card-sub { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--muted); }
     .del-icon { color: var(--danger); background: none; border: none; cursor: pointer; font-size: 0.8rem; }
 
-    /* قسم التصويت والـ MVP */
     .mvp-banner-box {
       background: linear-gradient(135deg, var(--card) 0%, var(--card-sub) 100%);
       border: 1.5px solid var(--primary); border-radius: 14px; padding: 14px; margin-bottom: 16px;
@@ -212,7 +216,6 @@
       color: var(--primary); margin-top: 6px; text-align: center;
     }
 
-    /* مولد الفرق السحابي */
     .vs-matchup-card {
       background: var(--card); border: 1.5px solid var(--border); border-radius: 14px;
       padding: 14px; margin-bottom: 14px;
@@ -225,20 +228,21 @@
     }
     .team-player-mini img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
 
-    /* مراجعات الألعاب المتطورة */
     .review-mobile-card {
       background: var(--card); border: 1px solid var(--border); border-radius: 14px;
       padding: 14px; margin-bottom: 14px;
     }
-    .review-game-header { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
-    .review-poster-mini { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
+    .review-game-header { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 8px; }
+    .review-poster-mini {
+      width: 68px; height: 95px; border-radius: 8px; object-fit: cover;
+      background: #000; border: 1px solid var(--border); flex-shrink: 0;
+    }
     .sub-scores-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
     .sub-score-tag {
       background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
       padding: 2px 6px; border-radius: 6px; font-size: 0.7rem; color: var(--primary);
     }
 
-    /* واجهة الملف التعريفي الشاملة (Profile Hub) */
     .profile-hub-banner {
       width: 100%; height: 110px; border-radius: 14px; object-fit: cover;
       background: #141824; border: 1px solid var(--border);
@@ -273,7 +277,6 @@
     }
     .hub-member-cell:active { border-color: var(--primary); }
 
-    /* بطاقة العرض السريع للأعضاء (Story Pop Sheet) */
     .quick-sheet-backdrop {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
@@ -287,7 +290,16 @@
     }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-    /* عجلة التعادل */
+    .edit-profile-modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(6px);
+      z-index: 350; display: none; align-items: center; justify-content: center; padding: 16px;
+    }
+    .edit-profile-modal-box {
+      background: var(--card); border: 1.5px solid var(--primary); border-radius: 18px;
+      padding: 20px; max-width: 440px; width: 100%; box-shadow: 0 0 35px var(--primary-glow);
+    }
+
     .wheel-modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.85); z-index: 400; display: none;
@@ -305,13 +317,11 @@
 </head>
 <body>
 
-  <!-- هيدر نحيف -->
   <header class="app-header">
     <div class="header-logo">SBR</div>
     <div class="header-status-pill" id="header-status-user">كلان صبر 🦅</div>
   </header>
 
-  <!-- شاشة الدخول السريعة -->
   <section class="app-container login-container" id="login-view">
     <h2 style="font-weight: 900; font-size: 1.4rem;">اختر حسابك للدخول 🎮</h2>
     <div class="login-grid">
@@ -334,10 +344,9 @@
     </div>
   </section>
 
-  <!-- المحتوى الرئيسي المتغير -->
   <main class="app-container" id="main-view" style="display: none;">
 
-    <!-- 1. شاشة الألعاب (كل الألعاب / رباعي / ثلاثي / ثنائي) -->
+    <!-- 1. شاشة الألعاب -->
     <section id="tab-games-section">
       <div class="game-action-bar">
         <span id="current-cat-title" style="font-weight: 900; font-size: 1.1rem;">كل الألعاب 🎮</span>
@@ -351,8 +360,9 @@
           <option value="3">3 لاعبين (Trio)</option>
           <option value="2">ثنائي لاعبين (Duo)</option>
         </select>
-        <div style="margin-bottom: 10px;">
-          <input type="file" id="game-file-input" accept="image/*" onchange="processImage(this, 'game')">
+        <div class="file-input-wrapper">
+          <span id="game-file-label">📷 رفع صورة اللعبة</span>
+          <input type="file" accept="image/*" onchange="processImage(this, 'game')">
         </div>
         <button class="action-btn" id="add-game-btn" onclick="addGame()">نشر اللعبة بالسحابة 🚀</button>
       </div>
@@ -362,7 +372,6 @@
 
     <!-- 2. شاشة التصويت والـ MVP -->
     <section id="tab-vote-section" style="display: none;">
-      <!-- كرت نجم الجلسة MVP في الأعلى -->
       <div class="mvp-banner-box">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span style="font-weight: 900; color: var(--primary); font-size: 0.95rem;">👑 نجم الجلسة (MVP 24h)</span>
@@ -481,7 +490,8 @@
             </select>
           </div>
         </div>
-        <div style="margin: 8px 0;">
+        <div class="file-input-wrapper">
+          <span id="review-file-label">📷 صورة اللعبة (عالية الدقة)</span>
           <input type="file" accept="image/*" onchange="processImage(this, 'review')">
         </div>
         <textarea id="review-text" rows="3" placeholder="مراجعتك وانطباعك بالتفصيل..."></textarea>
@@ -504,13 +514,11 @@
         <p style="font-size: 0.8rem; color: var(--muted); margin-top: 4px; padding: 0 10px;" id="hub-display-bio">--</p>
       </div>
 
-      <!-- أعضاء كلان صبر -->
       <div class="hub-actions-card">
         <div style="font-weight: 800; font-size: 0.9rem; color: #fff; margin-bottom: 4px;">👥 أعضاء كلان صبر</div>
         <div class="hub-members-list" id="hub-clan-members-grid"></div>
       </div>
 
-      <!-- إعدادات المظهر والتحكم -->
       <div class="hub-actions-card">
         <label style="font-size: 0.8rem; font-weight: 700; color: var(--muted); display: block; margin-bottom: 6px;">🎨 ستايل التطبيق:</label>
         <select id="theme-selector" onchange="changeTheme(this.value)">
@@ -522,7 +530,7 @@
         </select>
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px;">
-          <button class="action-btn" onclick="openEditProfilePrompt()" style="background: var(--card-sub); color: #fff; border: 1px solid var(--border);">تعديل الملف ⚙️</button>
+          <button class="action-btn" onclick="openEditProfileModal()" style="background: var(--card-sub); color: #fff; border: 1px solid var(--border);">تعديل الملف ⚙️</button>
           <button class="action-btn" onclick="logout()" style="background: rgba(239,68,68,0.15); color: var(--danger); border: 1px solid var(--danger);">تسجيل خروج</button>
         </div>
       </div>
@@ -530,22 +538,22 @@
 
   </main>
 
-  <!-- شريط التنقل السفلي بالأيقونات والرسومات -->
+  <!-- شريط التنقل السفلي المعدل (④ رباعي / ③ ثلاثي / ② ثنائي / ⚔️ الفرق) -->
   <nav class="app-bottom-nav" id="app-nav" style="display: none;">
     <button class="nav-item active" onclick="switchNav('all', this)">
       <span class="nav-icon">🎮</span>
       <span>الكل</span>
     </button>
     <button class="nav-item" onclick="switchNav('4', this)">
-      <span class="nav-icon">👥</span>
+      <span class="nav-icon" style="font-weight: 900; font-size: 1.25rem;">④</span>
       <span>رباعي</span>
     </button>
     <button class="nav-item" onclick="switchNav('3', this)">
-      <span class="nav-icon">👤</span>
+      <span class="nav-icon" style="font-weight: 900; font-size: 1.25rem;">③</span>
       <span>ثلاثي</span>
     </button>
     <button class="nav-item" onclick="switchNav('2', this)">
-      <span class="nav-icon">⚔️</span>
+      <span class="nav-icon" style="font-weight: 900; font-size: 1.25rem;">②</span>
       <span>ثنائي</span>
     </button>
     <button class="nav-item" onclick="switchNav('vote', this)">
@@ -553,7 +561,7 @@
       <span>التصويت</span>
     </button>
     <button class="nav-item" onclick="switchNav('teams', this)">
-      <span class="nav-icon">⚡</span>
+      <span class="nav-icon" style="font-size: 1.15rem;">⚔️</span>
       <span>الفرق</span>
     </button>
     <button class="nav-item" onclick="switchNav('reviews', this)">
@@ -566,7 +574,35 @@
     </button>
   </nav>
 
-  <!-- نافذة العرض السريع للأعضاء (Story Card Sheet) -->
+  <!-- نافذة تعديل الملف -->
+  <div class="edit-profile-modal-overlay" id="edit-profile-modal">
+    <div class="edit-profile-modal-box">
+      <h3 style="color: var(--primary); font-weight: 900; margin-bottom: 12px; font-size: 1.15rem; text-align: center;">⚙️ تعديل الملف الشخصي</h3>
+      
+      <label style="font-size: 0.75rem; color: var(--muted); font-weight: 700;">اللقب المفضل:</label>
+      <input type="text" id="modal-edit-title" placeholder="أدخل لقبك...">
+
+      <label style="font-size: 0.75rem; color: var(--muted); font-weight: 700;">النبذة التعريفية (Bio):</label>
+      <textarea id="modal-edit-bio" rows="2" placeholder="أدخل نبذتك..."></textarea>
+
+      <label style="font-size: 0.75rem; color: var(--muted); font-weight: 700;">الصورة الشخصية (الدائرية):</label>
+      <div class="file-input-wrapper">
+        <span id="modal-avatar-label">🖼️ رفع الصورة الشخصية</span>
+        <input type="file" accept="image/*" onchange="processProfileUpload(this, 'avatar')">
+      </div>
+
+      <label style="font-size: 0.75rem; color: var(--muted); font-weight: 700;">صورة الغلاف (العرضية الطويلة):</label>
+      <div class="file-input-wrapper">
+        <span id="modal-banner-label">🌌 رفع صورة الغلاف العريضة</span>
+        <input type="file" accept="image/*" onchange="processProfileUpload(this, 'banner')">
+      </div>
+
+      <button class="action-btn" id="save-profile-btn" onclick="saveProfileChanges()" style="margin-top: 6px;">حفظ في التخزين السحابي 💾</button>
+      <button class="action-btn" onclick="closeEditProfileModal()" style="background: transparent; color: var(--muted); margin-top: 6px;">إلغاء</button>
+    </div>
+  </div>
+
+  <!-- بطاقة العرض السريع للأعضاء (Story Card Sheet) -->
   <div class="quick-sheet-backdrop" id="quick-sheet" onclick="closeQuickSheet(event)">
     <div class="quick-sheet-card" onclick="event.stopPropagation()">
       <div style="width: 36px; height: 4px; background: var(--border); border-radius: 4px; margin: 0 auto 12px;"></div>
@@ -615,6 +651,8 @@
     
     let uploadedImageBase64 = '';
     let uploadedReviewImageBase64 = '';
+    let editAvatarBase64 = '';
+    let editBannerBase64 = '';
     let multiSelections = {};
 
     let gamesList = [];
@@ -651,7 +689,6 @@
       return membersProfiles[name] && membersProfiles[name].online;
     }
 
-    // مزامنة لحظية كاملة
     db.collection("users").onSnapshot(snapshot => {
       membersProfiles = {};
       snapshot.forEach(doc => membersProfiles[doc.id] = doc.data());
@@ -760,11 +797,9 @@
       document.getElementById('header-status-user').innerHTML = `<b>${currentUser}</b> 🔒`;
       setUserOnlineStatus(true);
       updateProfileHubUI();
-      // تشغيل الصفحة الأولى (كل الألعاب)
       switchNav('all', document.querySelector('.nav-item'));
     }
 
-    // التنقل بنمط التطبيقات
     function switchNav(tab, elem) {
       currentNavTab = tab;
       document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
@@ -778,22 +813,16 @@
       document.getElementById('tab-profile-section').style.display = (tab === 'profile') ? 'block' : 'none';
 
       if (isGames) {
-        const titles = { 'all': 'كل الألعاب 🎮', '4': 'ألعاب 4 لاعبين (Squad) 👥', '3': 'ألعاب 3 لاعبين (Trio) 👤', '2': 'ألعاب ثنائية (Duo) ⚔️' };
+        const titles = { 'all': 'كل الألعاب 🎮', '4': 'ألعاب 4 لاعبين (Squad) ④', '3': 'ألعاب 3 لاعبين (Trio) ③', '2': 'ألعاب ثنائية (Duo) ②' };
         document.getElementById('current-cat-title').innerText = titles[tab];
         renderGames();
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function toggleAddGameForm() {
-      document.getElementById('add-game-box').classList.toggle('show');
-    }
-    function toggleAddPollForm() {
-      document.getElementById('add-poll-box').classList.toggle('show');
-    }
-    function toggleAddReviewForm() {
-      document.getElementById('add-review-box').classList.toggle('show');
-    }
+    function toggleAddGameForm() { document.getElementById('add-game-box').classList.toggle('show'); }
+    function toggleAddPollForm() { document.getElementById('add-poll-box').classList.toggle('show'); }
+    function toggleAddReviewForm() { document.getElementById('add-review-box').classList.toggle('show'); }
 
     function openQuickSheet(name) {
       const p = membersProfiles[name] || {};
@@ -812,9 +841,7 @@
       document.getElementById('quick-sheet').style.display = 'flex';
     }
 
-    function closeQuickSheet(e) {
-      document.getElementById('quick-sheet').style.display = 'none';
-    }
+    function closeQuickSheet(e) { document.getElementById('quick-sheet').style.display = 'none'; }
 
     function updateProfileHubUI() {
       const p = membersProfiles[currentUser] || {};
@@ -841,7 +868,6 @@
       const dotElem = document.getElementById('hub-online-dot');
       if (dotElem) dotElem.className = 'discord-dot ' + (isOnline ? 'dot-online' : 'dot-offline');
 
-      // قائمة أعضاء الكلان الأربعة بداخل البروفايل
       const membersGrid = document.getElementById('hub-clan-members-grid');
       if (membersGrid) {
         membersGrid.innerHTML = '';
@@ -860,34 +886,93 @@
       }
     }
 
-    function openEditProfilePrompt() {
+    function openEditProfileModal() {
       const p = membersProfiles[currentUser] || {};
-      const newTitle = prompt("أدخل لقبك الجديد:", p.title || '');
-      if (newTitle === null) return;
-      const newBio = prompt("أدخل نبذتك (Bio):", p.bio || '');
-      if (newBio === null) return;
-
-      db.collection("users").doc(currentUser).set({
-        title: newTitle.trim() || 'عضو كلان صبر',
-        bio: newBio.trim() || 'متحمس للجيمنج مع السكواد 🎮'
-      }, { merge: true });
+      document.getElementById('modal-edit-title').value = p.title || '';
+      document.getElementById('modal-edit-bio').value = p.bio || '';
+      editAvatarBase64 = '';
+      editBannerBase64 = '';
+      document.getElementById('modal-avatar-label').innerText = '🖼️ رفع الصورة الشخصية';
+      document.getElementById('modal-banner-label').innerText = '🌌 رفع صورة الغلاف العريضة';
+      document.getElementById('edit-profile-modal').style.display = 'flex';
     }
 
-    function processImage(input, target) {
+    function closeEditProfileModal() {
+      document.getElementById('edit-profile-modal').style.display = 'none';
+    }
+
+    function processProfileUpload(input, type) {
       if (input.files && input.files[0]) {
         const file = input.files[0];
+        const label = (type === 'avatar') ? document.getElementById('modal-avatar-label') : document.getElementById('modal-banner-label');
+        label.innerText = 'تم الاختيار: ' + file.name.substring(0, 10) + '...';
+
         const reader = new FileReader();
         reader.onload = function(e) {
           const img = new Image();
           img.onload = function() {
             const canvas = document.createElement('canvas');
-            const MAX_WIDTH = 320;
+            const MAX_WIDTH = (type === 'avatar') ? 400 : 800;
+            const scale = MAX_WIDTH / img.width;
+            canvas.width = MAX_WIDTH;
+            canvas.height = img.height * scale;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            if (type === 'avatar') editAvatarBase64 = dataUrl;
+            if (type === 'banner') editBannerBase64 = dataUrl;
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function saveProfileChanges() {
+      const title = document.getElementById('modal-edit-title').value.trim();
+      const bio = document.getElementById('modal-edit-bio').value.trim();
+      const saveBtn = document.getElementById('save-profile-btn');
+
+      saveBtn.innerText = 'جاري الحفظ في السحابة... ⏳';
+      saveBtn.disabled = true;
+
+      const updateData = {
+        title: title || 'عضو كلان صبر',
+        bio: bio || 'متحمس للجيمنج مع السكواد 🎮'
+      };
+      if (editAvatarBase64) updateData.avatar = editAvatarBase64;
+      if (editBannerBase64) updateData.banner = editBannerBase64;
+
+      db.collection("users").doc(currentUser).set(updateData, { merge: true }).then(() => {
+        saveBtn.innerText = 'حفظ في التخزين السحابي 💾';
+        saveBtn.disabled = false;
+        closeEditProfileModal();
+      }).catch(err => {
+        alert('حدث خطأ: ' + err.message);
+        saveBtn.innerText = 'حفظ في التخزين السحابي 💾';
+        saveBtn.disabled = false;
+      });
+    }
+
+    function processImage(input, target) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const label = (target === 'game') ? document.getElementById('game-file-label') : document.getElementById('review-file-label');
+        if (label) label.innerText = 'تم الاختيار: ' + file.name.substring(0, 10) + '...';
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            // رفع الدقة إلى 720 ومعدل الجودة إلى 85% لمنع الغبش في صور المراجعات
+            const MAX_WIDTH = (target === 'review') ? 720 : 500;
             const scaleSize = MAX_WIDTH / img.width;
             canvas.width = MAX_WIDTH;
             canvas.height = img.height * scaleSize;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            const comp = canvas.toDataURL('image/jpeg', 0.65);
+            const comp = canvas.toDataURL('image/jpeg', 0.85);
             if (target === 'game') uploadedImageBase64 = comp;
             if (target === 'review') uploadedReviewImageBase64 = comp;
           };
@@ -908,6 +993,7 @@
         title, cat, author: currentUser, img, createdAt: Date.now()
       }).then(() => {
         document.getElementById('game-title').value = '';
+        document.getElementById('game-file-label').innerText = '📷 رفع صورة اللعبة';
         uploadedImageBase64 = '';
         document.getElementById('add-game-btn').innerText = 'نشر اللعبة بالسحابة 🚀';
         toggleAddGameForm();
@@ -948,7 +1034,6 @@
       });
     }
 
-    // تصويت نجم الجلسة MVP
     function renderMvpChips() {
       const container = document.getElementById('mvp-voting-chips');
       if (!container) return;
@@ -1105,9 +1190,12 @@
           ? `<button class="action-btn" onclick="openTieBreakerWheel('${p.id}')" style="margin-top:10px; background:linear-gradient(45deg, var(--card), var(--primary)); color:#000;">🎡 فض التعادل بالعجلة (${topTied.length})</button>` : '';
 
         let winnerBanner = p.wheelWinner
-          ? `<div style="background:rgba(245,158,11,0.15); border:1px solid var(--primary); border-radius:10px; padding:8px; margin-top:10px; text-align:center;">
-              <span style="font-size:0.75rem; color:var(--primary); font-weight:800;">🏆 نتيجة قرعة العجلة:</span>
-              <div style="font-weight:900; font-size:1rem; color:#fff;">${p.wheelWinner.title}</div>
+          ? `<div style="background:rgba(245,158,11,0.15); border:1.5px solid var(--primary); border-radius:12px; padding:10px; margin-top:10px; display:flex; align-items:center; gap:10px;">
+              <img src="${p.wheelWinner.img || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=100'}" style="width:46px; height:46px; border-radius:8px; object-fit:cover; border:1px solid var(--primary);" alt="">
+              <div style="flex:1;">
+                <span style="font-size:0.75rem; color:var(--primary); font-weight:800;">🏆 نتيجة قرعة العجلة:</span>
+                <div style="font-weight:900; font-size:1rem; color:#fff;">${p.wheelWinner.title}</div>
+              </div>
             </div>` : '';
 
         container.innerHTML += `
@@ -1190,14 +1278,18 @@
         const winner = tieGames[winIdx];
         if (activePollIdForWheel) {
           db.collection("polls").doc(activePollIdForWheel).update({
-            wheelWinner: { title: winner.text, chosenBy: currentUser, timestamp: Date.now() }
+            wheelWinner: { 
+              title: winner.text, 
+              img: winner.img || '',
+              chosenBy: currentUser, 
+              timestamp: Date.now() 
+            }
           });
         }
         closeTieWheelModal();
       }, 4100);
     }
 
-    // مولد الفرق VS
     function generateAndSaveTeams() {
       const btn = document.getElementById('gen-teams-btn');
       btn.disabled = true;
@@ -1259,7 +1351,6 @@
       });
     }
 
-    // مراجعات الألعاب
     function addReview() {
       const title = document.getElementById('review-game-title').value.trim();
       const content = document.getElementById('review-text').value.trim();
@@ -1278,6 +1369,1430 @@
       }).then(() => {
         document.getElementById('review-game-title').value = '';
         document.getElementById('review-text').value = '';
+        document.getElementById('review-file-label').innerText = '📷 صورة اللعبة (عالية الدقة)';
+        uploadedReviewImageBase64 = '';
+        document.getElementById('add-review-btn').innerText = 'نشر المراجعة 🌟';
+        toggleAddReviewForm();
+      });
+    }
+
+    function deleteReview(id, author) {
+      if (author !== currentUser) return alert('فقط صاحب المراجعة يمكنه حذفها');
+      if (confirm('حذف مراجعتك؟')) db.collection("reviews").doc(id).delete();
+    }
+
+    function renderReviews() {
+      const container = document.getElementById('reviews-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (reviewsList.length === 0) {
+        container.innerHTML = `<p style="text-align:center; color:var(--muted); padding:30px 0;">لا توجد مراجعات حتى الآن.</p>`;
+        return;
+      }
+
+      reviewsList.forEach(r => {
+        const isMine = r.author === currentUser;
+        container.innerHTML += `
+          <div class="review-mobile-card">
+            <div class="review-game-header">
+              <img src="${r.img}" class="review-poster-mini" alt="${r.title}">
+              <div style="flex:1;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <h4 style="font-weight:800; font-size:0.95rem;">${r.title}</h4>
+                  <span style="font-weight:900; color:var(--primary); font-size:0.9rem;">★ ${r.scoreMain || '5.0'}</span>
+                </div>
+                <div class="sub-scores-tags">
+                  <span class="sub-score-tag">قصة: ${r.scoreStory || '5.0'}</span>
+                  <span class="sub-score-tag">لعب: ${r.scoreGameplay || '5.0'}</span>
+                  <span class="sub-score-tag">جرافيكس: ${r.scoreGraphics || '5.0'}</span>
+                </div>
+              </div>
+            </div>
+            <p style="font-size:0.82rem; line-height:1.6; color:#cbd5e1; margin-top:6px;">${r.content}</p>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:0.75rem; color:var(--muted); border-top:1px solid var(--border); padding-top:6px;">
+              <span onclick="openQuickSheet('${r.author}')" style="cursor:pointer; color:var(--primary); font-weight:700;">كتبها: ${r.author}</span>
+              ${isMine ? `<button class="del-icon" onclick="deleteReview('${r.id}', '${r.author}')">حذف 🗑️</button>` : ''}
+            </div>
+          </div>
+        `;
+      });
+    }
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>SBR CLAN</title>
+  
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="SBR">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#090a0f">
+
+  <link id="site-favicon" rel="icon" type="image/png" href="">
+  <link id="apple-touch-icon" rel="apple-touch-icon" href="">
+
+  <script>
+    (function createClanIcons() {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = 192; canvas.height = 192;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#090a0f'; ctx.fillRect(0, 0, 192, 192);
+        ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 10;
+        ctx.strokeRect(8, 8, 176, 176);
+        ctx.fillStyle = '#f59e0b'; ctx.font = '900 68px Arial, sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('SBR', 96, 100);
+        const iconData = canvas.toDataURL('image/png');
+        document.getElementById('site-favicon').href = iconData;
+        document.getElementById('apple-touch-icon').href = iconData;
+      } catch(e){}
+    })();
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    :root {
+      --bg: #07080c;
+      --card: #10131c;
+      --card-sub: #161a26;
+      --primary: #f59e0b;
+      --primary-glow: rgba(245, 158, 11, 0.35);
+      --text: #f8fafc;
+      --muted: #8492a6;
+      --border: #1f2638;
+      --danger: #ef4444;
+      --success: #10b981;
+      --blue: #38bdf8;
+      --nav-height: 64px;
+    }
+
+    body.theme-sony {
+      --bg: #040814;
+      --card: #0a1224;
+      --card-sub: #111e38;
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.35);
+      --border: #162648;
+    }
+    body.theme-crimson {
+      --bg: #0c0507;
+      --card: #180a0e;
+      --card-sub: #240f16;
+      --primary: #ef4444;
+      --primary-glow: rgba(239, 68, 68, 0.35);
+      --border: #381520;
+    }
+    body.theme-cyber {
+      --bg: #030d08;
+      --card: #081a11;
+      --card-sub: #0e291c;
+      --primary: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.35);
+      --border: #113d28;
+    }
+    body.theme-purple {
+      --bg: #090412;
+      --card: #150926;
+      --card-sub: #210e3c;
+      --primary: #c084fc;
+      --primary-glow: rgba(192, 132, 252, 0.35);
+      --border: #35175e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: calc(var(--nav-height) + 25px); overflow-x: hidden; }
+
+    .app-header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(7, 8, 12, 0.85);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      height: 48px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 16px;
+    }
+    .header-logo {
+      font-size: 1.65rem; font-weight: 900; letter-spacing: 2px;
+      color: var(--primary); text-shadow: 0 0 12px var(--primary-glow);
+    }
+    .header-status-pill {
+      font-size: 0.75rem; font-weight: 700; color: var(--muted);
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .app-bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; height: var(--nav-height);
+      background: rgba(10, 12, 18, 0.92);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-around;
+      z-index: 150; padding-bottom: env(safe-area-inset-bottom);
+    }
+    .nav-item {
+      background: none; border: none; color: var(--muted);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 3px; font-size: 0.68rem; font-weight: 700; cursor: pointer;
+      flex: 1; height: 100%; transition: color 0.2s;
+    }
+    .nav-item .nav-icon { font-size: 1.25rem; line-height: 1; }
+    .nav-item.active { color: var(--primary); font-weight: 800; }
+    .nav-profile-thumb {
+      width: 24px; height: 24px; border-radius: 50%;
+      object-fit: cover; border: 1.5px solid var(--muted); background: #000;
+    }
+    .nav-item.active .nav-profile-thumb { border-color: var(--primary); box-shadow: 0 0 8px var(--primary-glow); }
+
+    .app-container { max-width: 540px; margin: 0 auto; padding: 14px 14px 40px; }
+
+    .login-container { text-align: center; padding: 30px 10px; }
+    .login-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+    .login-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 20px 10px; cursor: pointer; text-align: center;
+    }
+    .login-card:active { transform: scale(0.97); border-color: var(--primary); }
+
+    .game-action-bar {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;
+    }
+    .toggle-add-btn {
+      background: var(--card); border: 1px solid var(--primary); color: var(--primary);
+      padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 800; cursor: pointer;
+    }
+    .mobile-form-box {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 14px; margin-bottom: 16px; display: none;
+    }
+    .mobile-form-box.show { display: block; }
+    input, select, textarea {
+      background: #080a10; border: 1px solid var(--border); color: #fff;
+      padding: 10px 12px; border-radius: 8px; font-size: 0.9rem; width: 100%; margin-bottom: 10px;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); outline: none; }
+    .action-btn {
+      background: var(--primary); color: #000; font-weight: 800; border: none;
+      padding: 11px; border-radius: 8px; width: 100%; cursor: pointer; font-size: 0.9rem;
+    }
+
+    .file-input-wrapper {
+      position: relative; background: #080a10; border: 1px dashed var(--primary);
+      border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--primary); font-weight: 700; font-size: 0.85rem; margin-bottom: 10px;
+      overflow: hidden; white-space: nowrap;
+    }
+    .file-input-wrapper input[type="file"] {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;
+    }
+
+    .mobile-games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .mobile-game-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      overflow: hidden; display: flex; flex-direction: column;
+    }
+    .game-poster { width: 100%; aspect-ratio: 16/11; object-fit: cover; background: #000; }
+    .game-meta-row { padding: 8px 10px; display: flex; flex-direction: column; gap: 4px; }
+    .game-card-title { font-size: 0.95rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .game-card-sub { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--muted); }
+    .del-icon { color: var(--danger); background: none; border: none; cursor: pointer; font-size: 0.8rem; }
+
+    .mvp-banner-box {
+      background: linear-gradient(135deg, var(--card) 0%, var(--card-sub) 100%);
+      border: 1.5px solid var(--primary); border-radius: 14px; padding: 14px; margin-bottom: 16px;
+      box-shadow: 0 4px 16px var(--primary-glow);
+    }
+    .mvp-chips-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 10px; }
+    .mvp-vote-btn {
+      background: #080a10; border: 1px solid var(--border); color: #fff;
+      padding: 6px 4px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer;
+    }
+
+    .poll-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 14px; margin-bottom: 16px;
+    }
+    .poll-option-row {
+      background: #080a10; border: 1px solid var(--border); border-radius: 10px;
+      padding: 10px; margin-top: 8px; display: flex; flex-direction: column; gap: 6px; cursor: pointer;
+    }
+    .poll-option-row.voted-by-me { border-color: var(--primary); background: rgba(245, 158, 11, 0.08); }
+    .poll-opt-top { display: flex; justify-content: space-between; align-items: center; }
+    .poll-opt-thumb { width: 34px; height: 34px; border-radius: 6px; object-fit: cover; }
+    .voters-avatars-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; border-top: 1px dashed var(--border); padding-top: 5px; }
+    .voter-micro-chip {
+      display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem;
+      background: rgba(255, 255, 255, 0.04); padding: 2px 6px; border-radius: 10px;
+    }
+    .voter-micro-chip img { width: 14px; height: 14px; border-radius: 50%; object-fit: cover; }
+    .unanimous-banner {
+      background: rgba(245, 158, 11, 0.15); border: 1px solid var(--primary);
+      border-radius: 8px; padding: 6px 10px; font-size: 0.8rem; font-weight: 800;
+      color: var(--primary); margin-top: 6px; text-align: center;
+    }
+
+    .vs-matchup-card {
+      background: var(--card); border: 1.5px solid var(--border); border-radius: 14px;
+      padding: 14px; margin-bottom: 14px;
+    }
+    .vs-teams-grid { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; margin-top: 10px; }
+    .team-cell { background: #080a10; border: 1px solid var(--border); border-radius: 10px; padding: 10px 8px; }
+    .team-player-mini {
+      display: flex; align-items: center; gap: 6px; margin-top: 6px;
+      font-size: 0.8rem; font-weight: 700; cursor: pointer;
+    }
+    .team-player-mini img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
+
+    .review-mobile-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 14px; margin-bottom: 14px;
+    }
+    .review-game-header { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 8px; }
+    .review-poster-mini {
+      width: 68px; height: 95px; border-radius: 8px; object-fit: cover;
+      background: #000; border: 1px solid var(--border); flex-shrink: 0;
+    }
+    .sub-scores-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+    .sub-score-tag {
+      background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+      padding: 2px 6px; border-radius: 6px; font-size: 0.7rem; color: var(--primary);
+    }
+
+    .profile-hub-banner {
+      width: 100%; height: 110px; border-radius: 14px; object-fit: cover;
+      background: #141824; border: 1px solid var(--border);
+    }
+    .profile-hub-header {
+      text-align: center; margin-top: -38px; margin-bottom: 16px;
+    }
+    .profile-hub-avatar-wrap {
+      position: relative; display: inline-block; width: 76px; height: 76px;
+    }
+    .profile-hub-avatar {
+      width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+      border: 3px solid var(--primary); background: #000;
+    }
+    .discord-dot {
+      position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px;
+      border-radius: 50%; border: 2.5px solid var(--card);
+    }
+    .dot-online { background: #10b981; box-shadow: 0 0 6px #10b981; }
+    .dot-offline { background: #ef4444; }
+
+    .hub-actions-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 14px; margin-bottom: 14px;
+    }
+    .hub-members-list {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;
+    }
+    .hub-member-cell {
+      background: #080a10; border: 1px solid var(--border); border-radius: 10px;
+      padding: 8px; display: flex; align-items: center; gap: 8px; cursor: pointer;
+    }
+    .hub-member-cell:active { border-color: var(--primary); }
+
+    .quick-sheet-backdrop {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+      z-index: 300; display: none; align-items: flex-end; justify-content: center;
+    }
+    .quick-sheet-card {
+      background: var(--card); border-top: 2px solid var(--primary);
+      border-radius: 20px 20px 0 0; width: 100%; max-width: 500px;
+      padding: 16px 16px calc(env(safe-area-inset-bottom) + 20px);
+      box-shadow: 0 -8px 30px rgba(0,0,0,0.8); animation: slideUp 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
+    }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+    .edit-profile-modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(6px);
+      z-index: 350; display: none; align-items: center; justify-content: center; padding: 16px;
+    }
+    .edit-profile-modal-box {
+      background: var(--card); border: 1.5px solid var(--primary); border-radius: 18px;
+      padding: 20px; max-width: 440px; width: 100%; box-shadow: 0 0 35px var(--primary-glow);
+    }
+
+    .wheel-modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85); z-index: 400; display: none;
+      align-items: center; justify-content: center; padding: 15px;
+    }
+    .wheel-modal-body {
+      background: var(--card); border: 1.5px solid var(--primary); border-radius: 18px;
+      padding: 18px; text-align: center; max-width: 320px; width: 100%;
+    }
+    #tieWheelCanvas {
+      width: 220px; height: 220px; border-radius: 50%; border: 4px solid var(--primary);
+      background: #000; margin: 12px auto; transition: transform 4s cubic-bezier(0.15, 0.9, 0.25, 1);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="header-logo">SBR</div>
+    <div class="header-status-pill" id="header-status-user">كلان صبر 🦅</div>
+  </header>
+
+  <section class="app-container login-container" id="login-view">
+    <h2 style="font-weight: 900; font-size: 1.4rem;">اختر حسابك للدخول 🎮</h2>
+    <div class="login-grid">
+      <div class="login-card" onclick="loginWithPin('عبدالرحمن')">
+        <div style="font-size: 1.8rem; margin-bottom: 4px;">🦅</div>
+        <div style="font-weight: 800;">عبدالرحمن</div>
+      </div>
+      <div class="login-card" onclick="loginWithPin('عبدالله')">
+        <div style="font-size: 1.8rem; margin-bottom: 4px;">⚔️</div>
+        <div style="font-weight: 800;">عبدالله</div>
+      </div>
+      <div class="login-card" onclick="loginWithPin('سعود')">
+        <div style="font-size: 1.8rem; margin-bottom: 4px;">🛡️</div>
+        <div style="font-weight: 800;">سعود</div>
+      </div>
+      <div class="login-card" onclick="loginWithPin('إياد')">
+        <div style="font-size: 1.8rem; margin-bottom: 4px;">⚡</div>
+        <div style="font-weight: 800;">إياد</div>
+      </div>
+    </div>
+  </section>
+
+  <main class="app-container" id="main-view" style="display: none;">
+
+    <!-- 1. شاشة الألعاب -->
+    <section id="tab-games-section">
+      <div class="game-action-bar">
+        <span id="current-cat-title" style="font-weight: 900; font-size: 1.1rem;">كل الألعاب 🎮</span>
+        <button class="toggle-add-btn" onclick="toggleAddGameForm()">+ إضافة لعبة</button>
+      </div>
+
+      <div class="mobile-form-box" id="add-game-box">
+        <input type="text" id="game-title" placeholder="اسم اللعبة...">
+        <select id="game-category">
+          <option value="4">4 لاعبين (Squad)</option>
+          <option value="3">3 لاعبين (Trio)</option>
+          <option value="2">ثنائي لاعبين (Duo)</option>
+        </select>
+        <div class="file-input-wrapper">
+          <span id="game-file-label">📷 رفع صورة اللعبة</span>
+          <input type="file" accept="image/*" onchange="processImage(this, 'game')">
+        </div>
+        <button class="action-btn" id="add-game-btn" onclick="addGame()">نشر اللعبة بالسحابة 🚀</button>
+      </div>
+
+      <div class="mobile-games-grid" id="games-container"></div>
+    </section>
+
+    <!-- 2. شاشة التصويت والـ MVP -->
+    <section id="tab-vote-section" style="display: none;">
+      <div class="mvp-banner-box">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-weight: 900; color: var(--primary); font-size: 0.95rem;">👑 نجم الجلسة (MVP 24h)</span>
+          <span style="font-size: 0.7rem; color: var(--muted);">صوّت لأسطورة الليلة</span>
+        </div>
+        <div class="mvp-chips-grid" id="mvp-voting-chips"></div>
+      </div>
+
+      <div class="game-action-bar">
+        <span style="font-weight: 900; font-size: 1.1rem;">تصويت الألعاب 🗳️</span>
+        <button class="toggle-add-btn" onclick="toggleAddPollForm()">+ تصويت جديد</button>
+      </div>
+
+      <div class="mobile-form-box" id="add-poll-box">
+        <input type="text" id="poll-question" placeholder="عنوان التصويت (مثال: وش بنلعب الليلة؟)...">
+        <select id="poll-type">
+          <option value="single">خيار واحد فقط</option>
+          <option value="multi">خيارات متعددة</option>
+        </select>
+        <select id="poll-source-cat">
+          <option value="all">كل الألعاب</option>
+          <option value="4">4 لاعبين فقط</option>
+          <option value="3_and_2">ألعاب 3 و 2 لاعبين</option>
+          <option value="2">ثنائي اللاعبين فقط</option>
+        </select>
+        <button class="action-btn" onclick="createAutoPoll()">نشر التصويت الآن 🚀</button>
+      </div>
+
+      <div id="polls-container"></div>
+    </section>
+
+    <!-- 3. شاشة مولد الفرق VS -->
+    <section id="tab-teams-section" style="display: none;">
+      <div style="text-align: center; margin-bottom: 16px;">
+        <h3 style="font-weight: 900; color: var(--primary); margin-bottom: 4px;">⚔️ مولّد الفرق السحابي</h3>
+        <p style="font-size: 0.75rem; color: var(--muted);">خلط عشوائي يظهر فوراً عند الجميع بالسحابة</p>
+        <button class="action-btn" id="gen-teams-btn" onclick="generateAndSaveTeams()" style="margin-top: 10px;">
+          خلط ونشر الفرق للجميع الآن 🎲
+        </button>
+      </div>
+      <div id="matchups-container"></div>
+    </section>
+
+    <!-- 4. شاشة مراجعات الألعاب -->
+    <section id="tab-reviews-section" style="display: none;">
+      <div style="background: rgba(239, 68, 68, 0.12); border: 1px solid var(--danger); border-radius: 10px; padding: 10px; margin-bottom: 12px; font-size: 0.75rem; color: #fca5a5;">
+        🛑 <b>ممنوع حرق قصة وأحداث الألعاب نهائياً!</b> اكتب رأيك بدون حرق.
+      </div>
+
+      <div class="game-action-bar">
+        <span style="font-weight: 900; font-size: 1.1rem;">مراجعات الشباب ⭐</span>
+        <button class="toggle-add-btn" onclick="toggleAddReviewForm()">+ كتابة مراجعة</button>
+      </div>
+
+      <div class="mobile-form-box" id="add-review-box">
+        <input type="text" id="review-game-title" placeholder="اسم اللعبة (مثال: Resident Evil 3)...">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div>
+            <label style="font-size: 0.7rem; color: var(--muted);">⭐ العام:</label>
+            <select id="score-main">
+              <option value="5.0">5.0 ★★★★★</option>
+              <option value="4.5">4.5 ★★★★☆</option>
+              <option value="4.0">4.0 ★★★★☆</option>
+              <option value="3.5">3.5 ★★★☆☆</option>
+              <option value="3.0">3.0 ★★★☆☆</option>
+              <option value="2.5">2.5 ★★☆☆☆</option>
+              <option value="2.0">2.0 ★★☆☆☆</option>
+              <option value="1.5">1.5 ★☆☆☆☆</option>
+              <option value="1.0">1.0 ★☆☆☆☆</option>
+              <option value="0.5">0.5 ☆☆☆☆☆</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 0.7rem; color: var(--muted);">📖 القصة:</label>
+            <select id="score-story">
+              <option value="5.0">5.0 ★★★★★</option>
+              <option value="4.5">4.5 ★★★★☆</option>
+              <option value="4.0">4.0 ★★★★☆</option>
+              <option value="3.5">3.5 ★★★☆☆</option>
+              <option value="3.0">3.0 ★★★☆☆</option>
+              <option value="2.5">2.5 ★★☆☆☆</option>
+              <option value="2.0">2.0 ★★☆☆☆</option>
+              <option value="1.5">1.5 ★☆☆☆☆</option>
+              <option value="1.0">1.0 ★☆☆☆☆</option>
+              <option value="0.5">0.5 ☆☆☆☆☆</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 0.7rem; color: var(--muted);">🎮 أسلوب اللعب:</label>
+            <select id="score-gameplay">
+              <option value="5.0">5.0 ★★★★★</option>
+              <option value="4.5">4.5 ★★★★☆</option>
+              <option value="4.0">4.0 ★★★★☆</option>
+              <option value="3.5">3.5 ★★★☆☆</option>
+              <option value="3.0">3.0 ★★★☆☆</option>
+              <option value="2.5">2.5 ★★☆☆☆</option>
+              <option value="2.0">2.0 ★★☆☆☆</option>
+              <option value="1.5">1.5 ★☆☆☆☆</option>
+              <option value="1.0">1.0 ★☆☆☆☆</option>
+              <option value="0.5">0.5 ☆☆☆☆☆</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 0.7rem; color: var(--muted);">🎨 الجرافيكس:</label>
+            <select id="score-graphics">
+              <option value="5.0">5.0 ★★★★★</option>
+              <option value="4.5">4.5 ★★★★☆</option>
+              <option value="4.0">4.0 ★★★★☆</option>
+              <option value="3.5">3.5 ★★★☆☆</option>
+              <option value="3.0">3.0 ★★★☆☆</option>
+              <option value="2.5">2.5 ★★☆☆☆</option>
+              <option value="2.0">2.0 ★★☆☆☆</option>
+              <option value="1.5">1.5 ★☆☆☆☆</option>
+              <option value="1.0">1.0 ★☆☆☆☆</option>
+              <option value="0.5">0.5 ☆☆☆☆☆</option>
+            </select>
+          </div>
+        </div>
+        <div class="file-input-wrapper">
+          <span id="review-file-label">📷 صورة اللعبة (عالية الدقة)</span>
+          <input type="file" accept="image/*" onchange="processImage(this, 'review')">
+        </div>
+        <textarea id="review-text" rows="3" placeholder="مراجعتك وانطباعك بالتفصيل..."></textarea>
+        <button class="action-btn" id="add-review-btn" onclick="addReview()">نشر المراجعة 🌟</button>
+      </div>
+
+      <div id="reviews-container"></div>
+    </section>
+
+    <!-- 5. صفحة الملف التعريفي الشاملة (Profile Hub) -->
+    <section id="tab-profile-section" style="display: none;">
+      <img src="" id="hub-banner-img" class="profile-hub-banner" alt="غلاف الملف">
+      <div class="profile-hub-header">
+        <div class="profile-hub-avatar-wrap">
+          <img src="" id="hub-avatar-img" class="profile-hub-avatar" alt="الصورة">
+          <span class="discord-dot dot-online" id="hub-online-dot"></span>
+        </div>
+        <h3 style="font-weight: 900; margin-top: 6px;" id="hub-display-name">--</h3>
+        <div style="font-size: 0.78rem; color: var(--primary); font-weight: 700;" id="hub-display-title">--</div>
+        <p style="font-size: 0.8rem; color: var(--muted); margin-top: 4px; padding: 0 10px;" id="hub-display-bio">--</p>
+      </div>
+
+      <div class="hub-actions-card">
+        <div style="font-weight: 800; font-size: 0.9rem; color: #fff; margin-bottom: 4px;">👥 أعضاء كلان صبر</div>
+        <div class="hub-members-list" id="hub-clan-members-grid"></div>
+      </div>
+
+      <div class="hub-actions-card">
+        <label style="font-size: 0.8rem; font-weight: 700; color: var(--muted); display: block; margin-bottom: 6px;">🎨 ستايل التطبيق:</label>
+        <select id="theme-selector" onchange="changeTheme(this.value)">
+          <option value="gold">👑 ذهبي وأسود (SBR الملكي)</option>
+          <option value="sony">🎮 بلايستيشن (PlayStation)</option>
+          <option value="crimson">🔥 أحمر وأسود (Crimson Ops)</option>
+          <option value="cyber">⚡ أخضر سايبر (Cyber Matrix)</option>
+          <option value="purple">🔮 بنفسجي نيون (Midnight Neon)</option>
+        </select>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px;">
+          <button class="action-btn" onclick="openEditProfileModal()" style="background: var(--card-sub); color: #fff; border: 1px solid var(--border);">تعديل الملف ⚙️</button>
+          <button class="action-btn" onclick="logout()" style="background: rgba(239,68,68,0.15); color: var(--danger); border: 1px solid var(--danger);">تسجيل خروج</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- شريط التنقل السفلي المعدل (④ رباعي / ③ ثلاثي / ② ثنائي / ⚔️ الفرق) -->
+  <nav class="app-bottom-nav" id="app-nav" style="display: none;">
+    <button class="nav-item active" onclick="switchNav('all', this)">
+      <span class="nav-icon">🎮</span>
+      <span>الكل</span>
+    </button>
+    <button class="nav-item" onclick="switchNav('4', this)">
+      <span class="nav-icon" style="font-weight: 900; font-size: 1.25rem;">④</span>
+      <span>رباعي</span>
+    </button>
+    <button class="nav-item" onclick="switchNav('3', this)">
+      <span class="nav-icon" style="font-weight: 900; font-size: 1.25rem;">③</span>
+      <span>ثلاثي</span>
+    </button>
+    <button class="nav-item" onclick="switchNav('2', this)">
+      <span class="nav-icon" style="font-weight: 900; font-size: 1.25rem;">②</span>
+      <span>ثنائي</span>
+    </button>
+    <button class="nav-item" onclick="switchNav('vote', this)">
+      <span class="nav-icon">🗳️</span>
+      <span>التصويت</span>
+    </button>
+    <button class="nav-item" onclick="switchNav('teams', this)">
+      <span class="nav-icon" style="font-size: 1.15rem;">⚔️</span>
+      <span>الفرق</span>
+    </button>
+    <button class="nav-item" onclick="switchNav('reviews', this)">
+      <span class="nav-icon">⭐</span>
+      <span>المراجعات</span>
+    </button>
+    <button class="nav-item" onclick="switchNav('profile', this)">
+      <img src="" id="bottom-bar-avatar" class="nav-profile-thumb" alt="أنت">
+      <span>أنت</span>
+    </button>
+  </nav>
+
+  <!-- نافذة تعديل الملف -->
+  <div class="edit-profile-modal-overlay" id="edit-profile-modal">
+    <div class="edit-profile-modal-box">
+      <h3 style="color: var(--primary); font-weight: 900; margin-bottom: 12px; font-size: 1.15rem; text-align: center;">⚙️ تعديل الملف الشخصي</h3>
+      
+      <label style="font-size: 0.75rem; color: var(--muted); font-weight: 700;">اللقب المفضل:</label>
+      <input type="text" id="modal-edit-title" placeholder="أدخل لقبك...">
+
+      <label style="font-size: 0.75rem; color: var(--muted); font-weight: 700;">النبذة التعريفية (Bio):</label>
+      <textarea id="modal-edit-bio" rows="2" placeholder="أدخل نبذتك..."></textarea>
+
+      <label style="font-size: 0.75rem; color: var(--muted); font-weight: 700;">الصورة الشخصية (الدائرية):</label>
+      <div class="file-input-wrapper">
+        <span id="modal-avatar-label">🖼️ رفع الصورة الشخصية</span>
+        <input type="file" accept="image/*" onchange="processProfileUpload(this, 'avatar')">
+      </div>
+
+      <label style="font-size: 0.75rem; color: var(--muted); font-weight: 700;">صورة الغلاف (العرضية الطويلة):</label>
+      <div class="file-input-wrapper">
+        <span id="modal-banner-label">🌌 رفع صورة الغلاف العريضة</span>
+        <input type="file" accept="image/*" onchange="processProfileUpload(this, 'banner')">
+      </div>
+
+      <button class="action-btn" id="save-profile-btn" onclick="saveProfileChanges()" style="margin-top: 6px;">حفظ في التخزين السحابي 💾</button>
+      <button class="action-btn" onclick="closeEditProfileModal()" style="background: transparent; color: var(--muted); margin-top: 6px;">إلغاء</button>
+    </div>
+  </div>
+
+  <!-- بطاقة العرض السريع للأعضاء (Story Card Sheet) -->
+  <div class="quick-sheet-backdrop" id="quick-sheet" onclick="closeQuickSheet(event)">
+    <div class="quick-sheet-card" onclick="event.stopPropagation()">
+      <div style="width: 36px; height: 4px; background: var(--border); border-radius: 4px; margin: 0 auto 12px;"></div>
+      <img src="" id="sheet-banner" style="width: 100%; height: 90px; border-radius: 10px; object-fit: cover; background: #000;" alt="">
+      <div style="display: flex; align-items: center; gap: 12px; margin-top: -24px; padding: 0 10px;">
+        <div style="position: relative;">
+          <img src="" id="sheet-avatar" style="width: 58px; height: 58px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; background: #000;" alt="">
+          <span class="discord-dot dot-online" id="sheet-dot" style="bottom: 0; right: 0;"></span>
+        </div>
+        <div style="margin-top: 18px;">
+          <h4 style="font-weight: 900; font-size: 1.1rem; color: #fff;" id="sheet-name">--</h4>
+          <span style="font-size: 0.75rem; color: var(--primary); font-weight: 700;" id="sheet-title">--</span>
+        </div>
+      </div>
+      <div style="background: #080a10; border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin-top: 12px; font-size: 0.8rem; color: #cbd5e1;" id="sheet-bio">--</div>
+    </div>
+  </div>
+
+  <!-- نافذة عجلة فض التعادل -->
+  <div class="wheel-modal-overlay" id="tie-wheel-modal">
+    <div class="wheel-modal-body">
+      <h4 style="color: var(--primary); font-weight: 900;">🎡 فض التعادل بالعجلة</h4>
+      <canvas id="tieWheelCanvas" width="400" height="400"></canvas>
+      <button class="action-btn" id="spin-tie-btn" onclick="spinTieWheel()">تدوير العجلة 🎲</button>
+      <button class="action-btn" onclick="closeTieWheelModal()" style="background: transparent; color: var(--muted); margin-top: 6px;">إغلاق</button>
+    </div>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBZ1E4enqjFRR2iaZWURWUTsx3-kuf_zRE",
+      authDomain: "sbr-gaming.firebaseapp.com",
+      projectId: "sbr-gaming",
+      storageBucket: "sbr-gaming.firebasestorage.app",
+      messagingSenderId: "386954529466",
+      appId: "1:386954529466:web:085a041c2f12958fbc5083"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const CLAN_MEMBERS = ['عبدالرحمن', 'عبدالله', 'سعود', 'إياد'];
+    let currentNavTab = 'all';
+    let currentUser = localStorage.getItem('sbr_current_user') || '';
+    let currentTheme = localStorage.getItem('sbr_theme') || 'gold';
+    
+    let uploadedImageBase64 = '';
+    let uploadedReviewImageBase64 = '';
+    let editAvatarBase64 = '';
+    let editBannerBase64 = '';
+    let multiSelections = {};
+
+    let gamesList = [];
+    let pollsList = [];
+    let matchupsList = [];
+    let reviewsList = [];
+    let membersProfiles = {};
+    let sessionData = {};
+
+    let activePollIdForWheel = null;
+    let tieGames = [];
+    let tieRotation = 0;
+    let isTieSpinning = false;
+
+    changeTheme(currentTheme, false);
+
+    function changeTheme(theme, save = true) {
+      document.body.className = '';
+      if (theme !== 'gold') document.body.classList.add('theme-' + theme);
+      currentTheme = theme;
+      if (save) localStorage.setItem('sbr_theme', theme);
+      const sel = document.getElementById('theme-selector');
+      if (sel) sel.value = theme;
+    }
+
+    function getUserAvatar(name) {
+      if (membersProfiles[name] && membersProfiles[name].avatar && membersProfiles[name].avatar.trim().length > 10) {
+        return membersProfiles[name].avatar;
+      }
+      return 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100';
+    }
+
+    function isUserOnline(name) {
+      return membersProfiles[name] && membersProfiles[name].online;
+    }
+
+    db.collection("users").onSnapshot(snapshot => {
+      membersProfiles = {};
+      snapshot.forEach(doc => membersProfiles[doc.id] = doc.data());
+      updateProfileHubUI();
+      renderGames();
+      renderPolls();
+      renderMatchups();
+      renderReviews();
+    });
+
+    db.collection("games").onSnapshot(snapshot => {
+      gamesList = [];
+      snapshot.forEach(doc => gamesList.push({ id: doc.id, ...doc.data() }));
+      gamesList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      renderGames();
+    });
+
+    db.collection("polls").onSnapshot(snapshot => {
+      pollsList = [];
+      snapshot.forEach(doc => pollsList.push({ id: doc.id, ...doc.data() }));
+      pollsList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      renderPolls();
+    });
+
+    db.collection("matchups").onSnapshot(snapshot => {
+      matchupsList = [];
+      snapshot.forEach(doc => matchupsList.push({ id: doc.id, ...doc.data() }));
+      matchupsList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      renderMatchups();
+    });
+
+    db.collection("reviews").onSnapshot(snapshot => {
+      reviewsList = [];
+      snapshot.forEach(doc => reviewsList.push({ id: doc.id, ...doc.data() }));
+      reviewsList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      renderReviews();
+    });
+
+    db.collection("session").doc("latest").onSnapshot(doc => {
+      sessionData = doc.exists ? doc.data() : {};
+      renderMvpChips();
+    });
+
+    if (currentUser) {
+      applyUserSession();
+    }
+
+    function setUserOnlineStatus(isOnline) {
+      if (!currentUser) return;
+      db.collection("users").doc(currentUser).set({
+        online: isOnline,
+        lastSeen: Date.now()
+      }, { merge: true });
+    }
+
+    window.addEventListener('beforeunload', () => {
+      if (currentUser) setUserOnlineStatus(false);
+    });
+
+    function loginWithPin(name) {
+      const savedPin = localStorage.getItem('sbr_pin_' + name);
+      if (!savedPin) {
+        const newPin = prompt(`مرحباً يا ${name}! أنشئ رمز PIN سري خاص بك:`);
+        if (!newPin || !newPin.trim()) return;
+        localStorage.setItem('sbr_pin_' + name, newPin.trim());
+        currentUser = name;
+        localStorage.setItem('sbr_current_user', name);
+        initProfile(name);
+        applyUserSession();
+      } else {
+        const inputPin = prompt(`أهلاً يا ${name}! أدخل رمزك السري (PIN):`);
+        if (inputPin === savedPin) {
+          currentUser = name;
+          localStorage.setItem('sbr_current_user', name);
+          applyUserSession();
+        } else {
+          alert('الرمز السري غير صحيح! ❌');
+        }
+      }
+    }
+
+    function initProfile(name) {
+      db.collection("users").doc(name).get().then(doc => {
+        if (!doc.exists) {
+          db.collection("users").doc(name).set({
+            name: name, title: 'عضو كلان صبر', bio: 'متحمس للجيمنج مع السكواد 🎮',
+            avatar: '', banner: '', online: true, mvpUntil: 0
+          });
+        }
+      });
+    }
+
+    function logout() {
+      if (currentUser) setUserOnlineStatus(false);
+      currentUser = '';
+      localStorage.removeItem('sbr_current_user');
+      document.getElementById('main-view').style.display = 'none';
+      document.getElementById('app-nav').style.display = 'none';
+      document.getElementById('login-view').style.display = 'block';
+    }
+
+    function applyUserSession() {
+      document.getElementById('login-view').style.display = 'none';
+      document.getElementById('main-view').style.display = 'block';
+      document.getElementById('app-nav').style.display = 'flex';
+      document.getElementById('header-status-user').innerHTML = `<b>${currentUser}</b> 🔒`;
+      setUserOnlineStatus(true);
+      updateProfileHubUI();
+      switchNav('all', document.querySelector('.nav-item'));
+    }
+
+    function switchNav(tab, elem) {
+      currentNavTab = tab;
+      document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+      if (elem) elem.classList.add('active');
+
+      const isGames = (tab === 'all' || tab === '4' || tab === '3' || tab === '2');
+      document.getElementById('tab-games-section').style.display = isGames ? 'block' : 'none';
+      document.getElementById('tab-vote-section').style.display = (tab === 'vote') ? 'block' : 'none';
+      document.getElementById('tab-teams-section').style.display = (tab === 'teams') ? 'block' : 'none';
+      document.getElementById('tab-reviews-section').style.display = (tab === 'reviews') ? 'block' : 'none';
+      document.getElementById('tab-profile-section').style.display = (tab === 'profile') ? 'block' : 'none';
+
+      if (isGames) {
+        const titles = { 'all': 'كل الألعاب 🎮', '4': 'ألعاب 4 لاعبين (Squad) ④', '3': 'ألعاب 3 لاعبين (Trio) ③', '2': 'ألعاب ثنائية (Duo) ②' };
+        document.getElementById('current-cat-title').innerText = titles[tab];
+        renderGames();
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleAddGameForm() { document.getElementById('add-game-box').classList.toggle('show'); }
+    function toggleAddPollForm() { document.getElementById('add-poll-box').classList.toggle('show'); }
+    function toggleAddReviewForm() { document.getElementById('add-review-box').classList.toggle('show'); }
+
+    function openQuickSheet(name) {
+      const p = membersProfiles[name] || {};
+      const isOnline = !!p.online;
+      const isMvp = p.mvpUntil && p.mvpUntil > Date.now();
+
+      document.getElementById('sheet-name').innerText = name + (isMvp ? ' 👑' : '');
+      document.getElementById('sheet-title').innerText = p.title || 'عضو كلان صبر';
+      document.getElementById('sheet-bio').innerText = p.bio || 'لا توجد نبذة تعريفية مكتوبة بعد.';
+      document.getElementById('sheet-avatar').src = getUserAvatar(name);
+      document.getElementById('sheet-banner').src = p.banner || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500';
+      
+      const dot = document.getElementById('sheet-dot');
+      dot.className = 'discord-dot ' + (isOnline ? 'dot-online' : 'dot-offline');
+
+      document.getElementById('quick-sheet').style.display = 'flex';
+    }
+
+    function closeQuickSheet(e) { document.getElementById('quick-sheet').style.display = 'none'; }
+
+    function updateProfileHubUI() {
+      const p = membersProfiles[currentUser] || {};
+      const isOnline = !!p.online;
+      
+      const bottomThumb = document.getElementById('bottom-bar-avatar');
+      if (bottomThumb) bottomThumb.src = getUserAvatar(currentUser);
+
+      const avatarElem = document.getElementById('hub-avatar-img');
+      if (avatarElem) avatarElem.src = getUserAvatar(currentUser);
+
+      const bannerElem = document.getElementById('hub-banner-img');
+      if (bannerElem) bannerElem.src = p.banner || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500';
+
+      const nameElem = document.getElementById('hub-display-name');
+      if (nameElem) nameElem.innerText = currentUser;
+
+      const titleElem = document.getElementById('hub-display-title');
+      if (titleElem) titleElem.innerText = p.title || 'عضو كلان صبر';
+
+      const bioElem = document.getElementById('hub-display-bio');
+      if (bioElem) bioElem.innerText = p.bio || 'متحمس للجيمنج مع السكواد 🎮';
+
+      const dotElem = document.getElementById('hub-online-dot');
+      if (dotElem) dotElem.className = 'discord-dot ' + (isOnline ? 'dot-online' : 'dot-offline');
+
+      const membersGrid = document.getElementById('hub-clan-members-grid');
+      if (membersGrid) {
+        membersGrid.innerHTML = '';
+        CLAN_MEMBERS.forEach(mName => {
+          const mOnline = isUserOnline(mName);
+          membersGrid.innerHTML += `
+            <div class="hub-member-cell" onclick="openQuickSheet('${mName}')">
+              <div style="position:relative;">
+                <img src="${getUserAvatar(mName)}" style="width:28px; height:28px; border-radius:50%; object-fit:cover;" alt="${mName}">
+                <span class="discord-dot ${mOnline ? 'dot-online' : 'dot-offline'}" style="width:9px; height:9px; bottom:-1px; right:-1px;"></span>
+              </div>
+              <span style="font-size:0.8rem; font-weight:700; color:#fff;">${mName}</span>
+            </div>
+          `;
+        });
+      }
+    }
+
+    function openEditProfileModal() {
+      const p = membersProfiles[currentUser] || {};
+      document.getElementById('modal-edit-title').value = p.title || '';
+      document.getElementById('modal-edit-bio').value = p.bio || '';
+      editAvatarBase64 = '';
+      editBannerBase64 = '';
+      document.getElementById('modal-avatar-label').innerText = '🖼️ رفع الصورة الشخصية';
+      document.getElementById('modal-banner-label').innerText = '🌌 رفع صورة الغلاف العريضة';
+      document.getElementById('edit-profile-modal').style.display = 'flex';
+    }
+
+    function closeEditProfileModal() {
+      document.getElementById('edit-profile-modal').style.display = 'none';
+    }
+
+    function processProfileUpload(input, type) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const label = (type === 'avatar') ? document.getElementById('modal-avatar-label') : document.getElementById('modal-banner-label');
+        label.innerText = 'تم الاختيار: ' + file.name.substring(0, 10) + '...';
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = (type === 'avatar') ? 400 : 800;
+            const scale = MAX_WIDTH / img.width;
+            canvas.width = MAX_WIDTH;
+            canvas.height = img.height * scale;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            if (type === 'avatar') editAvatarBase64 = dataUrl;
+            if (type === 'banner') editBannerBase64 = dataUrl;
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function saveProfileChanges() {
+      const title = document.getElementById('modal-edit-title').value.trim();
+      const bio = document.getElementById('modal-edit-bio').value.trim();
+      const saveBtn = document.getElementById('save-profile-btn');
+
+      saveBtn.innerText = 'جاري الحفظ في السحابة... ⏳';
+      saveBtn.disabled = true;
+
+      const updateData = {
+        title: title || 'عضو كلان صبر',
+        bio: bio || 'متحمس للجيمنج مع السكواد 🎮'
+      };
+      if (editAvatarBase64) updateData.avatar = editAvatarBase64;
+      if (editBannerBase64) updateData.banner = editBannerBase64;
+
+      db.collection("users").doc(currentUser).set(updateData, { merge: true }).then(() => {
+        saveBtn.innerText = 'حفظ في التخزين السحابي 💾';
+        saveBtn.disabled = false;
+        closeEditProfileModal();
+      }).catch(err => {
+        alert('حدث خطأ: ' + err.message);
+        saveBtn.innerText = 'حفظ في التخزين السحابي 💾';
+        saveBtn.disabled = false;
+      });
+    }
+
+    function processImage(input, target) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const label = (target === 'game') ? document.getElementById('game-file-label') : document.getElementById('review-file-label');
+        if (label) label.innerText = 'تم الاختيار: ' + file.name.substring(0, 10) + '...';
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            // رفع الدقة إلى 720 ومعدل الجودة إلى 85% لمنع الغبش في صور المراجعات
+            const MAX_WIDTH = (target === 'review') ? 720 : 500;
+            const scaleSize = MAX_WIDTH / img.width;
+            canvas.width = MAX_WIDTH;
+            canvas.height = img.height * scaleSize;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            const comp = canvas.toDataURL('image/jpeg', 0.85);
+            if (target === 'game') uploadedImageBase64 = comp;
+            if (target === 'review') uploadedReviewImageBase64 = comp;
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function addGame() {
+      const title = document.getElementById('game-title').value.trim();
+      const cat = document.getElementById('game-category').value;
+      const img = uploadedImageBase64 || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500';
+      if (!title) return alert('اكتب اسم اللعبة');
+
+      document.getElementById('add-game-btn').innerText = 'جاري النشر...';
+      db.collection("games").add({
+        title, cat, author: currentUser, img, createdAt: Date.now()
+      }).then(() => {
+        document.getElementById('game-title').value = '';
+        document.getElementById('game-file-label').innerText = '📷 رفع صورة اللعبة';
+        uploadedImageBase64 = '';
+        document.getElementById('add-game-btn').innerText = 'نشر اللعبة بالسحابة 🚀';
+        toggleAddGameForm();
+      });
+    }
+
+    function deleteGame(id) {
+      if (confirm('حذف هذه اللعبة؟')) db.collection("games").doc(id).delete();
+    }
+
+    function renderGames() {
+      const container = document.getElementById('games-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const filtered = (currentNavTab === 'all' || !['4','3','2'].includes(currentNavTab))
+        ? gamesList
+        : gamesList.filter(g => g.cat === currentNavTab);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 30px 0;">لا توجد ألعاب هنا حالياً.</p>`;
+        return;
+      }
+
+      filtered.forEach(g => {
+        container.innerHTML += `
+          <div class="mobile-game-card">
+            <img src="${g.img}" class="game-poster" alt="${g.title}">
+            <div class="game-meta-row">
+              <span class="game-card-title">${g.title}</span>
+              <div class="game-card-sub">
+                <span onclick="openQuickSheet('${g.author}')" style="cursor:pointer; color:var(--primary); font-weight:700;">${g.author}</span>
+                <button class="del-icon" onclick="deleteGame('${g.id}')">🗑️</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function renderMvpChips() {
+      const container = document.getElementById('mvp-voting-chips');
+      if (!container) return;
+      container.innerHTML = '';
+      CLAN_MEMBERS.forEach(name => {
+        container.innerHTML += `
+          <button class="mvp-vote-btn" onclick="voteMvp('${name}')">${name}</button>
+        `;
+      });
+    }
+
+    function voteMvp(votedUser) {
+      const votes = sessionData.mvpVotes || {};
+      if (votes[currentUser]) return alert('صوّت مسبقاً لنجم السهرة!');
+      votes[currentUser] = votedUser;
+      db.collection("session").doc("latest").set({ mvpVotes: votes }, { merge: true });
+
+      const counts = {};
+      Object.values(votes).forEach(u => counts[u] = (counts[u] || 0) + 1);
+      if (counts[votedUser] >= 2) {
+        db.collection("users").doc(votedUser).set({
+          mvpUntil: Date.now() + (24 * 60 * 60 * 1000)
+        }, { merge: true });
+        alert(`🎉 ألف مبروك! توج الكلان ${votedUser} نجماً للجلسة MVP لمدة 24 ساعة!`);
+      }
+    }
+
+    function createAutoPoll() {
+      const question = document.getElementById('poll-question').value.trim();
+      const type = document.getElementById('poll-type').value;
+      const sourceCat = document.getElementById('poll-source-cat').value;
+      if (!question) return alert('اكتب عنوان التصويت');
+
+      let targets = gamesList;
+      if (sourceCat === '4') targets = gamesList.filter(g => g.cat === '4');
+      if (sourceCat === '3_and_2') targets = gamesList.filter(g => g.cat === '3' || g.cat === '2');
+      if (sourceCat === '2') targets = gamesList.filter(g => g.cat === '2');
+
+      if (targets.length < 2) return alert('يجب توفر لعبتين على الأقل');
+
+      const options = targets.map((g, idx) => ({ id: idx, text: g.title, img: g.img, votes: 0 }));
+      db.collection("polls").add({
+        question, type, author: currentUser, options, voters: {}, wheelWinner: null, createdAt: Date.now()
+      }).then(() => {
+        document.getElementById('poll-question').value = '';
+        toggleAddPollForm();
+      });
+    }
+
+    function voteSingle(pollId, optId) {
+      const poll = pollsList.find(p => p.id === pollId);
+      if (!poll) return;
+      const voters = poll.voters || {};
+      if (voters[currentUser]) return alert('صوّت مسبقاً في هذا الاستطلاع!');
+      const opt = poll.options.find(o => o.id === optId);
+      if (opt) opt.votes += 1;
+      voters[currentUser] = [optId];
+      db.collection("polls").doc(pollId).update({ options: poll.options, voters });
+    }
+
+    function toggleMultiOption(pollId, optId) {
+      if (!multiSelections[pollId]) multiSelections[pollId] = [];
+      const idx = multiSelections[pollId].indexOf(optId);
+      if (idx > -1) multiSelections[pollId].splice(idx, 1);
+      else multiSelections[pollId].push(optId);
+      renderPolls();
+    }
+
+    function submitMultiVote(pollId) {
+      const poll = pollsList.find(p => p.id === pollId);
+      if (!poll) return;
+      const selected = multiSelections[pollId] || [];
+      if (selected.length === 0) return alert('اختر خياراً واحداً على الأقل');
+      const voters = poll.voters || {};
+      selected.forEach(optId => {
+        const opt = poll.options.find(o => o.id === optId);
+        if (opt) opt.votes += 1;
+      });
+      voters[currentUser] = selected;
+      delete multiSelections[pollId];
+      db.collection("polls").doc(pollId).update({ options: poll.options, voters });
+    }
+
+    function deletePoll(id) {
+      if (confirm('حذف هذا التصويت؟')) db.collection("polls").doc(id).delete();
+    }
+
+    function renderPolls() {
+      const container = document.getElementById('polls-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      pollsList.forEach(p => {
+        const voters = p.voters || {};
+        const myVotes = voters[currentUser] || null;
+        const hasVoted = myVotes !== null;
+        const isMulti = p.type === 'multi';
+
+        const sorted = [...(p.options || [])].sort((a, b) => b.votes - a.votes);
+        const maxVotes = sorted[0] ? sorted[0].votes : 0;
+        const topTied = sorted.filter(o => o.votes === maxVotes && maxVotes > 0);
+        const hasTie = topTied.length >= 2;
+
+        let optionsHtml = '';
+        sorted.forEach(o => {
+          const whoVoted = [];
+          Object.keys(voters).forEach(u => {
+            if (Array.isArray(voters[u]) && voters[u].includes(o.id)) whoVoted.push(u);
+          });
+
+          const isVotedByMe = hasVoted && myVotes.includes(o.id);
+          const isTemp = !hasVoted && isMulti && (multiSelections[p.id] || []).includes(o.id);
+
+          const action = hasVoted ? '' : (isMulti ? `toggleMultiOption('${p.id}', ${o.id})` : `voteSingle('${p.id}', ${o.id})`);
+
+          let chipsHtml = '';
+          if (whoVoted.length > 0) {
+            chipsHtml = `
+              <div class="voters-avatars-row">
+                ${whoVoted.map(u => `
+                  <span class="voter-micro-chip" onclick="event.stopPropagation(); openQuickSheet('${u}')">
+                    <img src="${getUserAvatar(u)}" alt="${u}">
+                    <span>${u}</span>
+                  </span>
+                `).join('')}
+              </div>
+            `;
+          }
+
+          let unanimous = '';
+          if (whoVoted.length === 4) {
+            unanimous = `<div class="unanimous-banner">إجماع تام من كلان صبر! (4/4) 🦅🔥</div>`;
+          }
+
+          optionsHtml += `
+            <div class="poll-option-row ${isVotedByMe ? 'voted-by-me' : ''}" onclick="${action}">
+              <div class="poll-opt-top">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <img src="${o.img}" class="poll-opt-thumb" alt="${o.text}">
+                  <span style="font-weight:700; font-size:0.85rem;">${isVotedByMe ? '✅ ' : (isTemp ? '☑️ ' : '')}${o.text}</span>
+                </div>
+                <span style="font-weight:800; color:var(--primary); font-size:0.85rem;">${o.votes}</span>
+              </div>
+              ${chipsHtml}
+              ${unanimous}
+            </div>
+          `;
+        });
+
+        let multiConfirm = (isMulti && !hasVoted)
+          ? `<button class="action-btn" onclick="submitMultiVote('${p.id}')" style="margin-top:10px;">تأكيد وإرسال التصويت 🗳️</button>` : '';
+
+        let tieBtn = (hasTie && !p.wheelWinner)
+          ? `<button class="action-btn" onclick="openTieBreakerWheel('${p.id}')" style="margin-top:10px; background:linear-gradient(45deg, var(--card), var(--primary)); color:#000;">🎡 فض التعادل بالعجلة (${topTied.length})</button>` : '';
+
+        let winnerBanner = p.wheelWinner
+          ? `<div style="background:rgba(245,158,11,0.15); border:1.5px solid var(--primary); border-radius:12px; padding:10px; margin-top:10px; display:flex; align-items:center; gap:10px;">
+              <img src="${p.wheelWinner.img || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=100'}" style="width:46px; height:46px; border-radius:8px; object-fit:cover; border:1px solid var(--primary);" alt="">
+              <div style="flex:1;">
+                <span style="font-size:0.75rem; color:var(--primary); font-weight:800;">🏆 نتيجة قرعة العجلة:</span>
+                <div style="font-weight:900; font-size:1rem; color:#fff;">${p.wheelWinner.title}</div>
+              </div>
+            </div>` : '';
+
+        container.innerHTML += `
+          <div class="poll-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h4 style="font-weight:800; font-size:1rem;">${p.question}</h4>
+              <button class="del-icon" onclick="deletePoll('${p.id}')">🗑️</button>
+            </div>
+            ${optionsHtml}
+            ${multiConfirm}
+            ${tieBtn}
+            ${winnerBanner}
+          </div>
+        `;
+      });
+    }
+
+    function openTieBreakerWheel(pollId) {
+      const poll = pollsList.find(p => p.id === pollId);
+      if (!poll) return;
+      const maxVotes = Math.max(...poll.options.map(o => o.votes));
+      tieGames = poll.options.filter(o => o.votes === maxVotes && maxVotes > 0);
+      if (tieGames.length < 2) return alert('لا يوجد تعادل!');
+      activePollIdForWheel = pollId;
+      document.getElementById('tie-wheel-modal').style.display = 'flex';
+      drawTieWheel();
+    }
+
+    function closeTieWheelModal() {
+      document.getElementById('tie-wheel-modal').style.display = 'none';
+      activePollIdForWheel = null;
+    }
+
+    function drawTieWheel() {
+      const canvas = document.getElementById('tieWheelCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const num = tieGames.length;
+      ctx.clearRect(0, 0, 400, 400);
+      const arc = (2 * Math.PI) / num;
+      const colors = ['#131722', '#1c2233', '#242b3d', '#181e2e'];
+      for (let i = 0; i < num; i++) {
+        const angle = i * arc;
+        ctx.beginPath();
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.moveTo(200, 200);
+        ctx.arc(200, 200, 195, angle, angle + arc);
+        ctx.lineTo(200, 200);
+        ctx.fill();
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        ctx.save();
+        ctx.translate(200, 200);
+        ctx.rotate(angle + arc / 2);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 16px Cairo';
+        ctx.fillText(tieGames[i].text.substring(0, 12), 180, 6);
+        ctx.restore();
+      }
+    }
+
+    function spinTieWheel() {
+      if (isTieSpinning) return;
+      isTieSpinning = true;
+      const btn = document.getElementById('spin-tie-btn');
+      btn.disabled = true;
+      const num = tieGames.length;
+      const arcDeg = 360 / num;
+      const winIdx = Math.floor(Math.random() * num);
+      const total = (5 * 360) + ((360 - (winIdx * arcDeg) - (arcDeg / 2) + 270) % 360);
+      tieRotation += total;
+      document.getElementById('tieWheelCanvas').style.transform = `rotate(${tieRotation}deg)`;
+
+      setTimeout(() => {
+        isTieSpinning = false;
+        btn.disabled = false;
+        const winner = tieGames[winIdx];
+        if (activePollIdForWheel) {
+          db.collection("polls").doc(activePollIdForWheel).update({
+            wheelWinner: { 
+              title: winner.text, 
+              img: winner.img || '',
+              chosenBy: currentUser, 
+              timestamp: Date.now() 
+            }
+          });
+        }
+        closeTieWheelModal();
+      }, 4100);
+    }
+
+    function generateAndSaveTeams() {
+      const btn = document.getElementById('gen-teams-btn');
+      btn.disabled = true;
+      const mems = [...CLAN_MEMBERS];
+      for (let i = mems.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [mems[i], mems[j]] = [mems[j], mems[i]];
+      }
+      db.collection("matchups").add({
+        teamA: [mems[0], mems[1]], teamB: [mems[2], mems[3]],
+        createdBy: currentUser, createdAt: Date.now()
+      }).then(() => { btn.disabled = false; });
+    }
+
+    function deleteMatchup(id) {
+      if (confirm('حذف هذه المواجهة؟')) db.collection("matchups").doc(id).delete();
+    }
+
+    function renderMatchups() {
+      const container = document.getElementById('matchups-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (matchupsList.length === 0) {
+        container.innerHTML = `<p style="text-align:center; color:var(--muted); padding:30px 0;">لا توجد مواجهات مولدة حالياً.</p>`;
+        return;
+      }
+
+      matchupsList.forEach(m => {
+        container.innerHTML += `
+          <div class="vs-matchup-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:var(--muted);">
+              <span>بواسطة: <b>${m.createdBy || 'عضو'}</b></span>
+              <button class="del-icon" onclick="deleteMatchup('${m.id}')">🗑️</button>
+            </div>
+            <div class="vs-teams-grid">
+              <div class="team-cell">
+                <span style="font-size:0.75rem; font-weight:800; color:var(--primary);">الفريق الأول 🦅</span>
+                ${(m.teamA || []).map(u => `
+                  <div class="team-player-mini" onclick="openQuickSheet('${u}')">
+                    <img src="${getUserAvatar(u)}" alt="${u}">
+                    <span>${u}</span>
+                  </div>
+                `).join('')}
+              </div>
+              <div style="font-weight:900; font-size:1.4rem; color:var(--primary); font-style:italic;">VS</div>
+              <div class="team-cell">
+                <span style="font-size:0.75rem; font-weight:800; color:var(--blue);">الفريق الثاني 🐺</span>
+                ${(m.teamB || []).map(u => `
+                  <div class="team-player-mini" onclick="openQuickSheet('${u}')">
+                    <img src="${getUserAvatar(u)}" alt="${u}">
+                    <span>${u}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function addReview() {
+      const title = document.getElementById('review-game-title').value.trim();
+      const content = document.getElementById('review-text').value.trim();
+      const scoreMain = document.getElementById('score-main').value;
+      const scoreStory = document.getElementById('score-story').value;
+      const scoreGameplay = document.getElementById('score-gameplay').value;
+      const scoreGraphics = document.getElementById('score-graphics').value;
+      const img = uploadedReviewImageBase64 || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500';
+
+      if (!title || !content) return alert('يرجى كتابة اسم اللعبة والمراجعة');
+      document.getElementById('add-review-btn').innerText = 'جاري النشر...';
+
+      db.collection("reviews").add({
+        title, content, scoreMain, scoreStory, scoreGameplay, scoreGraphics,
+        img, author: currentUser, createdAt: Date.now()
+      }).then(() => {
+        document.getElementById('review-game-title').value = '';
+        document.getElementById('review-text').value = '';
+        document.getElementById('review-file-label').innerText = '📷 صورة اللعبة (عالية الدقة)';
         uploadedReviewImageBase64 = '';
         document.getElementById('add-review-btn').innerText = 'نشر المراجعة 🌟';
         toggleAddReviewForm();
