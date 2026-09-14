@@ -4,7 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SBR CLAN | البوابة الرسمية</title>
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23090a0f'/%3E%3Crect width='486' height='486' x='13' y='13' rx='100' fill='none' stroke='%23f59e0b' stroke-width='16'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-weight='900' font-size='170' fill='%23f59e0b' letter-spacing='4'%3ESBR%3C/text%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23090a0f'/%3E%3Crect width='486' height='486' x='13' y='13' rx='100' fill='none' stroke='%23f59e0b' stroke-width='16'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-weight='900' font-size='170' fill='%23f59e0b' letter-spacing='4'%3ESBR%3C/text%3E%3C/svg%3E">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="SBR CLAN">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+  
+  <!-- مكتبات Firebase السحابية الرسمية -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
   <style>
     :root {
       --bg: #090a0f;
@@ -59,7 +71,6 @@
     }
     .logout-btn:hover { color: var(--danger); border-color: var(--danger); }
 
-    /* صفحة اختيار الحساب */
     .hero-section {
       max-width: 900px;
       margin: 40px auto;
@@ -226,7 +237,6 @@
     .game-meta span { color: var(--gold); font-weight: 700; }
     .del-btn { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 0.85rem; }
 
-    /* نظام التصويت المتطور */
     .vote-box {
       background: var(--card);
       border: 1px solid var(--border);
@@ -297,10 +307,9 @@
     <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
   </div>
 
-  <!-- صفحة اختيار الحساب مع الحماية بالرمز السري PIN -->
   <section class="hero-section" id="hero-view">
     <h2 class="hero-title">من أنت؟ اختر حسابك</h2>
-    <p class="hero-desc">كل حساب محمي برمز سري (PIN) خاص بصاحبه لمنع أي شخص آخر من الدخول</p>
+    <p class="hero-desc">كل حساب محمي برمز سري (PIN) خاص لمنع التعديل نيابة عنك</p>
     <div class="members-grid">
       <div class="member-card" onclick="loginWithPin('عبدالرحمن')">
         <div class="member-icon">🦅</div>
@@ -325,7 +334,6 @@
     </div>
   </section>
 
-  <!-- الصالة الرئيسية -->
   <main id="main-hub">
     <nav class="nav-tabs">
       <button class="nav-btn active" onclick="setTab('all')">كل الألعاب</button>
@@ -337,7 +345,6 @@
 
     <div class="container">
       
-      <!-- إضافة لعبة -->
       <section class="add-box" id="game-form-box">
         <h3 style="color: var(--gold); margin-bottom: 15px; font-weight: 800;">إضافة لعبة جديدة للموقع</h3>
         <div class="form-grid">
@@ -354,16 +361,14 @@
             <input type="file" id="game-file-input" accept="image/*" onchange="processImage(this)">
           </div>
         </div>
-        <button class="action-btn" onclick="addGame()">نشر اللعبة للجميع 🚀</button>
+        <button class="action-btn" id="add-game-btn" onclick="addGame()">نشر اللعبة للجميع في السحابة 🚀</button>
       </section>
 
       <section class="games-grid" id="games-container"></section>
 
-      <!-- إنشاء تصويت مع خيار (متعدد أو أحادي) -->
       <section id="poll-section" style="display: none;">
         <div class="vote-box">
           <h3 style="color: var(--gold); margin-bottom: 12px; font-weight: 800;">إنشاء تصويت جديد (حتى 20 خيار)</h3>
-          
           <input type="text" id="poll-question" placeholder="موضوع التصويت (مثال: وش الألعاب اللي نلعبها الليلة؟)..." style="margin-bottom: 10px;">
           
           <select id="poll-type" style="margin-bottom: 10px;">
@@ -372,7 +377,6 @@
           </select>
 
           <textarea id="poll-options-input" rows="4" placeholder="اكتب كل خيار في سطر جديد (يقبل من 2 إلى 20 خيار)" style="width: 100%; background: #0b0d14; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 8px; margin-bottom: 10px;"></textarea>
-          
           <button class="action-btn" onclick="createPoll()">نشر التصويت للكل 🗳️</button>
         </div>
 
@@ -383,33 +387,52 @@
   </main>
 
   <script>
+    // إعدادات Firebase الخاصة بمشروعك sbr-gaming
+    const firebaseConfig = {
+      apiKey: "AIzaSyBZ1E4enqjFRR2iaZWURWUTsx3-kuf_zRE",
+      authDomain: "sbr-gaming.firebaseapp.com",
+      projectId: "sbr-gaming",
+      storageBucket: "sbr-gaming.firebasestorage.app",
+      messagingSenderId: "386954529466",
+      appId: "1:386954529466:web:085a041c2f12958fbc5083"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
     let currentTab = 'all';
     let currentUser = localStorage.getItem('sbr_current_user') || '';
     let uploadedImageBase64 = '';
-    let multiSelections = {}; // لتخزين التحديدات المؤقتة في الخيارات المتعددة
-    let db;
-
-    const request = indexedDB.open('SBR_Clan_System_DB', 2);
-    request.onupgradeneeded = function(e) {
-      db = e.target.result;
-      if (!db.objectStoreNames.contains('games')) db.createObjectStore('games', { keyPath: 'id' });
-      if (!db.objectStoreNames.contains('polls')) db.createObjectStore('polls', { keyPath: 'id' });
-    };
-    request.onsuccess = function(e) {
-      db = e.target.result;
-      if (currentUser) applyUserSession();
-      loadAllData();
-    };
+    let multiSelections = {};
 
     let gamesList = [];
     let pollsList = [];
 
-    // تسجيل الدخول مع التحقق من الرمز السري PIN
+    // استماع مباشر للسحابة (Live Realtime Sync)
+    db.collection("games").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+      gamesList = [];
+      snapshot.forEach(doc => {
+        gamesList.push({ id: doc.id, ...doc.data() });
+      });
+      render();
+    });
+
+    db.collection("polls").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+      pollsList = [];
+      snapshot.forEach(doc => {
+        pollsList.push({ id: doc.id, ...doc.data() });
+      });
+      render();
+    });
+
+    if (currentUser) {
+      applyUserSession();
+    }
+
     function loginWithPin(name) {
       const savedPin = localStorage.getItem('sbr_pin_' + name);
 
       if (!savedPin) {
-        // أول مرة يسجل العضو
         const newPin = prompt(`مرحباً يا ${name}! هذه أول مرة تدخل فيها.\nأنشئ رمز PIN سري خاص بك لحماية حسابك (مثال: 1234):`);
         if (!newPin || newPin.trim() === '') {
           alert('يجب وضع رمز سري للدخول!');
@@ -420,14 +443,13 @@
         localStorage.setItem('sbr_current_user', name);
         applyUserSession();
       } else {
-        // العضو مسجل سابقاً ومطلوب الرمز
         const inputPin = prompt(`أهلاً يا ${name}! أدخل رمزك السري (PIN) للدخول لحسابك:`);
         if (inputPin === savedPin) {
           currentUser = name;
           localStorage.setItem('sbr_current_user', name);
           applyUserSession();
         } else {
-          alert('الرمز السري غير صحيح! لا يمكنك الدخول لحساب ليس لك ❌');
+          alert('الرمز السري غير صحيح! ❌');
         }
       }
     }
@@ -447,17 +469,6 @@
       document.getElementById('hero-view').style.display = 'none';
       document.getElementById('main-hub').style.display = 'block';
       render();
-    }
-
-    function loadAllData() {
-      if (!db) return;
-      const tx = db.transaction(['games', 'polls'], 'readonly');
-      
-      const gReq = tx.objectStore('games').getAll();
-      gReq.onsuccess = () => { gamesList = gReq.result || []; render(); };
-
-      const pReq = tx.objectStore('polls').getAll();
-      pReq.onsuccess = () => { pollsList = pReq.result || []; render(); };
     }
 
     function setTab(tab) {
@@ -483,14 +494,14 @@
           const img = new Image();
           img.onload = function() {
             const canvas = document.createElement('canvas');
-            const MAX_WIDTH = 320;
+            const MAX_WIDTH = 300;
             const scaleSize = MAX_WIDTH / img.width;
             canvas.width = MAX_WIDTH;
             canvas.height = img.height * scaleSize;
 
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            uploadedImageBase64 = canvas.toDataURL('image/jpeg', 0.65);
+            uploadedImageBase64 = canvas.toDataURL('image/jpeg', 0.6);
           };
           img.src = e.target.result;
         };
@@ -505,28 +516,34 @@
 
       if (!title) return alert('يرجى كتابة اسم اللعبة');
 
-      const newGame = { id: Date.now(), title, cat, author: currentUser, img };
+      const btn = document.getElementById('add-game-btn');
+      btn.innerText = 'جاري النشر للسحابة... ⏳';
+      btn.disabled = true;
 
-      const tx = db.transaction(['games'], 'readwrite');
-      tx.objectStore('games').add(newGame);
-      tx.oncomplete = function() {
-        gamesList.unshift(newGame);
-        render();
-
+      db.collection("games").add({
+        title,
+        cat,
+        author: currentUser,
+        img,
+        createdAt: Date.now()
+      }).then(() => {
         document.getElementById('game-title').value = '';
         document.getElementById('game-file-input').value = '';
         document.getElementById('file-label-text').innerText = '📷 رفع صورة (الصور / الملفات)';
         uploadedImageBase64 = '';
-      };
+        btn.innerText = 'نشر اللعبة للجميع في السحابة 🚀';
+        btn.disabled = false;
+      }).catch(err => {
+        alert('حدث خطأ في الرفع: ' + err.message);
+        btn.innerText = 'نشر اللعبة للجميع في السحابة 🚀';
+        btn.disabled = false;
+      });
     }
 
     function deleteGame(id) {
-      const tx = db.transaction(['games'], 'readwrite');
-      tx.objectStore('games').delete(id);
-      tx.oncomplete = function() {
-        gamesList = gamesList.filter(g => g.id !== id);
-        render();
-      };
+      if (confirm('هل أنت متأكد من حذف اللعبة؟')) {
+        db.collection("games").doc(id).delete();
+      }
     }
 
     function createPoll() {
@@ -540,47 +557,39 @@
       if (lines.length < 2) return alert('أضف خيارين على الأقل');
 
       const options = lines.map((name, i) => ({ id: i, text: name, votes: 0 }));
-      const newPoll = { 
-        id: Date.now(), 
-        question, 
-        type, 
-        author: currentUser, 
+
+      db.collection("polls").add({
+        question,
+        type,
+        author: currentUser,
         options,
-        voters: {} 
-      };
-
-      const tx = db.transaction(['polls'], 'readwrite');
-      tx.objectStore('polls').add(newPoll);
-      tx.oncomplete = function() {
-        pollsList.unshift(newPoll);
-        render();
-
+        voters: {},
+        createdAt: Date.now()
+      }).then(() => {
         document.getElementById('poll-question').value = '';
         document.getElementById('poll-options-input').value = '';
-      };
+      });
     }
 
-    // تصويت أحادي
     function voteSingle(pollId, optId) {
       const poll = pollsList.find(p => p.id === pollId);
       if (!poll) return;
 
-      if (!poll.voters) poll.voters = {};
-
-      if (poll.voters[currentUser]) {
+      const voters = poll.voters || {};
+      if (voters[currentUser]) {
         alert('لقد قمت بالتصويت مسبقاً في هذا الاستطلاع!');
         return;
       }
 
       poll.options[optId].votes += 1;
-      poll.voters[currentUser] = [optId];
+      voters[currentUser] = [optId];
 
-      const tx = db.transaction(['polls'], 'readwrite');
-      tx.objectStore('polls').put(poll);
-      tx.oncomplete = () => render();
+      db.collection("polls").doc(pollId).update({
+        options: poll.options,
+        voters: voters
+      });
     }
 
-    // تحديد خيار مؤقت في التصويت المتعدد
     function toggleMultiOption(pollId, optId) {
       if (!multiSelections[pollId]) multiSelections[pollId] = [];
       const idx = multiSelections[pollId].indexOf(optId);
@@ -593,7 +602,6 @@
       render();
     }
 
-    // تأكيد إرسال التصويت المتعدد
     function submitMultiVote(pollId) {
       const poll = pollsList.find(p => p.id === pollId);
       if (!poll) return;
@@ -604,18 +612,18 @@
         return;
       }
 
-      if (!poll.voters) poll.voters = {};
-
+      const voters = poll.voters || {};
       selected.forEach(optId => {
         poll.options[optId].votes += 1;
       });
+      voters[currentUser] = selected;
 
-      poll.voters[currentUser] = selected;
       delete multiSelections[pollId];
 
-      const tx = db.transaction(['polls'], 'readwrite');
-      tx.objectStore('polls').put(poll);
-      tx.oncomplete = () => render();
+      db.collection("polls").doc(pollId).update({
+        options: poll.options,
+        voters: voters
+      });
     }
 
     function render() {
@@ -627,7 +635,7 @@
         : gamesList.filter(g => g.cat === currentTab);
 
       if (filtered.length === 0 && currentTab !== 'vote') {
-        container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 40px 0;">لا توجد ألعاب مضافة في هذا التصنيف بعد. أضف أول لعبة بالأعلى!</p>`;
+        container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 40px 0;">لا توجد ألعاب مضافة في هذا التصنيف بعد.</p>`;
       }
 
       filtered.forEach(g => {
@@ -638,7 +646,7 @@
               <div class="game-title">${g.title}</div>
               <div class="game-meta">
                 <div>بواسطة: <span>${g.author}</span></div>
-                <button class="del-btn" onclick="deleteGame(${g.id})">حذف</button>
+                <button class="del-btn" onclick="deleteGame('${g.id}')">حذف</button>
               </div>
             </div>
           </div>
@@ -649,8 +657,8 @@
       pollList.innerHTML = '';
 
       pollsList.forEach(p => {
-        if (!p.voters) p.voters = {};
-        const myVotes = p.voters[currentUser] || null;
+        const voters = p.voters || {};
+        const myVotes = voters[currentUser] || null;
         const hasVoted = myVotes !== null;
         const isMulti = p.type === 'multi';
 
@@ -672,7 +680,7 @@
             }
           }
 
-          const clickAction = hasVoted ? '' : (isMulti ? `toggleMultiOption(${p.id}, ${o.id})` : `voteSingle(${p.id}, ${o.id})`);
+          const clickAction = hasVoted ? '' : (isMulti ? `toggleMultiOption('${p.id}', ${o.id})` : `voteSingle('${p.id}', ${o.id})`);
 
           opts += `
             <div class="${classes}" onclick="${clickAction}">
@@ -684,7 +692,7 @@
 
         let multiConfirmButton = '';
         if (isMulti && !hasVoted) {
-          multiConfirmButton = `<button class="confirm-multi-btn" onclick="submitMultiVote(${p.id})">تأكيد وإرسال التصويت (صوت واحد لكل خيار محدد) 🗳️</button>`;
+          multiConfirmButton = `<button class="confirm-multi-btn" onclick="submitMultiVote('${p.id}')">تأكيد وإرسال التصويت 🗳️</button>`;
         }
 
         pollList.innerHTML += `
