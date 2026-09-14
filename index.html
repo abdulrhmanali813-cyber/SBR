@@ -420,15 +420,15 @@
             </select>
 
             <select id="poll-source-cat">
-              <option value="all">الألعاب: كل الألعاب المضافة</option>
-              <option value="4">الألعاب: 4 لاعبين فقط</option>
-              <option value="3">الألعاب: 3 لاعبين فقط</option>
-              <option value="2">الألعاب: ثنائي اللاعبين فقط</option>
+              <option value="all">كل الألعاب</option>
+              <option value="4">4 لاعبين فقط</option>
+              <option value="3_and_2">ألعاب 3 و 2 لاعبين مع بعض (ثلاثية وثنائية)</option>
+              <option value="2">ثنائي اللاعبين فقط</option>
             </select>
           </div>
 
           <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 12px;">
-            * سيقوم النظام تلقائياً بسحب جميع الألعاب وصورها حسب التصنيف المختار وإضافتها للتصويت فوراً.
+            * يقوم النظام بسحب الألعاب وصورها تلقائياً حسب اختيارك بدون الحاجة لكتابة أي اسم.
           </p>
 
           <button class="action-btn" onclick="createAutoPoll()">نشر التصويت التلقائي 🚀</button>
@@ -461,7 +461,6 @@
     let gamesList = [];
     let pollsList = [];
 
-    // استماع مباشر للسحابة مع ترتيب الألعاب والتصويتات الأحدث في الأعلى تلقائياً
     db.collection("games").orderBy("createdAt", "desc").onSnapshot(snapshot => {
       gamesList = [];
       snapshot.forEach(doc => {
@@ -606,12 +605,18 @@
 
       if (!question) return alert('يرجى كتابة عنوان التصويت');
 
-      const targetGames = sourceCat === 'all' 
-        ? gamesList 
-        : gamesList.filter(g => g.cat === sourceCat);
+      let targetGames = [];
+      if (sourceCat === 'all') {
+        targetGames = gamesList;
+      } else if (sourceCat === '3_and_2') {
+        // دمج ألعاب الثلاثي والثنائي معاً في تصويت واحد
+        targetGames = gamesList.filter(g => g.cat === '3' || g.cat === '2');
+      } else {
+        targetGames = gamesList.filter(g => g.cat === sourceCat);
+      }
 
       if (targetGames.length < 2) {
-        return alert('يجب أن تتوفر لعبتان على الأقل في هذا التصنيف لإنشاء تصويت تلقائي!');
+        return alert('يجب توفر لعبتين على الأقل في هذا الاختيار لإنشاء تصويت!');
       }
 
       const options = targetGames.map((game, index) => ({
@@ -732,7 +737,7 @@
         const hasVoted = myVotes !== null;
         const isMulti = p.type === 'multi';
 
-        // ترتيب الخيارات تلقائياً: الأعلى تصويتاً في الأعلى
+        // ترتيب الخيارات: الأعلى تصويتاً يرتفع للأعلى تلقائياً
         const sortedOptions = [...p.options].sort((a, b) => b.votes - a.votes);
 
         let opts = '';
