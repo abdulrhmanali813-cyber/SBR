@@ -11,7 +11,6 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#090a0f">
 
-  <!-- إعداد الأيقونة الخارجية للآبل والأندرويد تلقائياً برمجياً -->
   <link id="site-favicon" rel="icon" type="image/png" href="">
   <link id="apple-touch-icon" rel="apple-touch-icon" href="">
 
@@ -22,16 +21,13 @@
       canvas.height = 192;
       const ctx = canvas.getContext('2d');
 
-      // خلفية سوداء فخمة
       ctx.fillStyle = '#090a0f';
       ctx.fillRect(0, 0, 192, 192);
 
-      // إطار ذهبي أنيق
       ctx.strokeStyle = '#f59e0b';
       ctx.lineWidth = 10;
       ctx.strokeRect(8, 8, 176, 176);
 
-      // رسم نص الشعار SBR
       ctx.fillStyle = '#f59e0b';
       ctx.font = '900 68px Arial, sans-serif';
       ctx.textAlign = 'center';
@@ -46,7 +42,6 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
   
-  <!-- مكتبات Firebase السحابية الرسمية للمزامنة المباشرة -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
@@ -289,7 +284,7 @@
     .vote-option {
       background: #0d1017;
       border: 1px solid var(--border);
-      padding: 12px 18px;
+      padding: 10px 14px;
       margin-top: 10px;
       border-radius: 8px;
       display: flex;
@@ -307,7 +302,20 @@
       border-color: #3b82f6;
       background: rgba(59, 130, 246, 0.15);
     }
-    .vote-count { font-weight: 800; color: var(--gold); }
+    .vote-opt-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .vote-opt-img {
+      width: 46px;
+      height: 46px;
+      border-radius: 6px;
+      object-fit: cover;
+      background: #000;
+      border: 1px solid var(--border);
+    }
+    .vote-count { font-weight: 800; color: var(--gold); font-size: 0.95rem; }
     .already-voted-notice {
       color: var(--success);
       font-size: 0.85rem;
@@ -401,16 +409,29 @@
 
       <section id="poll-section" style="display: none;">
         <div class="vote-box">
-          <h3 style="color: var(--gold); margin-bottom: 12px; font-weight: 800;">إنشاء تصويت جديد (حتى 20 خيار)</h3>
-          <input type="text" id="poll-question" placeholder="موضوع التصويت (مثال: وش الألعاب اللي نلعبها الليلة؟)..." style="margin-bottom: 10px;">
+          <h3 style="color: var(--gold); margin-bottom: 14px; font-weight: 800;">إنشاء تصويت تلقائي للألعاب 🗳️</h3>
           
-          <select id="poll-type" style="margin-bottom: 10px;">
-            <option value="single">نوع التصويت: خيار واحد فقط (Single choice)</option>
-            <option value="multi">نوع التصويت: خيارات متعددة (Multiple choice)</option>
-          </select>
+          <input type="text" id="poll-question" placeholder="عنوان التصويت (مثال: وش بنلعب الليلة؟)..." style="margin-bottom: 12px;">
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+            <select id="poll-type">
+              <option value="single">نوع التصويت: خيار واحد فقط (Single choice)</option>
+              <option value="multi">نوع التصويت: خيارات متعددة (Multiple choice)</option>
+            </select>
 
-          <textarea id="poll-options-input" rows="4" placeholder="اكتب كل خيار في سطر جديد (يقبل من 2 إلى 20 خيار)" style="width: 100%; background: #0b0d14; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 8px; margin-bottom: 10px;"></textarea>
-          <button class="action-btn" onclick="createPoll()">نشر التصويت للكل 🗳️</button>
+            <select id="poll-source-cat">
+              <option value="all">الألعاب: كل الألعاب المضافة</option>
+              <option value="4">الألعاب: 4 لاعبين فقط</option>
+              <option value="3">الألعاب: 3 لاعبين فقط</option>
+              <option value="2">الألعاب: ثنائي اللاعبين فقط</option>
+            </select>
+          </div>
+
+          <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 12px;">
+            * سيقوم النظام تلقائياً بسحب جميع الألعاب وصورها حسب التصنيف المختار وإضافتها للتصويت فوراً.
+          </p>
+
+          <button class="action-btn" onclick="createAutoPoll()">نشر التصويت التلقائي 🚀</button>
         </div>
 
         <div id="active-polls"></div>
@@ -420,7 +441,6 @@
   </main>
 
   <script>
-    // إعدادات الربط السحابي مع Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyBZ1E4enqjFRR2iaZWURWUTsx3-kuf_zRE",
       authDomain: "sbr-gaming.firebaseapp.com",
@@ -441,7 +461,7 @@
     let gamesList = [];
     let pollsList = [];
 
-    // استماع لحظي ومباشر لقاعدة البيانات (Realtime Sync)
+    // استماع مباشر للسحابة مع ترتيب الألعاب والتصويتات الأحدث في الأعلى تلقائياً
     db.collection("games").orderBy("createdAt", "desc").onSnapshot(snapshot => {
       gamesList = [];
       snapshot.forEach(doc => {
@@ -574,22 +594,32 @@
     }
 
     function deleteGame(id) {
-      if (confirm('هل أنت متأكد من حذف اللعبة؟')) {
+      if (confirm('هل أنت متأكد من حذف هذه اللعبة من السحابة؟')) {
         db.collection("games").doc(id).delete();
       }
     }
 
-    function createPoll() {
+    function createAutoPoll() {
       const question = document.getElementById('poll-question').value.trim();
       const type = document.getElementById('poll-type').value;
-      const optionsText = document.getElementById('poll-options-input').value.trim();
+      const sourceCat = document.getElementById('poll-source-cat').value;
 
-      if (!question || !optionsText) return alert('اكتب الموضوع والخيارات');
+      if (!question) return alert('يرجى كتابة عنوان التصويت');
 
-      const lines = optionsText.split('\n').map(l => l.trim()).filter(l => l.length > 0).slice(0, 20);
-      if (lines.length < 2) return alert('أضف خيارين على الأقل');
+      const targetGames = sourceCat === 'all' 
+        ? gamesList 
+        : gamesList.filter(g => g.cat === sourceCat);
 
-      const options = lines.map((name, i) => ({ id: i, text: name, votes: 0 }));
+      if (targetGames.length < 2) {
+        return alert('يجب أن تتوفر لعبتان على الأقل في هذا التصنيف لإنشاء تصويت تلقائي!');
+      }
+
+      const options = targetGames.map((game, index) => ({
+        id: index,
+        text: game.title,
+        img: game.img,
+        votes: 0
+      }));
 
       db.collection("polls").add({
         question,
@@ -600,8 +630,13 @@
         createdAt: Date.now()
       }).then(() => {
         document.getElementById('poll-question').value = '';
-        document.getElementById('poll-options-input').value = '';
       });
+    }
+
+    function deletePoll(pollId) {
+      if (confirm('هل أنت متأكد من حذف هذا التصويت؟')) {
+        db.collection("polls").doc(pollId).delete();
+      }
     }
 
     function voteSingle(pollId, optId) {
@@ -614,7 +649,8 @@
         return;
       }
 
-      poll.options[optId].votes += 1;
+      const opt = poll.options.find(o => o.id === optId);
+      if (opt) opt.votes += 1;
       voters[currentUser] = [optId];
 
       db.collection("polls").doc(pollId).update({
@@ -647,7 +683,8 @@
 
       const voters = poll.voters || {};
       selected.forEach(optId => {
-        poll.options[optId].votes += 1;
+        const opt = poll.options.find(o => o.id === optId);
+        if (opt) opt.votes += 1;
       });
       voters[currentUser] = selected;
 
@@ -695,8 +732,11 @@
         const hasVoted = myVotes !== null;
         const isMulti = p.type === 'multi';
 
+        // ترتيب الخيارات تلقائياً: الأعلى تصويتاً في الأعلى
+        const sortedOptions = [...p.options].sort((a, b) => b.votes - a.votes);
+
         let opts = '';
-        p.options.forEach(o => {
+        sortedOptions.forEach(o => {
           let classes = 'vote-option';
           let checkMark = '';
 
@@ -717,7 +757,10 @@
 
           opts += `
             <div class="${classes}" onclick="${clickAction}">
-              <span>${checkMark}${o.text}</span>
+              <div class="vote-opt-left">
+                <img src="${o.img || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=100'}" class="vote-opt-img" alt="${o.text}">
+                <span style="font-weight: 700; color: #fff;">${checkMark}${o.text}</span>
+              </div>
               <span class="vote-count">${o.votes} صوت</span>
             </div>
           `;
@@ -732,7 +775,10 @@
           <div class="vote-box">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
               <h4 style="font-size: 1.2rem; color: #fff;">${p.question}</h4>
-              <span class="vote-badge">${isMulti ? 'خيارات متعددة' : 'خيار واحد فقط'}</span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="vote-badge">${isMulti ? 'خيارات متعددة' : 'خيار واحد فقط'}</span>
+                <button class="del-btn" onclick="deletePoll('${p.id}')" title="حذف هذا التصويت">حذف 🗑️</button>
+              </div>
             </div>
             <div style="font-size: 0.85rem; color: var(--gold); margin-bottom: 12px;">صاحب التصويت: ${p.author}</div>
             ${opts}
