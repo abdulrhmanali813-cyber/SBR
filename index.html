@@ -338,6 +338,33 @@
       width: 100%;
     }
 
+    /* شريط نتيجة عجلة الحظ داخل التصويت */
+    .wheel-result-banner {
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.2) 0%, rgba(180, 83, 9, 0.2) 100%);
+      border: 2px solid var(--gold);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 4px 20px var(--gold-glow);
+      animation: popIn 0.4s ease-out;
+    }
+    .wheel-result-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .wheel-result-img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--gold);
+    }
+
     /* زر فض التعادل بالعجلة */
     .tie-breaker-btn {
       background: linear-gradient(45deg, #b45309, #f59e0b);
@@ -758,6 +785,7 @@
     let wishlistList = [];
 
     // متغيرات عجلة فض التعادل
+    let activePollIdForWheel = null;
     let tieGames = [];
     let tieRotation = 0;
     let isTieSpinning = false;
@@ -938,7 +966,7 @@
         author: currentUser,
         img,
         buyers: [currentUser],
-        declined: {}, // { "عبدالله": "💸 السعر غالي" }
+        declined: {},
         createdAt: Date.now()
       }).then(() => {
         document.getElementById('wish-title').value = '';
@@ -1056,6 +1084,7 @@
         author: currentUser,
         options,
         voters: {},
+        wheelWinner: null,
         createdAt: Date.now()
       }).then(() => {
         document.getElementById('poll-question').value = '';
@@ -1125,7 +1154,7 @@
       });
     }
 
-    /* دوال عجلة فض التعادل المخصصة */
+    /* دوال عجلة فض التعادل وتوثيق النتيجة */
     function openTieBreakerWheel(pollId) {
       const poll = pollsList.find(p => p.id === pollId);
       if (!poll) return;
@@ -1137,12 +1166,14 @@
         return alert('لا يوجد تعادل حالياً في أعلى الأصوات!');
       }
 
+      activePollIdForWheel = pollId;
       document.getElementById('tie-wheel-modal').style.display = 'flex';
       drawTieWheel();
     }
 
     function closeTieWheelModal() {
       document.getElementById('tie-wheel-modal').style.display = 'none';
+      activePollIdForWheel = null;
     }
 
     function drawTieWheel() {
@@ -1218,8 +1249,23 @@
         isTieSpinning = false;
         spinBtn.disabled = false;
         spinBtn.innerText = 'تدوير العجلة الآن! 🎲';
+        
+        const winner = tieGames[winningIndex];
+        
+        // حفظ نتيجة العجلة بالسحابة لتظهر في بطاقة التصويت عند الجميع
+        if (activePollIdForWheel) {
+          db.collection("polls").doc(activePollIdForWheel).update({
+            wheelWinner: {
+              title: winner.text,
+              img: winner.img,
+              chosenBy: currentUser,
+              timestamp: Date.now()
+            }
+          });
+        }
+
         closeTieWheelModal();
-        showWinner(tieGames[winningIndex]);
+        showWinner(winner);
       }, 4100);
     }
 
@@ -1261,7 +1307,7 @@
         `;
       });
 
-      // 2. ريندر التصويتات مع زر فض التعادل الذكي
+      // 2. ريندر التصويتات مع إظهار نتيجة العجلة بداخل الرسالة
       const pollList = document.getElementById('active-polls');
       pollList.innerHTML = '';
 
@@ -1313,11 +1359,29 @@
         }
 
         let tieBreakerSection = '';
-        if (hasTie) {
+        if (hasTie && !p.wheelWinner) {
           tieBreakerSection = `
             <button class="tie-breaker-btn" onclick="openTieBreakerWheel('${p.id}')">
               🎡 فض التعادل بالعجلة بين الألعاب المتصدرة (${topTiedGames.length} ألعاب)
             </button>
+          `;
+        }
+
+        let wheelWinnerHtml = '';
+        if (p.wheelWinner) {
+          wheelWinnerHtml = `
+            <div class="wheel-result-banner">
+              <div class="wheel-result-left">
+                <img src="${p.wheelWinner.img || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=100'}" class="wheel-result-img" alt="الفائز">
+                <div>
+                  <div style="font-size: 0.8rem; color: var(--gold); font-weight: 700;">🏆 نتيجة قرعة عجلة الحظ لليلة:</div>
+                  <div style="font-size: 1.15rem; font-weight: 900; color: #fff;">اختارت العجلة: ${p.wheelWinner.title}</div>
+                </div>
+              </div>
+              <div style="font-size: 0.75rem; color: var(--muted); text-align: left;">
+                تم السحب بواسطة:<br><b style="color: var(--gold);">${p.wheelWinner.chosenBy}</b>
+              </div>
+            </div>
           `;
         }
 
@@ -1335,6 +1399,7 @@
             ${multiConfirmButton}
             ${hasVoted ? '<span class="already-voted-notice">✓ تم تسجيل صوتك بنجاح في هذا الاستطلاع.</span>' : ''}
             ${tieBreakerSection}
+            ${wheelWinnerHtml}
           </div>
         `;
       });
