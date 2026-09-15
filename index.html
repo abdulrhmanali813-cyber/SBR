@@ -126,7 +126,6 @@
       display: flex; align-items: center; gap: 6px;
     }
 
-    /* الشريط السفلي */
     .app-bottom-nav {
       position: fixed; bottom: 0; left: 0; right: 0; height: var(--nav-height);
       background: rgba(10, 12, 18, 0.94);
@@ -151,7 +150,6 @@
 
     .app-container { max-width: 540px; margin: 0 auto; padding: 14px 14px 40px; position: relative; z-index: 2; }
 
-    /* شاشة الدخول */
     .login-container { text-align: center; padding: 40px 10px; }
     .login-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
     .login-card {
@@ -160,7 +158,6 @@
     }
     .login-card:active { transform: scale(0.97); border-color: var(--primary); }
 
-    /* فلاتر الألعاب العلوية */
     .category-chips-row {
       display: flex; align-items: center; gap: 8px; margin-bottom: 14px; overflow-x: auto;
       padding-bottom: 4px; scrollbar-width: none;
@@ -219,7 +216,6 @@
     .card-actions-icons { display: flex; align-items: center; gap: 8px; }
     .icon-action-btn { background: none; border: none; cursor: pointer; font-size: 0.85rem; }
 
-    /* نظام الـ MVP 2.0 */
     .mvp-banner-box {
       background: linear-gradient(135deg, var(--card) 0%, var(--card-sub) 100%);
       border: 1.5px solid var(--primary); border-radius: 14px; padding: 14px; margin-bottom: 16px;
@@ -257,7 +253,6 @@
       color: var(--primary); margin-top: 6px; text-align: center;
     }
 
-    /* مولد الفرق النقي */
     .vs-matchup-card {
       background: var(--card); border: 1.5px solid var(--border); border-radius: 14px;
       padding: 14px; margin-bottom: 14px;
@@ -270,7 +265,6 @@
     }
     .team-player-mini img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
 
-    /* مراجعات الألعاب */
     .review-mobile-card {
       background: var(--card); border: 1px solid var(--border); border-radius: 14px;
       padding: 14px; margin-bottom: 14px;
@@ -287,7 +281,6 @@
       padding: 2px 6px; border-radius: 6px; font-size: 0.7rem; color: var(--primary);
     }
 
-    /* الملف التعريفي */
     .profile-hub-banner {
       width: 100%; height: 110px; border-radius: 14px; object-fit: cover;
       background: #141824; border: 1px solid var(--border);
@@ -331,7 +324,6 @@
       padding: 8px; display: flex; align-items: center; gap: 8px; cursor: pointer;
     }
 
-    /* النوافذ السفلية المنبثقة */
     .bottom-sheet-backdrop {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
@@ -364,7 +356,6 @@
 </head>
 <body>
 
-  <!-- تأثيرات الجزيئات (الثلج والنار) -->
   <canvas id="snowCanvas" class="particle-canvas"></canvas>
   <canvas id="fireCanvas" class="particle-canvas"></canvas>
 
@@ -374,7 +365,7 @@
   </header>
 
   <!-- شاشة الدخول -->
-  <section class="app-container login-container" id="login-view">
+  <section class="app-container login-container" id="login-view" style="display: none;">
     <h2 style="font-weight: 900; font-size: 1.4rem;">اختر حسابك للدخول 🎮</h2>
     <div class="login-grid">
       <div class="login-card" onclick="loginWithPin('عبدالرحمن')">
@@ -399,7 +390,7 @@
   <!-- المحتوى الرئيسي للموقع -->
   <main class="app-container" id="main-view" style="display: none;">
 
-    <!-- 1. شاشة الألعاب (مع فلاتر الدوائر العلوية) -->
+    <!-- 1. شاشة الألعاب -->
     <section id="tab-games-section">
       <div class="category-chips-row">
         <div class="category-chip active" id="chip-all" onclick="filterGamesByCat('all', this)">🎮 كل الألعاب</div>
@@ -708,7 +699,7 @@
     </div>
   </div>
 
-  <!-- نافذة تعديل بيانات اللعبة (✏️) -->
+  <!-- نافذة تعديل بيانات اللعبة -->
   <div class="modal-overlay" id="edit-game-modal">
     <div class="modal-box">
       <h3 style="color: var(--primary); font-weight: 900; margin-bottom: 12px; font-size: 1.1rem; text-align: center;">✏️ تعديل بيانات اللعبة</h3>
@@ -867,21 +858,29 @@
     }
 
     function getUserAvatar(name) {
-      if (membersProfiles[name] && membersProfiles[name].avatar && membersProfiles[name].avatar.trim().length > 10) {
+      if (membersProfiles[name] && membersProfiles[name].avatar && membersProfiles[name].avatar.trim().length > 15) {
         return membersProfiles[name].avatar;
       }
       return 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100';
     }
 
-    // نظام فحص الاتصال الذكي: إذا مر 35 ثانية بدون نبضة يعتبر غير متصل فوراً
     function isUserOnline(name) {
       const p = membersProfiles[name];
       if (!p || !p.online) return false;
       const lastSeen = p.lastSeen || 0;
-      return (Date.now() - lastSeen) < 35000;
+      return (Date.now() - lastSeen) < 180000;
     }
 
-    // مزامنة لحظية فورية
+    // تفعيل الجلسة فوراً عند التحديث بدون أي شاشة تسجيل
+    if (currentUser) {
+      applyUserSession();
+    } else {
+      document.getElementById('login-view').style.display = 'block';
+      document.getElementById('main-view').style.display = 'none';
+      document.getElementById('app-nav').style.display = 'none';
+    }
+
+    // استماع لحظي ومستقر للسحابة بدون استهلاك الحصة
     db.collection("users").onSnapshot(snapshot => {
       membersProfiles = {};
       snapshot.forEach(doc => membersProfiles[doc.id] = doc.data());
@@ -891,85 +890,56 @@
       renderMatchups();
       renderReviews();
       renderMvpChips();
-    });
+    }, err => console.log(err));
 
     db.collection("games").onSnapshot(snapshot => {
       gamesList = [];
       snapshot.forEach(doc => gamesList.push({ id: doc.id, ...doc.data() }));
       gamesList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
       renderGames();
-    });
+    }, err => console.log(err));
 
     db.collection("polls").onSnapshot(snapshot => {
       pollsList = [];
       snapshot.forEach(doc => pollsList.push({ id: doc.id, ...doc.data() }));
       pollsList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
       renderPolls();
-    });
+    }, err => console.log(err));
 
     db.collection("matchups").onSnapshot(snapshot => {
       matchupsList = [];
       snapshot.forEach(doc => matchupsList.push({ id: doc.id, ...doc.data() }));
       matchupsList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
       renderMatchups();
-    });
+    }, err => console.log(err));
 
     db.collection("reviews").onSnapshot(snapshot => {
       reviewsList = [];
       snapshot.forEach(doc => reviewsList.push({ id: doc.id, ...doc.data() }));
       reviewsList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
       renderReviews();
-    });
+    }, err => console.log(err));
 
     db.collection("session").doc("latest").onSnapshot(doc => {
       sessionData = doc.exists ? doc.data() : {};
       renderMvpChips();
-    });
-
-    if (currentUser) {
-      applyUserSession();
-    } else {
-      document.getElementById('login-view').style.display = 'block';
-      document.getElementById('main-view').style.display = 'none';
-      document.getElementById('app-nav').style.display = 'none';
-    }
-
-    // إرسال نبضة اتصال (Heartbeat) كل 10 ثوانٍ لتأكيد التواجد الفعلي
-    let heartbeatTimer = null;
-    function startHeartbeat() {
-      if (heartbeatTimer) clearInterval(heartbeatTimer);
-      const ping = () => {
-        if (!currentUser) return;
-        db.collection("users").doc(currentUser).set({
-          online: true,
-          lastSeen: Date.now()
-        }, { merge: true });
-      };
-      ping();
-      heartbeatTimer = setInterval(ping, 10000);
-    }
+    }, err => console.log(err));
 
     function setUserOnlineStatus(isOnline) {
       if (!currentUser) return;
       db.collection("users").doc(currentUser).set({
         online: isOnline,
-        lastSeen: isOnline ? Date.now() : 0
-      }, { merge: true });
+        lastSeen: Date.now()
+      }, { merge: true }).catch(()=>{});
     }
 
     window.addEventListener('beforeunload', () => {
       if (currentUser) setUserOnlineStatus(false);
     });
 
-    // مراقبة إغلاق أو تصغير المتصفح بالجوال لتحويل الحالة لحمراء فوراً
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) {
-        if (currentUser) setUserOnlineStatus(false);
-      } else {
-        if (currentUser) {
-          setUserOnlineStatus(true);
-          startHeartbeat();
-        }
+      if (currentUser) {
+        setUserOnlineStatus(!document.hidden);
       }
     });
 
@@ -1007,7 +977,6 @@
     }
 
     function logout() {
-      if (heartbeatTimer) clearInterval(heartbeatTimer);
       if (currentUser) setUserOnlineStatus(false);
       currentUser = '';
       localStorage.removeItem('sbr_current_user');
@@ -1023,7 +992,6 @@
       document.getElementById('app-nav').style.display = 'flex';
       document.getElementById('header-status-user').innerHTML = `<b>${currentUser}</b> 🔒`;
       setUserOnlineStatus(true);
-      startHeartbeat();
       updateProfileHubUI();
       switchNav('games', document.querySelector('.nav-item'));
     }
@@ -1061,13 +1029,12 @@
     function toggleAddPollForm() { document.getElementById('add-poll-box').classList.toggle('show'); }
     function toggleAddReviewForm() { document.getElementById('add-review-box').classList.toggle('show'); }
 
-    // بطاقة اللعبة وإحصائياتها
     function openGameInsightsSheet(gameId, event) {
       if (event) event.stopPropagation();
       const g = gamesList.find(item => item.id === gameId);
       if (!g) return;
 
-      document.getElementById('insight-game-img').src = g.img;
+      document.getElementById('insight-game-img').src = g.img || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500';
       document.getElementById('insight-game-title').innerText = g.title;
       const catLabels = { '4': 'رباعي ④', '3': 'ثلاثي ③', '2': 'ثنائي ②' };
       document.getElementById('insight-game-cat').innerText = catLabels[g.cat] || 'لعبة';
@@ -1122,7 +1089,6 @@
       document.getElementById('game-insights-sheet').style.display = 'none';
     }
 
-    // تعديل بيانات اللعبة (✏️)
     function openEditGameModal(gameId, event) {
       if (event) event.stopPropagation();
       const g = gamesList.find(item => item.id === gameId);
@@ -1162,7 +1128,6 @@
       });
     }
 
-    // تعديل المراجعة (✏️)
     function openEditReviewModal(reviewId) {
       const r = reviewsList.find(item => item.id === reviewId);
       if (!r) return;
@@ -1214,7 +1179,6 @@
       });
     }
 
-    // نظام الـ MVP 2.0
     function renderMvpChips() {
       const container = document.getElementById('mvp-voting-chips');
       if (!container) return;
@@ -1258,7 +1222,7 @@
         listContainer.innerHTML += `
           <div class="mvp-game-opt-row" id="mvp-opt-${g.id}" onclick="selectMvpGame('${g.id}', '${g.title}')" style="background:#080a10; border:1px solid var(--border); border-radius:10px; padding:8px 10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
             <div style="display:flex; align-items:center; gap:8px;">
-              <img src="${g.img}" style="width:34px; height:34px; border-radius:6px; object-fit:cover;" alt="">
+              <img src="${g.img || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=100'}" style="width:34px; height:34px; border-radius:6px; object-fit:cover;" alt="">
               <span style="font-weight:700; font-size:0.85rem; color:#fff;">${g.title}</span>
             </div>
             <span class="mvp-check-icon" style="color:var(--primary); font-size:0.9rem; display:none;">✅</span>
@@ -1344,7 +1308,6 @@
       });
     }
 
-    // بطاقة العرض السريع للأعضاء
     function openQuickSheet(name) {
       const p = membersProfiles[name] || {};
       const isOnline = isUserOnline(name);
@@ -1455,13 +1418,13 @@
           const img = new Image();
           img.onload = function() {
             const canvas = document.createElement('canvas');
-            const MAX_WIDTH = (type === 'avatar') ? 400 : 800;
+            const MAX_WIDTH = (type === 'avatar') ? 350 : 650;
             const scale = MAX_WIDTH / img.width;
             canvas.width = MAX_WIDTH;
             canvas.height = img.height * scale;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.88);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
             if (type === 'avatar') editAvatarBase64 = dataUrl;
             if (type === 'banner') editBannerBase64 = dataUrl;
           };
@@ -1501,15 +1464,13 @@
           const img = new Image();
           img.onload = function() {
             const canvas = document.createElement('canvas');
-            const MAX_WIDTH = (target === 'review' || target === 'edit-review') ? 800 : 540;
+            const MAX_WIDTH = (target === 'review' || target === 'edit-review') ? 700 : 500;
             const scaleSize = MAX_WIDTH / img.width;
             canvas.width = MAX_WIDTH;
             canvas.height = img.height * scaleSize;
             const ctx = canvas.getContext('2d');
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            const comp = canvas.toDataURL('image/jpeg', 0.90);
+            const comp = canvas.toDataURL('image/jpeg', 0.85);
             if (target === 'game') uploadedImageBase64 = comp;
             if (target === 'review') uploadedReviewImageBase64 = comp;
             if (target === 'edit-game') editGameImageBase64 = comp;
@@ -1561,7 +1522,7 @@
       filtered.forEach(g => {
         container.innerHTML += `
           <div class="mobile-game-card" onclick="openGameInsightsSheet('${g.id}', event)">
-            <img src="${g.img}" class="game-poster" alt="${g.title}">
+            <img src="${g.img || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500'}" class="game-poster" alt="${g.title}">
             <div class="game-meta-row">
               <span class="game-card-title">${g.title}</span>
               <div class="game-card-sub">
@@ -1589,7 +1550,7 @@
 
       if (targets.length < 2) return alert('يجب توفر لعبتين على الأقل');
 
-      const options = targets.map((g, idx) => ({ id: idx, text: g.title, img: g.img, votes: 0 }));
+      const options = targets.map((g, idx) => ({ id: idx, text: g.title, img: g.img || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=100', votes: 0 }));
       db.collection("polls").add({
         question, type, author: currentUser, options, voters: {}, wheelWinner: null, createdAt: Date.now()
       }).then(() => {
@@ -1686,7 +1647,7 @@
             <div class="poll-option-row ${isVotedByMe ? 'voted-by-me' : ''}" onclick="${action}">
               <div class="poll-opt-top">
                 <div style="display:flex; align-items:center; gap:8px;">
-                  <img src="${o.img}" class="poll-opt-thumb" alt="${o.text}">
+                  <img src="${o.img || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=100'}" class="poll-opt-thumb" alt="${o.text}">
                   <span style="font-weight:700; font-size:0.85rem;">${isVotedByMe ? '✅ ' : (isTemp ? '☑️ ' : '')}${o.text}</span>
                 </div>
                 <span style="font-weight:800; color:var(--primary); font-size:0.85rem;">${o.votes}</span>
@@ -1910,7 +1871,7 @@
         container.innerHTML += `
           <div class="review-mobile-card">
             <div class="review-game-header">
-              <img src="${r.img}" class="review-poster-mini" alt="${r.title}">
+              <img src="${r.img || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500'}" class="review-poster-mini" alt="${r.title}">
               <div style="flex:1;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                   <h4 style="font-weight:800; font-size:0.95rem;">${r.title}</h4>
@@ -1945,6 +1906,7 @@
     function initSnowAnimation() {
       if (snowAnimId) return;
       const canvas = document.getElementById('snowCanvas');
+      if (!canvas) return;
       const ctx = canvas.getContext('2d');
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -1991,6 +1953,7 @@
     function initFireAnimation() {
       if (fireAnimId) return;
       const canvas = document.getElementById('fireCanvas');
+      if (!canvas) return;
       const ctx = canvas.getContext('2d');
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
