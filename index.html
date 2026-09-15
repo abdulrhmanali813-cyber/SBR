@@ -150,7 +150,15 @@
 
     .app-container { max-width: 540px; margin: 0 auto; padding: 14px 14px 40px; position: relative; z-index: 2; }
 
-    .login-container { text-align: center; padding: 40px 10px; }
+    /* شاشة الدخول كطبقة واضحة إذا لم يسجل */
+    .login-modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(7, 8, 12, 0.96); z-index: 500;
+      display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    .login-box {
+      max-width: 420px; width: 100%; text-align: center;
+    }
     .login-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
     .login-card {
       background: var(--card); border: 1px solid var(--border); border-radius: 14px;
@@ -364,31 +372,33 @@
     <div class="header-status-pill" id="header-status-user">كلان صبر 🦅</div>
   </header>
 
-  <!-- شاشة الدخول -->
-  <section class="app-container login-container" id="login-view" style="display: none;">
-    <h2 style="font-weight: 900; font-size: 1.4rem;">اختر حسابك للدخول 🎮</h2>
-    <div class="login-grid">
-      <div class="login-card" onclick="loginWithPin('عبدالرحمن')">
-        <div style="font-size: 1.8rem; margin-bottom: 4px;">🦅</div>
-        <div style="font-weight: 800;">عبدالرحمن</div>
-      </div>
-      <div class="login-card" onclick="loginWithPin('عبدالله')">
-        <div style="font-size: 1.8rem; margin-bottom: 4px;">⚔️</div>
-        <div style="font-weight: 800;">عبدالله</div>
-      </div>
-      <div class="login-card" onclick="loginWithPin('سعود')">
-        <div style="font-size: 1.8rem; margin-bottom: 4px;">🛡️</div>
-        <div style="font-weight: 800;">سعود</div>
-      </div>
-      <div class="login-card" onclick="loginWithPin('إياد')">
-        <div style="font-size: 1.8rem; margin-bottom: 4px;">⚡</div>
-        <div style="font-weight: 800;">إياد</div>
+  <!-- شاشة الدخول المنبثقة -->
+  <div class="login-modal-overlay" id="login-modal">
+    <div class="login-box">
+      <h2 style="font-weight: 900; font-size: 1.4rem;">اختر حسابك للدخول 🎮</h2>
+      <div class="login-grid">
+        <div class="login-card" onclick="loginWithPin('عبدالرحمن')">
+          <div style="font-size: 1.8rem; margin-bottom: 4px;">🦅</div>
+          <div style="font-weight: 800;">عبدالرحمن</div>
+        </div>
+        <div class="login-card" onclick="loginWithPin('عبدالله')">
+          <div style="font-size: 1.8rem; margin-bottom: 4px;">⚔️</div>
+          <div style="font-weight: 800;">عبدالله</div>
+        </div>
+        <div class="login-card" onclick="loginWithPin('سعود')">
+          <div style="font-size: 1.8rem; margin-bottom: 4px;">🛡️</div>
+          <div style="font-weight: 800;">سعود</div>
+        </div>
+        <div class="login-card" onclick="loginWithPin('إياد')">
+          <div style="font-size: 1.8rem; margin-bottom: 4px;">⚡</div>
+          <div style="font-weight: 800;">إياد</div>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- المحتوى الرئيسي للموقع -->
-  <main class="app-container" id="main-view" style="display: none;">
+  <!-- المحتوى الرئيسي الظاهر دائماً -->
+  <main class="app-container" id="main-view">
 
     <!-- 1. شاشة الألعاب -->
     <section id="tab-games-section">
@@ -576,7 +586,7 @@
   </main>
 
   <!-- شريط التنقل السفلي -->
-  <nav class="app-bottom-nav" id="app-nav" style="display: none;">
+  <nav class="app-bottom-nav" id="app-nav">
     <button class="nav-item active" onclick="switchNav('games', this)">
       <span class="nav-icon">🎮</span>
       <span>الألعاب</span>
@@ -657,7 +667,7 @@
 
       <label style="font-size: 0.75rem; color: var(--muted); font-weight: 700; margin-top: 6px; display: block;">تغيير بوستر اللعبة (اختياري):</label>
       <div class="file-input-wrapper">
-        <span id="edit-review-file-label">📷 اختيار صورة جديدة</span>
+        <span id="edit-review-file-label">📷 اختيار بوستر جديد</span>
         <input type="file" accept="image/*" onchange="processImage(this, 'edit-review')">
       </div>
 
@@ -871,16 +881,15 @@
       return (Date.now() - lastSeen) < 180000;
     }
 
-    // تفعيل الجلسة فوراً عند التحديث بدون أي شاشة تسجيل
+    // فحص المستخدم مباشرة عند فتح الصفحة
     if (currentUser) {
       applyUserSession();
     } else {
-      document.getElementById('login-view').style.display = 'block';
-      document.getElementById('main-view').style.display = 'none';
-      document.getElementById('app-nav').style.display = 'none';
+      document.getElementById('login-modal').style.display = 'flex';
+      document.getElementById('header-status-user').innerHTML = `كلان صبر 🦅`;
     }
 
-    // استماع لحظي ومستقر للسحابة بدون استهلاك الحصة
+    // جلب البيانات من السحابة بسلاسة فائقة
     db.collection("users").onSnapshot(snapshot => {
       membersProfiles = {};
       snapshot.forEach(doc => membersProfiles[doc.id] = doc.data());
@@ -980,16 +989,12 @@
       if (currentUser) setUserOnlineStatus(false);
       currentUser = '';
       localStorage.removeItem('sbr_current_user');
-      document.getElementById('main-view').style.display = 'none';
-      document.getElementById('app-nav').style.display = 'none';
-      document.getElementById('login-view').style.display = 'block';
+      document.getElementById('login-modal').style.display = 'flex';
       document.getElementById('header-status-user').innerHTML = `كلان صبر 🦅`;
     }
 
     function applyUserSession() {
-      document.getElementById('login-view').style.display = 'none';
-      document.getElementById('main-view').style.display = 'block';
-      document.getElementById('app-nav').style.display = 'flex';
+      document.getElementById('login-modal').style.display = 'none';
       document.getElementById('header-status-user').innerHTML = `<b>${currentUser}</b> 🔒`;
       setUserOnlineStatus(true);
       updateProfileHubUI();
@@ -1899,14 +1904,12 @@
       });
     }
 
-    // محرك تأثير الثلج والنار
     let snowAnimId = null;
     let fireAnimId = null;
 
     function initSnowAnimation() {
       if (snowAnimId) return;
       const canvas = document.getElementById('snowCanvas');
-      if (!canvas) return;
       const ctx = canvas.getContext('2d');
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -1953,7 +1956,6 @@
     function initFireAnimation() {
       if (fireAnimId) return;
       const canvas = document.getElementById('fireCanvas');
-      if (!canvas) return;
       const ctx = canvas.getContext('2d');
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
