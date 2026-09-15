@@ -2,6 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>SBR CLAN</title>
   
@@ -96,7 +99,7 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: calc(var(--nav-height) + 25px); overflow-x: hidden; position: relative; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: calc(var(--nav-height) + 30px); overflow-x: hidden; position: relative; }
 
     .bg-fx-layer {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -126,7 +129,7 @@
 
     .app-header {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(7, 8, 12, 0.9);
+      background: rgba(7, 8, 12, 0.92);
       backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
       height: 48px; display: flex; align-items: center; justify-content: space-between;
@@ -141,6 +144,7 @@
       display: flex; align-items: center; gap: 6px;
     }
 
+    /* الشريط السفلي النظيف والمنسق */
     .app-bottom-nav {
       position: fixed; bottom: 0; left: 0; right: 0; height: var(--nav-height);
       background: rgba(10, 12, 18, 0.96);
@@ -157,13 +161,18 @@
     }
     .nav-item .nav-icon { font-size: 1.35rem; line-height: 1; display: inline-block; }
     .nav-item.active { color: var(--primary); font-weight: 800; }
+    
     .nav-profile-thumb {
-      width: 28px; height: 28px; border-radius: 50%;
-      object-fit: cover; border: 2px solid var(--muted); background: #000;
+      width: 26px; height: 26px; border-radius: 50%;
+      object-fit: cover; border: 2px solid var(--muted); background: #000; display: block;
     }
-    .nav-item.active .nav-profile-thumb { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+    .nav-item.active .nav-profile-thumb { border-color: var(--primary); box-shadow: 0 0 8px var(--primary-glow); }
 
-    .app-container { max-width: 540px; margin: 0 auto; padding: 14px 14px 40px; position: relative; z-index: 2; }
+    .app-container { max-width: 540px; margin: 0 auto; padding: 14px 14px 20px; position: relative; z-index: 2; }
+
+    /* حجب وتأمين التبديل بين الشاشات */
+    .app-view-tab { display: none !important; }
+    .app-view-tab.active-tab { display: block !important; }
 
     .login-modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -285,7 +294,7 @@
     }
     .team-player-mini img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
 
-    /* مراجعات الألعاب المتطورة */
+    /* مراجعات الألعاب - تنسيق النجوم النقي */
     .review-mobile-card {
       background: var(--card); border: 1px solid var(--border); border-radius: 14px;
       padding: 14px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 10px;
@@ -297,10 +306,20 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
     .review-info-side { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; gap: 6px; }
+    
+    /* تصميم النجوم المنضبط بدون أي تشويه */
     .review-stars-visual {
-      display: inline-flex; align-items: center; gap: 3px; font-size: 1.15rem; color: #f59e0b;
+      display: inline-flex; align-items: center; gap: 2px; font-size: 1.15rem; line-height: 1; color: #f59e0b;
     }
-    .review-stars-visual .star-empty { color: #334155; }
+    .star-half-wrap {
+      position: relative; display: inline-block; width: 1em; height: 1em; line-height: 1;
+    }
+    .star-half-wrap .star-bg { color: #334155; position: absolute; left: 0; top: 0; }
+    .star-half-wrap .star-fill {
+      position: absolute; left: 0; top: 0; width: 50%; overflow: hidden; color: #f59e0b; white-space: nowrap;
+    }
+    .star-empty { color: #334155; }
+
     .badge-recommend {
       display: inline-flex; align-items: center; gap: 4px; font-size: 0.8rem; font-weight: 800;
       padding: 2px 8px; border-radius: 12px;
@@ -427,11 +446,11 @@
     </div>
   </div>
 
-  <!-- المحتوى الرئيسي -->
+  <!-- الحاوية الرئيسية مع فصل التبويبات بنظام الفئات المعزولة -->
   <main class="app-container" id="main-view">
 
     <!-- 1. شاشة الألعاب -->
-    <section id="tab-games-section">
+    <section id="tab-games-section" class="app-view-tab active-tab">
       <div class="category-chips-row">
         <div class="category-chip active" id="chip-all" onclick="filterGamesByCat('all', this)">🎮 كل الألعاب</div>
         <div class="category-chip" id="chip-4" onclick="filterGamesByCat('4', this)">④ رباعي</div>
@@ -462,7 +481,7 @@
     </section>
 
     <!-- 2. شاشة التصويت والـ MVP -->
-    <section id="tab-vote-section" style="display: none;">
+    <section id="tab-vote-section" class="app-view-tab">
       <div class="mvp-banner-box">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span style="font-weight: 900; color: var(--primary); font-size: 0.95rem;">👑 نجم الجلسة (MVP 24h)</span>
@@ -495,7 +514,7 @@
     </section>
 
     <!-- 3. شاشة مولد الفرق النقي -->
-    <section id="tab-teams-section" style="display: none;">
+    <section id="tab-teams-section" class="app-view-tab">
       <div style="text-align: center; margin-bottom: 16px;">
         <h3 style="font-weight: 900; color: var(--primary); margin-bottom: 4px;">⚔️ مولّد الفرق السحابي</h3>
         <p style="font-size: 0.75rem; color: var(--muted);">خلط عشوائي متزامن عند الجميع بالسحابة</p>
@@ -506,8 +525,8 @@
       <div id="matchups-container"></div>
     </section>
 
-    <!-- 4. شاشة مراجعات الألعاب المحدثة -->
-    <section id="tab-reviews-section" style="display: none;">
+    <!-- 4. شاشة مراجعات الألعاب -->
+    <section id="tab-reviews-section" class="app-view-tab">
       <div style="background: rgba(239, 68, 68, 0.12); border: 1px solid var(--danger); border-radius: 10px; padding: 10px; margin-bottom: 12px; font-size: 0.75rem; color: #fca5a5;">
         🛑 <b>ممنوع حرق قصة وأحداث الألعاب نهائياً!</b> اكتب رأيك بدون حرق.
       </div>
@@ -520,7 +539,6 @@
       <div class="mobile-form-box" id="add-review-box">
         <input type="text" id="review-game-title" placeholder="اسم اللعبة...">
         
-        <!-- التوصية السريعة -->
         <label style="font-size: 0.75rem; color: var(--muted); font-weight: 700;">التوصية السريعة:</label>
         <select id="review-recommend">
           <option value="good">👍 تستحق اللعب (لايك أخضر)</option>
@@ -552,11 +570,6 @@
               <option value="4.0">4.0 ★★★★☆</option>
               <option value="3.5">3.5 ★★★☆☆</option>
               <option value="3.0">3.0 ★★★☆☆</option>
-              <option value="2.5">2.5 ★★☆☆☆</option>
-              <option value="2.0">2.0 ★★☆☆☆</option>
-              <option value="1.5">1.5 ★☆☆☆☆</option>
-              <option value="1.0">1.0 ★☆☆☆☆</option>
-              <option value="0.5">0.5 ☆☆☆☆☆</option>
             </select>
           </div>
           <div>
@@ -567,11 +580,6 @@
               <option value="4.0">4.0 ★★★★☆</option>
               <option value="3.5">3.5 ★★★☆☆</option>
               <option value="3.0">3.0 ★★★☆☆</option>
-              <option value="2.5">2.5 ★★☆☆☆</option>
-              <option value="2.0">2.0 ★★☆☆☆</option>
-              <option value="1.5">1.5 ★☆☆☆☆</option>
-              <option value="1.0">1.0 ★☆☆☆☆</option>
-              <option value="0.5">0.5 ☆☆☆☆☆</option>
             </select>
           </div>
           <div>
@@ -582,11 +590,6 @@
               <option value="4.0">4.0 ★★★★☆</option>
               <option value="3.5">3.5 ★★★☆☆</option>
               <option value="3.0">3.0 ★★★☆☆</option>
-              <option value="2.5">2.5 ★★☆☆☆</option>
-              <option value="2.0">2.0 ★★☆☆☆</option>
-              <option value="1.5">1.5 ★☆☆☆☆</option>
-              <option value="1.0">1.0 ★☆☆☆☆</option>
-              <option value="0.5">0.5 ☆☆☆☆☆</option>
             </select>
           </div>
         </div>
@@ -603,7 +606,7 @@
     </section>
 
     <!-- 5. الملف التعريفي الشامل -->
-    <section id="tab-profile-section" style="display: none;">
+    <section id="tab-profile-section" class="app-view-tab">
       <img src="" id="hub-banner-img" class="profile-hub-banner" alt="غلاف الملف">
       <div class="profile-hub-header">
         <div class="profile-hub-avatar-wrap">
@@ -640,7 +643,7 @@
 
   </main>
 
-  <!-- شريط التنقل السفلي -->
+  <!-- شريط التنقل السفلي الموزع بدقة بدون تكرار -->
   <nav class="app-bottom-nav" id="app-nav">
     <button class="nav-item active" onclick="switchNav('games', this)">
       <span class="nav-icon">🎮</span>
@@ -664,7 +667,7 @@
     </button>
   </nav>
 
-  <!-- نافذة صفحة المراجعة التفصيلية (إظهار التفاصيل) -->
+  <!-- نافذة صفحة المراجعة التفصيلية -->
   <div class="bottom-sheet-backdrop" id="review-details-sheet" onclick="closeReviewDetailsSheet(event)">
     <div class="bottom-sheet-card" onclick="event.stopPropagation()">
       <div style="width: 36px; height: 4px; background: var(--border); border-radius: 4px; margin: 0 auto 12px;"></div>
@@ -677,7 +680,6 @@
         </div>
       </div>
 
-      <!-- شبكة النجوم التفصيلية بالرسم البصري -->
       <div style="background: #080a10; border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span style="font-size: 0.8rem; font-weight: 700; color: #fff;">⭐ التقييم العام:</span>
@@ -745,11 +747,6 @@
             <option value="4.0">4.0 ★★★★☆</option>
             <option value="3.5">3.5 ★★★☆☆</option>
             <option value="3.0">3.0 ★★★☆☆</option>
-            <option value="2.5">2.5 ★★☆☆☆</option>
-            <option value="2.0">2.0 ★★☆☆☆</option>
-            <option value="1.5">1.5 ★☆☆☆☆</option>
-            <option value="1.0">1.0 ★☆☆☆☆</option>
-            <option value="0.5">0.5 ☆☆☆☆☆</option>
           </select>
         </div>
         <div>
@@ -760,11 +757,6 @@
             <option value="4.0">4.0 ★★★★☆</option>
             <option value="3.5">3.5 ★★★☆☆</option>
             <option value="3.0">3.0 ★★★☆☆</option>
-            <option value="2.5">2.5 ★★☆☆☆</option>
-            <option value="2.0">2.0 ★★☆☆☆</option>
-            <option value="1.5">1.5 ★☆☆☆☆</option>
-            <option value="1.0">1.0 ★☆☆☆☆</option>
-            <option value="0.5">0.5 ☆☆☆☆☆</option>
           </select>
         </div>
         <div>
@@ -775,11 +767,6 @@
             <option value="4.0">4.0 ★★★★☆</option>
             <option value="3.5">3.5 ★★★☆☆</option>
             <option value="3.0">3.0 ★★★☆☆</option>
-            <option value="2.5">2.5 ★★☆☆☆</option>
-            <option value="2.0">2.0 ★★☆☆☆</option>
-            <option value="1.5">1.5 ★☆☆☆☆</option>
-            <option value="1.0">1.0 ★☆☆☆☆</option>
-            <option value="0.5">0.5 ☆☆☆☆☆</option>
           </select>
         </div>
       </div>
@@ -1001,7 +988,7 @@
       return (Date.now() - lastSeen) < 180000;
     }
 
-    // دالة توليد رسمة النجوم البصرية (تدعم الأنصاف من 0.5 إلى 5)
+    // دالة توليد النجوم المتقنة بدون أي تشويه بصري
     function generateStarsVisual(ratingVal) {
       const val = parseFloat(ratingVal) || 5.0;
       let html = '';
@@ -1009,7 +996,7 @@
         if (val >= i) {
           html += '<span>★</span>';
         } else if (val >= i - 0.5) {
-          html += '<span style="position:relative; display:inline-block;"><span style="color:#334155;">★</span><span style="position:absolute; left:0; top:0; width:50%; overflow:hidden; color:#f59e0b;">★</span></span>';
+          html += '<span class="star-half-wrap"><span class="star-bg">★</span><span class="star-fill">★</span></span>';
         } else {
           html += '<span class="star-empty">★</span>';
         }
@@ -1017,7 +1004,6 @@
       return html;
     }
 
-    // دالة توليد شارة التوصية
     function generateRecommendBadge(type) {
       if (type === 'good') return '<span class="badge-recommend good">👍 تستحق اللعب</span>';
       if (type === 'bad') return '<span class="badge-recommend bad">👎 لا تستحق اللعب</span>';
@@ -1142,16 +1128,24 @@
       switchNav('games', document.querySelector('.nav-item'));
     }
 
+    // تنقل معزول ونظيف يمنع تداخل الأقسام أسفل الشاشة
     function switchNav(tab, elem) {
       currentNavTab = tab;
       document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
       if (elem) elem.classList.add('active');
 
-      document.getElementById('tab-games-section').style.display = (tab === 'games') ? 'block' : 'none';
-      document.getElementById('tab-vote-section').style.display = (tab === 'vote') ? 'block' : 'none';
-      document.getElementById('tab-profile-section').style.display = (tab === 'profile') ? 'block' : 'none';
-      document.getElementById('tab-teams-section').style.display = (tab === 'teams') ? 'block' : 'none';
-      document.getElementById('tab-reviews-section').style.display = (tab === 'reviews') ? 'block' : 'none';
+      document.querySelectorAll('.app-view-tab').forEach(sec => sec.classList.remove('active-tab'));
+      
+      const tabMap = {
+        'games': 'tab-games-section',
+        'vote': 'tab-vote-section',
+        'profile': 'tab-profile-section',
+        'teams': 'tab-teams-section',
+        'reviews': 'tab-reviews-section'
+      };
+      
+      const targetSec = document.getElementById(tabMap[tab]);
+      if (targetSec) targetSec.classList.add('active-tab');
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -1274,7 +1268,6 @@
       });
     }
 
-    // فتح نافذة تفاصيل المراجعة
     function openReviewDetailsSheet(reviewId) {
       const r = reviewsList.find(item => item.id === reviewId);
       if (!r) return;
@@ -2079,6 +2072,9 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>SBR CLAN</title>
   
@@ -2173,7 +2169,7 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: calc(var(--nav-height) + 25px); overflow-x: hidden; position: relative; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: calc(var(--nav-height) + 30px); overflow-x: hidden; position: relative; }
 
     .bg-fx-layer {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -2203,7 +2199,7 @@
 
     .app-header {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(7, 8, 12, 0.9);
+      background: rgba(7, 8, 12, 0.92);
       backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
       height: 48px; display: flex; align-items: center; justify-content: space-between;
@@ -2218,6 +2214,7 @@
       display: flex; align-items: center; gap: 6px;
     }
 
+    /* الشريط السفلي النظيف والمنسق */
     .app-bottom-nav {
       position: fixed; bottom: 0; left: 0; right: 0; height: var(--nav-height);
       background: rgba(10, 12, 18, 0.96);
@@ -2234,13 +2231,18 @@
     }
     .nav-item .nav-icon { font-size: 1.35rem; line-height: 1; display: inline-block; }
     .nav-item.active { color: var(--primary); font-weight: 800; }
+    
     .nav-profile-thumb {
-      width: 28px; height: 28px; border-radius: 50%;
-      object-fit: cover; border: 2px solid var(--muted); background: #000;
+      width: 26px; height: 26px; border-radius: 50%;
+      object-fit: cover; border: 2px solid var(--muted); background: #000; display: block;
     }
-    .nav-item.active .nav-profile-thumb { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+    .nav-item.active .nav-profile-thumb { border-color: var(--primary); box-shadow: 0 0 8px var(--primary-glow); }
 
-    .app-container { max-width: 540px; margin: 0 auto; padding: 14px 14px 40px; position: relative; z-index: 2; }
+    .app-container { max-width: 540px; margin: 0 auto; padding: 14px 14px 20px; position: relative; z-index: 2; }
+
+    /* حجب وتأمين التبديل بين الشاشات */
+    .app-view-tab { display: none !important; }
+    .app-view-tab.active-tab { display: block !important; }
 
     .login-modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -2362,7 +2364,7 @@
     }
     .team-player-mini img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
 
-    /* مراجعات الألعاب المتطورة */
+    /* مراجعات الألعاب - تنسيق النجوم النقي */
     .review-mobile-card {
       background: var(--card); border: 1px solid var(--border); border-radius: 14px;
       padding: 14px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 10px;
@@ -2374,10 +2376,20 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
     .review-info-side { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; gap: 6px; }
+    
+    /* تصميم النجوم المنضبط بدون أي تشويه */
     .review-stars-visual {
-      display: inline-flex; align-items: center; gap: 3px; font-size: 1.15rem; color: #f59e0b;
+      display: inline-flex; align-items: center; gap: 2px; font-size: 1.15rem; line-height: 1; color: #f59e0b;
     }
-    .review-stars-visual .star-empty { color: #334155; }
+    .star-half-wrap {
+      position: relative; display: inline-block; width: 1em; height: 1em; line-height: 1;
+    }
+    .star-half-wrap .star-bg { color: #334155; position: absolute; left: 0; top: 0; }
+    .star-half-wrap .star-fill {
+      position: absolute; left: 0; top: 0; width: 50%; overflow: hidden; color: #f59e0b; white-space: nowrap;
+    }
+    .star-empty { color: #334155; }
+
     .badge-recommend {
       display: inline-flex; align-items: center; gap: 4px; font-size: 0.8rem; font-weight: 800;
       padding: 2px 8px; border-radius: 12px;
@@ -2504,11 +2516,11 @@
     </div>
   </div>
 
-  <!-- المحتوى الرئيسي -->
+  <!-- الحاوية الرئيسية مع فصل التبويبات بنظام الفئات المعزولة -->
   <main class="app-container" id="main-view">
 
     <!-- 1. شاشة الألعاب -->
-    <section id="tab-games-section">
+    <section id="tab-games-section" class="app-view-tab active-tab">
       <div class="category-chips-row">
         <div class="category-chip active" id="chip-all" onclick="filterGamesByCat('all', this)">🎮 كل الألعاب</div>
         <div class="category-chip" id="chip-4" onclick="filterGamesByCat('4', this)">④ رباعي</div>
@@ -2539,7 +2551,7 @@
     </section>
 
     <!-- 2. شاشة التصويت والـ MVP -->
-    <section id="tab-vote-section" style="display: none;">
+    <section id="tab-vote-section" class="app-view-tab">
       <div class="mvp-banner-box">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span style="font-weight: 900; color: var(--primary); font-size: 0.95rem;">👑 نجم الجلسة (MVP 24h)</span>
@@ -2572,7 +2584,7 @@
     </section>
 
     <!-- 3. شاشة مولد الفرق النقي -->
-    <section id="tab-teams-section" style="display: none;">
+    <section id="tab-teams-section" class="app-view-tab">
       <div style="text-align: center; margin-bottom: 16px;">
         <h3 style="font-weight: 900; color: var(--primary); margin-bottom: 4px;">⚔️ مولّد الفرق السحابي</h3>
         <p style="font-size: 0.75rem; color: var(--muted);">خلط عشوائي متزامن عند الجميع بالسحابة</p>
@@ -2583,8 +2595,8 @@
       <div id="matchups-container"></div>
     </section>
 
-    <!-- 4. شاشة مراجعات الألعاب المحدثة -->
-    <section id="tab-reviews-section" style="display: none;">
+    <!-- 4. شاشة مراجعات الألعاب -->
+    <section id="tab-reviews-section" class="app-view-tab">
       <div style="background: rgba(239, 68, 68, 0.12); border: 1px solid var(--danger); border-radius: 10px; padding: 10px; margin-bottom: 12px; font-size: 0.75rem; color: #fca5a5;">
         🛑 <b>ممنوع حرق قصة وأحداث الألعاب نهائياً!</b> اكتب رأيك بدون حرق.
       </div>
@@ -2597,7 +2609,6 @@
       <div class="mobile-form-box" id="add-review-box">
         <input type="text" id="review-game-title" placeholder="اسم اللعبة...">
         
-        <!-- التوصية السريعة -->
         <label style="font-size: 0.75rem; color: var(--muted); font-weight: 700;">التوصية السريعة:</label>
         <select id="review-recommend">
           <option value="good">👍 تستحق اللعب (لايك أخضر)</option>
@@ -2629,11 +2640,6 @@
               <option value="4.0">4.0 ★★★★☆</option>
               <option value="3.5">3.5 ★★★☆☆</option>
               <option value="3.0">3.0 ★★★☆☆</option>
-              <option value="2.5">2.5 ★★☆☆☆</option>
-              <option value="2.0">2.0 ★★☆☆☆</option>
-              <option value="1.5">1.5 ★☆☆☆☆</option>
-              <option value="1.0">1.0 ★☆☆☆☆</option>
-              <option value="0.5">0.5 ☆☆☆☆☆</option>
             </select>
           </div>
           <div>
@@ -2644,11 +2650,6 @@
               <option value="4.0">4.0 ★★★★☆</option>
               <option value="3.5">3.5 ★★★☆☆</option>
               <option value="3.0">3.0 ★★★☆☆</option>
-              <option value="2.5">2.5 ★★☆☆☆</option>
-              <option value="2.0">2.0 ★★☆☆☆</option>
-              <option value="1.5">1.5 ★☆☆☆☆</option>
-              <option value="1.0">1.0 ★☆☆☆☆</option>
-              <option value="0.5">0.5 ☆☆☆☆☆</option>
             </select>
           </div>
           <div>
@@ -2659,11 +2660,6 @@
               <option value="4.0">4.0 ★★★★☆</option>
               <option value="3.5">3.5 ★★★☆☆</option>
               <option value="3.0">3.0 ★★★☆☆</option>
-              <option value="2.5">2.5 ★★☆☆☆</option>
-              <option value="2.0">2.0 ★★☆☆☆</option>
-              <option value="1.5">1.5 ★☆☆☆☆</option>
-              <option value="1.0">1.0 ★☆☆☆☆</option>
-              <option value="0.5">0.5 ☆☆☆☆☆</option>
             </select>
           </div>
         </div>
@@ -2680,7 +2676,7 @@
     </section>
 
     <!-- 5. الملف التعريفي الشامل -->
-    <section id="tab-profile-section" style="display: none;">
+    <section id="tab-profile-section" class="app-view-tab">
       <img src="" id="hub-banner-img" class="profile-hub-banner" alt="غلاف الملف">
       <div class="profile-hub-header">
         <div class="profile-hub-avatar-wrap">
@@ -2717,7 +2713,7 @@
 
   </main>
 
-  <!-- شريط التنقل السفلي -->
+  <!-- شريط التنقل السفلي الموزع بدقة بدون تكرار -->
   <nav class="app-bottom-nav" id="app-nav">
     <button class="nav-item active" onclick="switchNav('games', this)">
       <span class="nav-icon">🎮</span>
@@ -2741,7 +2737,7 @@
     </button>
   </nav>
 
-  <!-- نافذة صفحة المراجعة التفصيلية (إظهار التفاصيل) -->
+  <!-- نافذة صفحة المراجعة التفصيلية -->
   <div class="bottom-sheet-backdrop" id="review-details-sheet" onclick="closeReviewDetailsSheet(event)">
     <div class="bottom-sheet-card" onclick="event.stopPropagation()">
       <div style="width: 36px; height: 4px; background: var(--border); border-radius: 4px; margin: 0 auto 12px;"></div>
@@ -2754,7 +2750,6 @@
         </div>
       </div>
 
-      <!-- شبكة النجوم التفصيلية بالرسم البصري -->
       <div style="background: #080a10; border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span style="font-size: 0.8rem; font-weight: 700; color: #fff;">⭐ التقييم العام:</span>
@@ -2822,11 +2817,6 @@
             <option value="4.0">4.0 ★★★★☆</option>
             <option value="3.5">3.5 ★★★☆☆</option>
             <option value="3.0">3.0 ★★★☆☆</option>
-            <option value="2.5">2.5 ★★☆☆☆</option>
-            <option value="2.0">2.0 ★★☆☆☆</option>
-            <option value="1.5">1.5 ★☆☆☆☆</option>
-            <option value="1.0">1.0 ★☆☆☆☆</option>
-            <option value="0.5">0.5 ☆☆☆☆☆</option>
           </select>
         </div>
         <div>
@@ -2837,11 +2827,6 @@
             <option value="4.0">4.0 ★★★★☆</option>
             <option value="3.5">3.5 ★★★☆☆</option>
             <option value="3.0">3.0 ★★★☆☆</option>
-            <option value="2.5">2.5 ★★☆☆☆</option>
-            <option value="2.0">2.0 ★★☆☆☆</option>
-            <option value="1.5">1.5 ★☆☆☆☆</option>
-            <option value="1.0">1.0 ★☆☆☆☆</option>
-            <option value="0.5">0.5 ☆☆☆☆☆</option>
           </select>
         </div>
         <div>
@@ -2852,11 +2837,6 @@
             <option value="4.0">4.0 ★★★★☆</option>
             <option value="3.5">3.5 ★★★☆☆</option>
             <option value="3.0">3.0 ★★★☆☆</option>
-            <option value="2.5">2.5 ★★☆☆☆</option>
-            <option value="2.0">2.0 ★★☆☆☆</option>
-            <option value="1.5">1.5 ★☆☆☆☆</option>
-            <option value="1.0">1.0 ★☆☆☆☆</option>
-            <option value="0.5">0.5 ☆☆☆☆☆</option>
           </select>
         </div>
       </div>
@@ -3078,7 +3058,7 @@
       return (Date.now() - lastSeen) < 180000;
     }
 
-    // دالة توليد رسمة النجوم البصرية (تدعم الأنصاف من 0.5 إلى 5)
+    // دالة توليد النجوم المتقنة بدون أي تشويه بصري
     function generateStarsVisual(ratingVal) {
       const val = parseFloat(ratingVal) || 5.0;
       let html = '';
@@ -3086,7 +3066,7 @@
         if (val >= i) {
           html += '<span>★</span>';
         } else if (val >= i - 0.5) {
-          html += '<span style="position:relative; display:inline-block;"><span style="color:#334155;">★</span><span style="position:absolute; left:0; top:0; width:50%; overflow:hidden; color:#f59e0b;">★</span></span>';
+          html += '<span class="star-half-wrap"><span class="star-bg">★</span><span class="star-fill">★</span></span>';
         } else {
           html += '<span class="star-empty">★</span>';
         }
@@ -3094,7 +3074,6 @@
       return html;
     }
 
-    // دالة توليد شارة التوصية
     function generateRecommendBadge(type) {
       if (type === 'good') return '<span class="badge-recommend good">👍 تستحق اللعب</span>';
       if (type === 'bad') return '<span class="badge-recommend bad">👎 لا تستحق اللعب</span>';
@@ -3219,16 +3198,24 @@
       switchNav('games', document.querySelector('.nav-item'));
     }
 
+    // تنقل معزول ونظيف يمنع تداخل الأقسام أسفل الشاشة
     function switchNav(tab, elem) {
       currentNavTab = tab;
       document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
       if (elem) elem.classList.add('active');
 
-      document.getElementById('tab-games-section').style.display = (tab === 'games') ? 'block' : 'none';
-      document.getElementById('tab-vote-section').style.display = (tab === 'vote') ? 'block' : 'none';
-      document.getElementById('tab-profile-section').style.display = (tab === 'profile') ? 'block' : 'none';
-      document.getElementById('tab-teams-section').style.display = (tab === 'teams') ? 'block' : 'none';
-      document.getElementById('tab-reviews-section').style.display = (tab === 'reviews') ? 'block' : 'none';
+      document.querySelectorAll('.app-view-tab').forEach(sec => sec.classList.remove('active-tab'));
+      
+      const tabMap = {
+        'games': 'tab-games-section',
+        'vote': 'tab-vote-section',
+        'profile': 'tab-profile-section',
+        'teams': 'tab-teams-section',
+        'reviews': 'tab-reviews-section'
+      };
+      
+      const targetSec = document.getElementById(tabMap[tab]);
+      if (targetSec) targetSec.classList.add('active-tab');
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -3351,7 +3338,6 @@
       });
     }
 
-    // فتح نافذة تفاصيل المراجعة
     function openReviewDetailsSheet(reviewId) {
       const r = reviewsList.find(item => item.id === reviewId);
       if (!r) return;
